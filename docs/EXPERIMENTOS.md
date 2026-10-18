@@ -169,9 +169,8 @@ el Nivel 2: hay que leer también los runners. La segunda es que un módulo
 cargado así falla tarde, ya empezada la corrida, y con un mensaje que
 habla de un archivo y no del experimento.
 
-`verify/comprobar_archivos.py` resuelve las dos vías leyendo el código, de
-modo que la ausencia de cualquiera de los diecinueve módulos se detecta
-antes de correr nada.
+El smoke test comprueba las dependencias y rutas necesarias antes de iniciar
+los experimentos.
 
 ## Tablas que no son salida de un experimento
 
