@@ -8,7 +8,7 @@
 # CSVs somewhere else.
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 mkpath("results/all_scenarios")
 # make_gif=true: versión final -- genera, además de las figuras estáticas,
