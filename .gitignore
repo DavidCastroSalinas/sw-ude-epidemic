@@ -33,3 +33,4 @@ JuliaLocalPreferences.toml
 
 #
 .ipynb_checkpoints
+figures_src/__pycache__/
