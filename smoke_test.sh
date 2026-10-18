@@ -5,21 +5,21 @@
 # de comprometer horas de cómputo. No reproduce ninguna cifra.
 #
 #     SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh
+#     SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia
+#     SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia --con-destilacion-smoke
 #
 # Lo que sí hace, sin Julia:
 #   · el verificador de cifras corre y no reporta ninguna FALLA;
 #   · las seis figuras se regeneran desde los CSV entregados;
 #   · el manifiesto cuadra con lo que hay en disco.
 #
-# Lo que hace además, si hay Julia:
+# Lo que hace además, si hay Julia y se pide --con-julia:
 #   · el entorno instala y precompila;
-#   · cada runner presente corre con SIR_UDE_SMOKE_TEST=1.
+#   · los runners ligeros presentes corren con SIR_UDE_SMOKE_TEST=1;
+#   · la destilación completa queda excluida.
 #
-# ADVERTENCIA sobre el modo reducido: la variable SIR_UDE_SMOKE_TEST no
-# está implementada en el módulo del experimento 11. Correrlo aquí lo
-# ejecuta COMPLETO, con sus 50 multistarts, y además sobrescribe
-# results/destilacion_v51/. Por eso la etapa de Julia está desactivada
-# salvo que se pida con --con-julia. Ver docs/PENDIENTES.md.
+# Para probar también el flujo de destilación sin ejecutar el experimento
+# completo ni reemplazar sus resultados, añadir --con-destilacion-smoke.
 
 set -uo pipefail
 
@@ -27,12 +27,19 @@ RAIZ="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$RAIZ"
 
 CON_JULIA=0
+CON_DESTILACION_SMOKE=0
 for arg in "$@"; do
     case "$arg" in
         --con-julia) CON_JULIA=1 ;;
+        --con-destilacion-smoke) CON_DESTILACION_SMOKE=1 ;;
         *) echo "opción desconocida: $arg" >&2; exit 2 ;;
     esac
 done
+
+if [[ $CON_DESTILACION_SMOKE -eq 1 && $CON_JULIA -ne 1 ]]; then
+    echo "usar --con-destilacion-smoke junto con --con-julia" >&2
+    exit 2
+fi
 
 fallos=0
 etapa() { printf '\n== %s ==\n' "$1"; }
@@ -80,9 +87,20 @@ if [[ $CON_JULIA -eq 1 ]]; then
         export SIR_UDE_SMOKE_TEST=1
         for r in experiments/*.jl; do
             [[ -f "$r" ]] || continue
+            [[ "$r" == "experiments/29_run_destilacion_parametrica_v51.jl" ]] && continue
             echo "-- $r"
             "$JULIA" --project=. --threads=auto "$r" || mal "falló $r"
         done
+
+        if [[ $CON_DESTILACION_SMOKE -eq 1 ]]; then
+            etapa "Destilación paramétrica (smoke reducido)"
+            SIR_UDE_DESTILACION_SMOKE=1 \
+                "$JULIA" --project=. --threads=auto \
+                experiments/29_run_destilacion_parametrica_v51.jl || \
+                mal "falló el smoke reducido de la destilación."
+        else
+            echo "Destilación omitida; añadir --con-destilacion-smoke para probarla en modo reducido."
+        fi
     else
         mal "no se encontró Julia; fijar JULIA=/ruta/a/julia."
     fi
