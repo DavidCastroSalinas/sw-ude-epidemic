@@ -50,7 +50,7 @@
 # el horizonte de entrenamiento en una ventana", ahora =164.
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 using CSV   # redundante si sir_ude_lib.jl ya lo carga; no hace daño repetirlo
 
 # Carga autosuficiente de src/lib/18 si no está en sir_ude_lib.jl
