@@ -1,0 +1,95 @@
+# Cómo citar este repositorio. GitHub y Zenodo leen este archivo.
+#
+# Hay dos citas distintas y conviene no confundirlas:
+#
+#   · las claves de primer nivel citan EL SOFTWARE, este anexo;
+#   · `preferred-citation` cita EL ARTÍCULO, y es la que GitHub ofrece
+#     por omisión en el botón «Cite this repository».
+#
+# Los campos marcados PENDIENTE hay que completarlos antes de la etiqueta
+# v1.0.0. Son tres: la revista, el DOI del artículo y el DOI de Zenodo del
+# software, que no existe hasta que se deposita. Ver docs/PENDIENTES.md.
+
+cff-version: 1.2.0
+message: >-
+  Si usa este software, cite el artículo y, si necesita referenciar una
+  versión concreta del código, también el software.
+type: software
+
+title: >-
+  Código y datos de «Temporal Supervision Horizon and Latent-Dynamics
+  Recovery in SIR Universal Differential Equations»
+
+abstract: >-
+  Anexo reproducible del artículo: la biblioteca SIR-UDE en Julia, los
+  runners de los once experimentos, los CSV de resultados citados en el
+  manuscrito, los scripts que generan las seis figuras y tres
+  verificadores que comprueban sin correr nada que las cifras del
+  manuscrito salen de los datos entregados.
+
+authors:
+  - family-names: Castro-Salinas
+    given-names: David
+    email: david.castro@utem.cl
+    orcid: https://orcid.org/0000-0002-7443-5467
+    affiliation: >-
+      Programa de Doctorado en Informática Aplicada a Salud y Medio
+      Ambiente, Escuela de Postgrado, Universidad Tecnológica
+      Metropolitana, Santiago, Chile
+  - family-names: Vergara Quezada
+    given-names: Jorge
+    email: jorgever@utem.cl
+    orcid: https://orcid.org/0000-0001-6699-4181
+    affiliation: >-
+      Departamento de Informática y Computación, Facultad de Ingeniería,
+      Universidad Tecnológica Metropolitana, Santiago, Chile
+  - family-names: Sepúlveda Oehninger
+    given-names: Daniel
+    email: daniel.sepulveda@utem.cl
+    orcid: https://orcid.org/0000-0002-3129-393X
+    affiliation: >-
+      Departamento de Matemática, Facultad de Ciencias Naturales,
+      Matemática y Medio Ambiente, Universidad Tecnológica Metropolitana,
+      Santiago, Chile
+
+license: MIT
+license-url: https://opensource.org/licenses/MIT
+keywords:
+  - hybrid dynamical models
+  - Universal Differential Equations
+  - latent dynamics
+  - temporal supervision
+  - mechanism recovery
+  - scientific machine learning
+  - epidemiological modeling
+  - SIR
+  - Julia
+
+doi: 10.5281/zenodo.23459303
+version: 1.0.0
+date-released: 2026-10-18
+
+# PENDIENTE, la última: la URL del repositorio público. Descomentar y poner
+# el usuario cuando exista. `date-released` arriba hay que igualarla a la
+# fecha real del release si no es hoy.
+# repository-code: https://github.com/<usuario>/sw-ude-epidemic
+
+preferred-citation:
+  type: article
+  title: >-
+    Temporal Supervision Horizon and Latent-Dynamics Recovery in SIR
+    Universal Differential Equations
+  authors:
+    - family-names: Castro-Salinas
+      given-names: David
+      orcid: https://orcid.org/0000-0002-7443-5467
+    - family-names: Vergara Quezada
+      given-names: Jorge
+      orcid: https://orcid.org/0000-0001-6699-4181
+    - family-names: Sepúlveda Oehninger
+      given-names: Daniel
+      orcid: https://orcid.org/0000-0002-3129-393X
+  year: 2026
+  # PENDIENTE: revista, volumen, número, páginas y DOI del artículo.
+  # journal: <revista>
+  # doi: 10.3390/XXXXXXX

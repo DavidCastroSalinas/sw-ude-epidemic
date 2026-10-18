@@ -1,0 +1,1643 @@
+# ======================================================================
+# cifras_manuscrito.yaml
+# ----------------------------------------------------------------------
+# Cada entrada declara UNA cifra citada en el manuscrito y cómo
+# recalcularla desde los CSV que este repositorio entrega. El verificador
+# (verify/verificar_cifras.py) recorre el archivo y emite PASA / FALLA.
+#
+# Campos:
+#   id             identificador estable de la cifra
+#   tabla          tabla, figura o sección del manuscrito donde aparece
+#   valor          el número TAL COMO SE IMPRIME en el .tex
+#   fuente         CSV, relativo a la raíz del repositorio
+#   columna        columna del CSV
+#   filtro         {col: valor} para elegir la(s) fila(s)
+#   reduccion      first | last | mean | median | min | max | sum | count | std
+#   transformacion periodo | inverso | exp | log | sqrt | negativo   (opcional)
+#   escala         multiplicador aplicado después (opcional)
+#   redondeo       decimales; con este campo la comparación es dígito a
+#                  dígito contra el valor impreso
+#   tolerancia     alternativa a `redondeo`: tolerancia RELATIVA
+#   estado         `pendiente` marca cifras cuya fuente todavía no está
+#                  en el repositorio; se informan como omitidas
+#
+# Cobertura al día de hoy: el bloque de destilación paramétrica (v5.1)
+# está completo y verificado. Los demás bloques quedan declarados como
+# pendientes hasta que se incorporen los CSV correspondientes; ver
+# docs/PENDIENTES.md.
+# ======================================================================
+
+# ----------------------------------------------------------------------
+# Tabla: parámetros ajustados de las tres formas (corrida v5.1)
+# ----------------------------------------------------------------------
+
+- id: destilacion_parametros.M1.beta0
+  tabla: "tab:closed_form_parameters"
+  valor: 0.1163
+  fuente: results/destilacion_v51/top10_dinamico_M1.csv
+  columna: p1
+  filtro: {ranking_dinamico: 1}
+  redondeo: 4
+
+- id: destilacion_parametros.M1.b
+  tabla: "tab:closed_form_parameters"
+  valor: 3.33
+  fuente: results/destilacion_v51/top10_dinamico_M1.csv
+  columna: p2
+  filtro: {ranking_dinamico: 1}
+  escala: 10000
+  redondeo: 2
+
+- id: destilacion_parametros.M1.A
+  tabla: "tab:closed_form_parameters"
+  valor: 0.0136
+  fuente: results/destilacion_v51/top10_dinamico_M1.csv
+  columna: p3
+  filtro: {ranking_dinamico: 1}
+  redondeo: 4
+
+- id: destilacion_parametros.M1.periodo
+  tabla: "tab:closed_form_parameters"
+  valor: 164.0
+  fuente: results/destilacion_v51/top10_dinamico_M1.csv
+  columna: periodo_dias
+  filtro: {ranking_dinamico: 1}
+  redondeo: 1
+
+- id: destilacion_parametros.M1.phi
+  tabla: "tab:closed_form_parameters"
+  valor: 0.032
+  fuente: results/destilacion_v51/top10_dinamico_M1.csv
+  columna: p5
+  filtro: {ranking_dinamico: 1}
+  redondeo: 3
+
+- id: destilacion_parametros.M2.beta0
+  tabla: "tab:closed_form_parameters"
+  valor: 0.1314
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: p1
+  filtro: {ranking_dinamico: 1}
+  redondeo: 4
+
+- id: destilacion_parametros.M2.b
+  tabla: "tab:closed_form_parameters"
+  valor: 2.89
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: p2
+  filtro: {ranking_dinamico: 1}
+  escala: 10000
+  redondeo: 2
+
+- id: destilacion_parametros.M2.A
+  tabla: "tab:closed_form_parameters"
+  valor: 0.0132
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: p3
+  filtro: {ranking_dinamico: 1}
+  redondeo: 4
+
+- id: destilacion_parametros.M2.periodo
+  tabla: "tab:closed_form_parameters"
+  valor: 164.0
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: periodo_dias
+  filtro: {ranking_dinamico: 1}
+  redondeo: 1
+
+- id: destilacion_parametros.M2.w2
+  tabla: "tab:closed_form_parameters"
+  valor: 15.45
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: p6
+  filtro: {ranking_dinamico: 1}
+  redondeo: 2
+
+- id: destilacion_parametros.M2.phi
+  tabla: "tab:closed_form_parameters"
+  valor: 0.113
+  fuente: results/destilacion_v51/top10_dinamico_M2.csv
+  columna: p5
+  filtro: {ranking_dinamico: 1}
+  redondeo: 3
+
+- id: destilacion_parametros.E.eta0
+  tabla: "tab:closed_form_parameters"
+  valor: -2.0
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p1
+  filtro: {ranking_dinamico: 1}
+  redondeo: 3
+
+- id: destilacion_parametros.E.eta1
+  tabla: "tab:closed_form_parameters"
+  valor: 1.96
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p2
+  filtro: {ranking_dinamico: 1}
+  escala: 1000
+  redondeo: 2
+
+- id: destilacion_parametros.E.A
+  tabla: "tab:closed_form_parameters"
+  valor: 0.0931
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p3
+  filtro: {ranking_dinamico: 1}
+  redondeo: 4
+
+- id: destilacion_parametros.E.periodo
+  tabla: "tab:closed_form_parameters"
+  valor: 164.0
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p4
+  filtro: {ranking_dinamico: 1}
+  transformacion: periodo
+  redondeo: 1
+
+- id: destilacion_parametros.E.kappa
+  tabla: "tab:closed_form_parameters"
+  valor: 140.1
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p6
+  filtro: {ranking_dinamico: 1}
+  redondeo: 1
+
+- id: destilacion_parametros.E.phi
+  tabla: "tab:closed_form_parameters"
+  valor: 0.089
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p5
+  filtro: {ranking_dinamico: 1}
+  redondeo: 3
+
+- id: destilacion_parametros.E.exp_eta0
+  tabla: "tab:closed_form_parameters"
+  valor: 0.135
+  fuente: results/destilacion_v51/top10_dinamico_C15.csv
+  columna: p1
+  filtro: {ranking_dinamico: 1}
+  transformacion: exp
+  redondeo: 3
+
+# ----------------------------------------------------------------------
+# Tabla: reconstrucción de I(t), error de prueba de las formas destiladas
+# ----------------------------------------------------------------------
+
+- id: destilacion_I.E.rmse_train
+  tabla: "tab:closed_form_dynamics"
+  valor: 610
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {modelo: "SIR + C15"}
+  redondeo: 0
+
+- id: destilacion_I.E.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 2516
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "SIR + C15"}
+  redondeo: 0
+
+- id: destilacion_I.E.coc_persistencia
+  tabla: "tab:closed_form_dynamics"
+  valor: 0.194
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "SIR + C15"}
+  redondeo: 3
+
+- id: destilacion_I.M2.rmse_train
+  tabla: "tab:closed_form_dynamics"
+  valor: 607
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {modelo: "SIR + M2"}
+  redondeo: 0
+
+- id: destilacion_I.M2.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 2752
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "SIR + M2"}
+  redondeo: 0
+
+- id: destilacion_I.M2.coc_persistencia
+  tabla: "tab:closed_form_dynamics"
+  valor: 0.212
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "SIR + M2"}
+  redondeo: 3
+
+- id: destilacion_I.M1.rmse_train
+  tabla: "tab:closed_form_dynamics"
+  valor: 616
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {modelo: "SIR + M1"}
+  redondeo: 0
+
+- id: destilacion_I.M1.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 12053
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "SIR + M1"}
+  redondeo: 0
+
+- id: destilacion_I.M1.coc_persistencia
+  tabla: "tab:closed_form_dynamics"
+  valor: 0.93
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "SIR + M1"}
+  redondeo: 3
+
+- id: destilacion_I.persistencia.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 12967
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "Persistencia"}
+  redondeo: 0
+
+- id: destilacion_I.persistencia.coc
+  tabla: "tab:closed_form_dynamics"
+  valor: 1.0
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "Persistencia"}
+  redondeo: 2
+
+- id: destilacion_I.swude.rmse_train
+  tabla: "tab:closed_form_dynamics"
+  valor: 671
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {modelo: "SW-UDE"}
+  redondeo: 0
+
+- id: destilacion_I.swude.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 14924
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "SW-UDE"}
+  redondeo: 0
+
+- id: destilacion_I.swude.coc_persistencia
+  tabla: "tab:closed_form_dynamics"
+  valor: 1.151
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "SW-UDE"}
+  redondeo: 3
+
+- id: destilacion_I.ude.rmse_train
+  tabla: "tab:closed_form_dynamics"
+  valor: 3828
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {modelo: "UDE"}
+  redondeo: 0
+
+- id: destilacion_I.ude.rmse_test
+  tabla: "tab:closed_form_dynamics"
+  valor: 26988
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_test
+  filtro: {modelo: "UDE"}
+  redondeo: 0
+
+- id: destilacion_I.ude.coc_persistencia
+  tabla: "tab:closed_form_dynamics"
+  valor: 2.081
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: coc_persistencia
+  filtro: {modelo: "UDE"}
+  redondeo: 3
+
+- id: destilacion_I.persistencia.I_164
+  tabla: "tab:closed_form_dynamics"
+  valor: 16584
+  fuente: data/datos_reales_curvas.csv
+  columna: I_observado
+  filtro: {dia: 164.0}
+  redondeo: 0
+
+# ----------------------------------------------------------------------
+# Tabla: las diez familias de sensibilidad
+# Correspondencia etiqueta del manuscrito -> clave de la implementación:
+#   S1=C1  S2=C4  S3=C5  S4=C6  S5=C7  S6=C8  S7=C12  S8=C9  S9=C11  S10=C13
+#   (y E=C15, ya verificada arriba)
+# ----------------------------------------------------------------------
+
+- id: destilacion_sensibilidad.S1.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 2
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C1}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S1.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.3355
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C1}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S1.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.414
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C1}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S1.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.755
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C1}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S2.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 3
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C4}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S2.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.2897
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C4}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S2.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 2.908
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C4}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S2.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.094
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C4}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S3.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 3
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C5}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S3.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.2852
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C5}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S3.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 3.156
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C5}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S3.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.108
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C5}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S4.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 5
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C6}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S4.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.1853
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C6}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S4.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 2.508
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C6}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S4.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.018
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C6}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S5.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 4
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C7}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S5.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.2641
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C7}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S5.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 3.658
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C7}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S5.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.106
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C7}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S6.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 5
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C8}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S6.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.212
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C8}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S6.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 7.55
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C8}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S6.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.052
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C8}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S7.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 5
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C12}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S7.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.0987
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C12}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S7.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 3.436
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C12}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S7.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.61
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C12}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S8.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 9
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C9}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S8.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.023
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C9}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S8.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.339
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C9}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S8.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.323
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C9}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S9.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 6
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C11}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S9.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.0228
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C11}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S9.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.269
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C11}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S9.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 1.03
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C11}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S10.k
+  tabla: "tab:closed_form_sensitivity"
+  valor: 5
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  filtro: {clave: C13}
+  redondeo: 0
+
+- id: destilacion_sensibilidad.S10.loss
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.023
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: loss_conjunta_train
+  filtro: {clave: C13}
+  redondeo: 4
+
+- id: destilacion_sensibilidad.S10.coc_beta
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.321
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: C13}
+  redondeo: 3
+
+- id: destilacion_sensibilidad.S10.coc_I
+  tabla: "tab:closed_form_sensitivity"
+  valor: 0.969
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: C13}
+  redondeo: 3
+
+# ----------------------------------------------------------------------
+# Prosa de la sección de destilación paramétrica
+# ----------------------------------------------------------------------
+
+- id: texto_destilacion.M1.coc_beta
+  tabla: "seccion:destilacion (prosa)"
+  valor: 0.263
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: M1}
+  redondeo: 3
+
+- id: texto_destilacion.M2.coc_beta
+  tabla: "seccion:destilacion (prosa)"
+  valor: 1.298
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_beta_pers
+  filtro: {clave: M2}
+  redondeo: 3
+
+- id: texto_destilacion.M2.coc_I
+  tabla: "seccion:destilacion (prosa)"
+  valor: 0.212
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: M2}
+  redondeo: 3
+
+- id: texto_destilacion.M1.coc_I
+  tabla: "seccion:destilacion (prosa)"
+  valor: 0.93
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {clave: M1}
+  redondeo: 3
+
+- id: texto_destilacion.banda_train_min
+  tabla: "seccion:destilacion (prosa)"
+  nota: "las tres formas quedaron entre 607 y 616 en entrenamiento"
+  valor: 607
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {tipo: principal}
+  reduccion: min
+  redondeo: 0
+
+- id: texto_destilacion.banda_train_max
+  tabla: "seccion:destilacion (prosa)"
+  valor: 616
+  fuente: results/destilacion_v51/comparacion_I.csv
+  columna: rmse_train
+  filtro: {tipo: principal}
+  reduccion: max
+  redondeo: 0
+
+- id: texto_destilacion.saturantes_S2_S6_min
+  tabla: "seccion:destilacion (prosa)"
+  nota: "las cinco formas S2-S6 quedaron entre 1,02 y 1,11"
+  valor: 1.02
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: coc_I_pers
+  filtro: {grupo: extendida}
+  reduccion: min
+  redondeo: 2
+
+- id: texto_destilacion.n_familias
+  tabla: "seccion:destilacion (prosa)"
+  nota: "trece formas destiladas en total"
+  valor: 13
+  fuente: results/destilacion_v51/resumen_familias.csv
+  columna: k
+  reduccion: count
+  redondeo: 0
+
+# ----------------------------------------------------------------------
+# Bloques todavía sin CSV en el repositorio. Ver docs/PENDIENTES.md.
+# Se declaran aquí para que el verificador informe explícitamente cuántas
+# cifras del manuscrito siguen sin respaldo entregado, en vez de dar un
+# "todo pasa" engañoso.
+# ----------------------------------------------------------------------
+
+- id: pendiente.panorama_siete_escenarios
+  tabla: "tab:synthetic_scenarios"
+  estado: pendiente
+  valor: 0
+  nota: "requiere results/all_scenarios/ (Exp 1)"
+
+
+# ── Experimento 3 · pareado multisemilla sin ruido, n = 10 semillas ────────
+#
+# tab:synthetic_multiseed, las 84 celdas: siete escenarios × dos métricas ×
+# (media±desviación de cada método + p pareada de t + p de Wilcoxon).
+#
+# Una fila del CSV por escenario y métrica, así que el filtro selecciona una
+# sola y la reducción es `first`. Los nombres de escenario son los del CSV,
+# que no son los del manuscrito: «Constant» allá es «Constant rate» acá, y
+# «Tanh» es «Nonlinear rate (tanh)».
+#
+# Dos celdas del manuscrito son desigualdades, no valores: imprime
+# «$<0.0001^{t}$» cuando el p-valor cae por debajo de lo que la tabla
+# muestra. Van con `comparacion: menor_que`, porque comparar por igualdad
+# ahí daría FALLA justamente cuando la cita es correcta.
+
+- id: sintetico_pareado.constante.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 2.716
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.constante.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 3.090
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.constante.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.056
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.constante.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.137
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.constante.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0245
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.constante.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Constant rate", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.constante.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0279
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.constante.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0335
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.constante.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00039
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.constante.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00097
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.constante.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0296
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.constante.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Constant rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.lineal.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 2.018
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 1.956
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.014
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.019
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0099
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.lineal.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Linear rate", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.lineal.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.168
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.157
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.lineal.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00045
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.lineal.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00061
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.lineal.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0080
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.lineal.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Linear rate", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 2.697
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.tanh.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.023
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.tanh.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 2.702
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.tanh.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.tanh.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.430
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 3
+  nota: "DISCREPANCIA con el manuscrito. El CSV da 0.4274269308, que al redondeo
+    de la tabla es 0.427; la tabla imprime otro valor. Verificado dos veces:
+    el resumen y los diez archivos por semilla coinciden, así que el dato
+    es consistente y lo que hay que corregir es la tabla."
+
+- id: sintetico_pareado.tanh.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.2754
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0719
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0042
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0556
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0059
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.tanh.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0001
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  comparacion: menor_que
+  nota: "el manuscrito imprime <0.0001"
+
+- id: sintetico_pareado.tanh.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Nonlinear rate (tanh)", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.dos_olas.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.293
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.dos_olas.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.123
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.dos_olas.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.204
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.dos_olas.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.188
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.dos_olas.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.260
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 3
+  nota: "DISCREPANCIA con el manuscrito. El CSV da 0.2615037521, que al redondeo
+    de la tabla es 0.262; la tabla imprime otro valor. Verificado dos veces:
+    el resumen y los diez archivos por semilla coinciden, así que el dato
+    es consistente y lo que hay que corregir es la tabla."
+
+- id: sintetico_pareado.dos_olas.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.1055
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Two-wave", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.dos_olas.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0207
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.dos_olas.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0091
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.dos_olas.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0179
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.dos_olas.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0086
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 4
+  nota: "DISCREPANCIA con el manuscrito. El CSV da 0.008545167906, que al redondeo
+    de la tabla es 0.0085; la tabla imprime otro valor. Verificado dos veces:
+    el resumen y los diez archivos por semilla coinciden, así que el dato
+    es consistente y lo que hay que corregir es la tabla."
+
+- id: sintetico_pareado.dos_olas.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.250
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 3
+  nota: "DISCREPANCIA con el manuscrito. El CSV da 0.2530058054, que al redondeo
+    de la tabla es 0.253; la tabla imprime otro valor. Verificado dos veces:
+    el resumen y los diez archivos por semilla coinciden, así que el dato
+    es consistente y lo que hay que corregir es la tabla."
+
+- id: sintetico_pareado.dos_olas.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.2324
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Two-wave", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.intervencion.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.694
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 3
+  nota: "DISCREPANCIA con el manuscrito. El CSV da 0.6934785928, que al redondeo
+    de la tabla es 0.693; la tabla imprime otro valor. Verificado dos veces:
+    el resumen y los diez archivos por semilla coinciden, así que el dato
+    es consistente y lo que hay que corregir es la tabla."
+
+- id: sintetico_pareado.intervencion.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.223
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.intervencion.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.455
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.intervencion.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.231
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.intervencion.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0026
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.intervencion.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0039
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.intervencion.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00945
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.intervencion.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00334
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.intervencion.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00468
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.intervencion.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00246
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.intervencion.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0004
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.intervencion.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0020
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Abrupt intervention", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.estacional.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.713
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.375
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.443
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.215
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.072
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.1055
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Seasonal", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.estacional.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00846
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.estacional.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00208
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.estacional.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00625
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.estacional.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00172
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.estacional.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.041
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.estacional.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0273
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Seasonal", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.sir.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 1.116
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.saturacion.sir.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.703
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.saturacion.sir.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 1.925
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.saturacion.sir.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.981
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 3
+
+- id: sintetico_pareado.saturacion.sir.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0441
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.sir.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0645
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Hospital saturation", metrica: rmse_global, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.beta.media_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0268
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.beta.std_UDE
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0124
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.beta.media_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00936
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.saturacion.beta.std_Windowed
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.00319
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 5
+
+- id: sintetico_pareado.saturacion.beta.p_valor_t_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0026
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+- id: sintetico_pareado.saturacion.beta.p_valor_wilcoxon_dos_colas
+  tabla: "tab:synthetic_multiseed"
+  valor: 0.0039
+  fuente: results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+  columna: p_valor_wilcoxon_dos_colas
+  filtro: {escenario: "Hospital saturation", metrica: rmse_beta, m: 10}
+  redondeo: 4
+
+
+# ── Experimento 4 · ruido observacional ────────────────────────────────────
+#
+# ATENCIÓN. De este experimento se declara UNA sola cifra, y no por falta de
+# datos: los datos están completos. Es que `tab:noise_beta` NO SE REPRODUCE
+# desde ellos, y conviene que el verificador lo diga en vez de callarlo.
+#
+# Lo comprobado el 2026-10-18 contra results/final_suite_ruido/, que son dos
+# archivos independientes que coinciden entre sí (los siete por escenario y
+# el unificado):
+#
+#   · Los niveles de ruido del dato son sigma_rel ∈ {0.0, 0.05, 0.10, 0.20}.
+#     La tabla encabeza la columna «sigma_obs/N» con {0.01, 0.05, 0.10}. El
+#     0.01 no existe en los datos y el 0.20 no está en la tabla.
+#
+#   · De los 30 valores de media que imprime la tabla, uno solo aparece en
+#     los datos (0.049), y en otro escenario, otro sigma y otro método que
+#     los que la tabla le asigna. Busqué los seis números de la fila Linear
+#     en las seis columnas numéricas × cuatro sigmas × dos métodos: cero
+#     coincidencias.
+#
+#   · El texto dice que tras Benjamini-Hochberg «six remain significant
+#     under both tests». Con estos datos sobreviven 16, y nominalmente
+#     significativas bajo ambas pruebas son 17, no 10.
+#
+#   · El ejemplo del texto —«in the Linear scenario mean RMSE_beta increases
+#     from 0.196 under global training to 0.449 with m=10»— va en sentido
+#     contrario al dato: en el nivel de ruido más bajo que existe (0.05),
+#     Linear va de 0.178 con UDE a 0.100 con SW-UDE, o sea que SW-UDE es
+#     MEJOR. La reversión en Linear empieza en 0.10, no en el nivel más bajo.
+#
+# La lectura más consistente es que §4.1.3 viene de una corrida anterior, con
+# niveles {0.01, 0.05, 0.10}, y que el experimento se volvió a correr con
+# {0.05, 0.10, 0.20} sin actualizar el manuscrito. Dos indicios lo apoyan: el
+# dato es MÁS favorable a la tesis del artículo que lo que el artículo
+# reporta (16 sobreviven contra 6), lo que descarta que se haya exagerado; y
+# la única afirmación que reproduce exacta es la de recuento, que da 18 de 21
+# en las dos versiones.
+#
+# Hasta que se resuelva, lo honesto es declarar solo esa afirmación. Ver
+# docs/PENDIENTES.md §4.1.
+
+- id: ruido_recuento.ventanas_peor_que_global
+  tabla: "sec:noise_results"
+  valor: 18
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  columna_vs: media_UDE
+  filtro: {m: 10}
+  filtro_no: {sigma_ruido: 0.0}
+  reduccion: count_pos
+  redondeo: 0
+  nota: >-
+    «mean RMSE_beta is higher for windowed training than for global training
+    in 18 of the 21 scenario-noise combinations». Cuenta las filas con
+    media_Windowed > media_UDE entre las 21 con ruido, es decir excluyendo
+    sigma = 0. Es la única cifra de §4.1.3 que reproduce desde los datos
+    entregados.
+
+- id: pendiente.datos_reales_sensibilidad_m
+  tabla: "tab:real_m_selection"
+  estado: pendiente
+  valor: 0
+  nota: "requiere results/datos_reales/window_sensitivity (Exp 6)"
+
+- id: pendiente.datos_reales_sensibilidad_m_multiseed
+  tabla: "tab:real_m_selection"
+  estado: pendiente
+  valor: 0
+  nota: "requiere results/datos_reales_multiseed/ (Exp 7)"
+
+- id: pendiente.datos_reales_pareado
+  tabla: "tab:real_multiseed"
+  estado: pendiente
+  valor: 0
+  nota: "requiere results/datos_reales_multisemilla/ (Exp 8)"
+
+- id: pendiente.datos_reales_horizontes
+  tabla: "tab:horizon_persistence"
+  estado: pendiente
+  valor: 0
+  nota: "requiere results/datos_reales/horizontes (Exp 9)"
+
+# ----------------------------------------------------------------------
+# Sección 4.2.5 — estabilidad y admisibilidad de la dinámica inferida
+# ----------------------------------------------------------------------
+# Fuente: el resumen por semilla del experimento 14, diez inicializaciones
+# por método.
+#
+# OJO con el archivo. results/datos_reales_multisemilla/
+# datos_reales_multisemilla.csv tiene un nombre casi idéntico, columnas
+# casi idénticas y cifras PARECIDAS PERO DISTINTAS: es el experimento 8,
+# otra corrida. Verificar la Sección 4.2.5 contra aquél da FALLA en la
+# mitad de las cifras. Ver docs/PENDIENTES.md §2.8.
+
+- id: reff_positividad.swude.beta_min
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 0.106
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: beta_min
+  filtro: {metodo: SW-UDE}
+  reduccion: min
+  redondeo: 3
+
+- id: reff_positividad.swude.beta_max
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 0.219
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: beta_max
+  filtro: {metodo: SW-UDE}
+  reduccion: max
+  redondeo: 3
+
+- id: reff_positividad.swude.corridas_negativas
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 0
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: beta_min
+  filtro: {metodo: SW-UDE}
+  reduccion: count_neg
+  redondeo: 0
+
+- id: reff_positividad.ude.beta_min
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: -0.286
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: beta_min
+  filtro: {metodo: UDE}
+  reduccion: min
+  redondeo: 3
+
+- id: reff_positividad.ude.corridas_negativas
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 4
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: beta_min
+  filtro: {metodo: UDE}
+  reduccion: count_neg
+  redondeo: 0
+
+- id: reff_positividad.swude.reff_max_media
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 1.313
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: Reff_max
+  filtro: {metodo: SW-UDE}
+  reduccion: mean
+  redondeo: 3
+
+- id: reff_positividad.swude.reff_max_sd
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 0.084
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: Reff_max
+  filtro: {metodo: SW-UDE}
+  reduccion: std
+  redondeo: 3
+
+- id: reff_positividad.ude.reff_max_media
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 1.151
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: Reff_max
+  filtro: {metodo: UDE}
+  reduccion: mean
+  redondeo: 3
+
+- id: reff_positividad.ude.reff_max_sd
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 0.197
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: Reff_max
+  filtro: {metodo: UDE}
+  reduccion: std
+  redondeo: 3
+
+- id: reff_positividad.ude.reff_max_peor
+  tabla: "seccion:4.2.5 (prosa)"
+  valor: 1.698
+  fuente: results/datos_reales_multiseed/resumen_multisemilla.csv
+  columna: Reff_max
+  filtro: {metodo: UDE}
+  reduccion: max
+  redondeo: 3
+
+- id: pendiente.reff_positividad_cruces
+  tabla: "seccion:4.2.5 (prosa)"
+  estado: pendiente
+  valor: 0
+  nota: "inicio del cruce sostenido de R_eff (t=126, 132, 16, 151): se deriva de las curvas por semilla, no está en ningún resumen"

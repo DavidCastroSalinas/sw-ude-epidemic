@@ -1,0 +1,11 @@
+# Dependencias de los scripts de figura. Versiones con las que se
+# regeneraron y comprobaron las figuras del repositorio.
+#
+#     pip install -r figures_src/requirements.txt
+#
+# El verificador de cifras (verify/verificar_cifras.py) NO necesita nada
+# de esto: corre con la biblioteca estándar de Python a propósito, para
+# que el Nivel 0 funcione en cualquier máquina sin instalar nada.
+matplotlib>=3.8
+numpy>=1.24
+pandas>=2.0

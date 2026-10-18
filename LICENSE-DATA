@@ -1,0 +1,43 @@
+Datos, figuras y CSV de salida — Creative Commons Attribution 4.0
+International (CC BY 4.0)
+
+Alcance
+-------
+
+Esta licencia cubre el contenido no-software de este repositorio:
+
+  data/       la serie de entrada y su documentación
+  results/    los CSV de resultados
+  figures/    los PDF que compila el manuscrito
+
+El código fuente (src/, experiments/, figures_src/, verify/, bin/ y los
+scripts de la raíz) se rige por LICENSE, que es un archivo aparte.
+
+Atribución
+----------
+
+Al reutilizar este material hay que citar el artículo y el repositorio
+según CITATION.cff, indicar si se hicieron cambios y enlazar la licencia.
+
+Obra de origen
+--------------
+
+La serie epidemiológica de la que deriva data/ mantiene la licencia de su
+fuente institucional, que NO queda sublicenciada por este archivo. Ver
+data/README.md: la procedencia y las condiciones de redistribución de esa
+fuente están pendientes de consignar.
+
+Texto legal
+-----------
+
+El texto completo de la licencia está en
+
+    https://creativecommons.org/licenses/by/4.0/legalcode
+
+y un resumen legible en
+
+    https://creativecommons.org/licenses/by/4.0/
+
+Conviene pegar aquí abajo el texto legal íntegro antes de publicar la
+etiqueta v1.0.0, para que el repositorio sea autocontenido y no dependa de
+que esa URL siga viva.

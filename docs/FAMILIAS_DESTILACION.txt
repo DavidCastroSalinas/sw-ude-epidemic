@@ -1,0 +1,35 @@
+DESTILACIÓN PARAMÉTRICA SW-UDE — v5
+
+FAMILIAS ACTIVAS
+
+Principales
+-----------
+M1  = β0 + b*t + A*sin(ω*t+φ)
+M2  = M1 - w2*(I/N)
+
+Controles / sensibilidad existentes
+-----------------------------------
+C1  = β0 + b*t
+C4  = (β0+b*t)/(1+κ*I/N)
+C5  = (β0+b*t)*exp(-κ*I/N)
+C6  = β0+b*t - Δ*σ(k(I/N-Ic))
+C11 = M2 con período lento
+C12 = transición logística temporal + feedback
+
+Nuevas familias COVID
+----------------------
+C7  = (β0+b*t)/(1+κ*(I/N)^h)
+C8  = β0+b*t - Δ*(I/N)^h/(K^h+(I/N)^h)
+C9  = β0+b*t - Δ1*σ(k1(t-t1)) + Δ2*σ(k2(t-t2)) - w2*(I/N)
+C13 = β0+b*t + A*sin(2π*t/365+φ) - w2*(I/N)
+C15 = exp(η0+η1*t+A*sin(ω*t+φ)-κ*(I/N))
+
+DISEÑO
+------
+- Integrador: Euler explícito discreto, Δt=1 día.
+- Etapa algebraica: 50 multistarts.
+- Refinamiento dinámico: 10 mejores soluciones.
+- Selección principal: únicamente M1 y M2, usando TRAIN.
+- C1/C4/C5/C6/C7/C8/C9/C11/C12/C13/C15:
+  análisis de sensibilidad y comparación, sin intervenir en
+  la elección principal.
