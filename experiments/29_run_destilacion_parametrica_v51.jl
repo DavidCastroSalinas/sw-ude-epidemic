@@ -17,6 +17,12 @@
 #           tab:destilacion_sensibilidad, fig:destilacion_beta_I,
 #           fig:destilacion_plano
 #
+# Smoke reducido (sólo prueba el flujo, no resultados científicos):
+#     SIR_UDE_DESTILACION_SMOKE=1 julia --threads=auto \
+#         experiments/29_run_destilacion_parametrica_v51.jl
+# En ese modo usa pocos arranques y conserva todas las salidas en OUTDIR
+# temporal, sin reemplazar results/destilacion_v51/.
+#
 # Tiempo de pared medido: ver docs/ENTORNO.md
 # ============================================================
 
@@ -70,8 +76,12 @@ end
 @time include(joinpath(REPO, "src", "lib", "29_destilacion_parametrica_v51.jl"))
 
 # ── Recolección de salidas ────────────────────────────────────────────────
-mkpath(DESTINO)
-for f in readdir(EXP_DIR)
-    cp(joinpath(EXP_DIR, f), joinpath(DESTINO, f); force = true)
+if get(ENV, "SIR_UDE_DESTILACION_SMOKE", "0") == "1"
+    println("\n✓ Smoke reducido completado; salidas temporales en ", EXP_DIR)
+else
+    mkpath(DESTINO)
+    for f in readdir(EXP_DIR)
+        cp(joinpath(EXP_DIR, f), joinpath(DESTINO, f); force = true)
+    end
+    println("\n✓ ", length(readdir(DESTINO)), " archivos en ", DESTINO)
 end
-println("\n✓ ", length(readdir(DESTINO)), " archivos en ", DESTINO)
