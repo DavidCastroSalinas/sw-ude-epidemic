@@ -16,7 +16,6 @@ function run_experiment(scenario_key::Symbol;
     beta_fn = BETA_FUNCTIONS[scenario_key]
     label   = SCENARIO_LABELS[scenario_key]
     file_key = scenario_file_key(scenario_key)
-    file_key = scenario_file_key(scenario_key)
 
     println("\n" * "="^65)
     println("  Escenario : $label")
@@ -97,7 +96,7 @@ function run_experiment(scenario_key::Symbol;
             MAE_beta  = [mG.MAE_β,     mW.MAE_β],
         )
         CSV.write("$outdir/$(file_key)_$(m)_metrics.csv", df)
-        println("  CSV guardado en $outdir/$(scenario_key)_$(m)_metrics.csv")
+        println("  CSV guardado en $outdir/$(file_key)_$(m)_metrics.csv")
 
         # ── Curvas completas (para regenerar figuras fuera de Julia,
         # p. ej. en el notebook de ajustes de figuras) ────────────────
