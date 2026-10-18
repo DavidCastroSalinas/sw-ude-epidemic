@@ -117,5 +117,5 @@ Siguiente paso: versionar Project.toml y Manifest.toml, y comprobar que
 el instalador los lee sin resolver nada:
 
     julia --project=. install_dependencies.jl
-    python3 verify/comprobar_archivos.py --solo-faltantes
+    ./smoke_test.sh
 """)
