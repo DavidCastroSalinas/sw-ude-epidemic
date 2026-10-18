@@ -62,10 +62,10 @@ qué valores quedan por debajo del piso epidemiológico (columnas
 - **Salida**: `results/final_suite_ruido/`
 - **Sustenta**: `tab:noise_beta`
 
-⚠️ Esquema multiplicativo ($\sigma$ relativo). Reemplazó al esquema
-absoluto ($\sigma$ como fracción de $N$) del antiguo
-`07_noise_sensitivity.jl`. **Confirmar que las cifras citadas en el
-manuscrito corresponden al esquema vigente**; ver `docs/PENDIENTES.md` §3a.
+El esquema vigente es multiplicativo ($\sigma$ relativo), implementado en
+`src/lib/27_ruido_relativo.jl`. Reemplazó al esquema absoluto ($\sigma$
+como fracción de $N$) del antiguo `07_noise_sensitivity.jl`; las cifras del
+artículo deben corresponder a este esquema.
 
 ## 5 · Saturación hospitalaria
 
@@ -130,9 +130,8 @@ manuscrito corresponden al esquema vigente**; ver `docs/PENDIENTES.md` §3a.
 
 Las trece familias y su correspondencia con las etiquetas del manuscrito
 están en `docs/DECISIONES.md`; su definición formal, en
-`docs/FAMILIAS_DESTILACION.txt`. La corrección v5.1 sobre la exportación
-con número variable de parámetros está en
-`docs/CORRECCION_v5_1_parametros_dinamicos.txt`.
+`docs/FAMILIAS_DESTILACION.txt`. La exportación admite el número de parámetros definido por cada familia; el
+runner de Julia es la entrada canónica del experimento.
 
 Archivos de salida, por familia $F$:
 
