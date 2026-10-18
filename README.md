@@ -371,5 +371,5 @@ software cuando se emita la versión citable definitiva.
 
 - Código: `LICENSE` (MIT).
 - Datos, figuras y CSV de salida: `LICENSE-DATA` (CC BY 4.0).
-- La serie epidemiológica de origen mantiene la licencia de su fuente; ver
-  `data/README.md`.
+- Antes de redistribuir la serie epidemiológica, completar y verificar la
+  referencia y las condiciones de la fuente original; ver `data/README.md`.
