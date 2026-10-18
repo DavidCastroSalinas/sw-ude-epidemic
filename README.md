@@ -363,9 +363,9 @@ bin/          utilidades necesarias para regenerar el manifiesto y verificar sal
 
 ## Cómo citar
 
-`CITATION.cff` trae dos citas: la del **artículo**, que es la que GitHub
-ofrece por omisión, y la de **este software**, para referenciar una versión
-concreta del código.
+`CITATION.cff` identifica el software, sus autores y el artículo asociado.
+Completar los datos editoriales del artículo y los metadatos de archivo del
+software cuando se emita la versión citable definitiva.
 
 ## Licencias
 
