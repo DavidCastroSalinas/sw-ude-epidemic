@@ -119,7 +119,6 @@ artículo deben corresponder a este esquema.
 ## 11 · Destilación paramétrica de $\beta_{\mathrm{SW-UDE}}(t,I)$, v5.1
 
 - **Runner**: `experiments/29_run_destilacion_parametrica_v51.jl`
-- **Notebook equivalente**: `experiments/29_notebook_destilacion_parametrica_v51.ipynb`
 - **Módulo**: `src/lib/29_destilacion_parametrica_v51.jl`
 - **Entrada**: `data/datos_reales_curvas.csv`
 - **Salida**: `results/destilacion_v51/` (42 CSV, más tres PNG de
