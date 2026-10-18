@@ -62,10 +62,10 @@ qué valores quedan por debajo del piso epidemiológico (columnas
 - **Salida**: `results/final_suite_ruido/`
 - **Sustenta**: `tab:noise_beta`
 
-⚠️ Esquema multiplicativo ($\sigma$ relativo). Reemplazó al esquema
-absoluto ($\sigma$ como fracción de $N$) del antiguo
-`07_noise_sensitivity.jl`. **Confirmar que las cifras citadas en el
-manuscrito corresponden al esquema vigente**; ver `docs/PENDIENTES.md` §3a.
+El esquema vigente es multiplicativo ($\sigma$ relativo), implementado en
+`src/lib/27_ruido_relativo.jl`. Reemplazó al esquema absoluto ($\sigma$
+como fracción de $N$) del antiguo `07_noise_sensitivity.jl`; las cifras del
+artículo deben corresponder a este esquema.
 
 ## 5 · Saturación hospitalaria
 
@@ -119,7 +119,6 @@ manuscrito corresponden al esquema vigente**; ver `docs/PENDIENTES.md` §3a.
 ## 11 · Destilación paramétrica de $\beta_{\mathrm{SW-UDE}}(t,I)$, v5.1
 
 - **Runner**: `experiments/29_run_destilacion_parametrica_v51.jl`
-- **Notebook equivalente**: `experiments/29_notebook_destilacion_parametrica_v51.ipynb`
 - **Módulo**: `src/lib/29_destilacion_parametrica_v51.jl`
 - **Entrada**: `data/datos_reales_curvas.csv`
 - **Salida**: `results/destilacion_v51/` (42 CSV, más tres PNG de
@@ -130,9 +129,8 @@ manuscrito corresponden al esquema vigente**; ver `docs/PENDIENTES.md` §3a.
 
 Las trece familias y su correspondencia con las etiquetas del manuscrito
 están en `docs/DECISIONES.md`; su definición formal, en
-`docs/FAMILIAS_DESTILACION.txt`. La corrección v5.1 sobre la exportación
-con número variable de parámetros está en
-`docs/CORRECCION_v5_1_parametros_dinamicos.txt`.
+`docs/FAMILIAS_DESTILACION.txt`. La exportación admite el número de parámetros definido por cada familia; el
+runner de Julia es la entrada canónica del experimento.
 
 Archivos de salida, por familia $F$:
 
@@ -171,9 +169,8 @@ el Nivel 2: hay que leer también los runners. La segunda es que un módulo
 cargado así falla tarde, ya empezada la corrida, y con un mensaje que
 habla de un archivo y no del experimento.
 
-`verify/comprobar_archivos.py` resuelve las dos vías leyendo el código, de
-modo que la ausencia de cualquiera de los diecinueve módulos se detecta
-antes de correr nada.
+El smoke test comprueba las dependencias y rutas necesarias antes de iniciar
+los experimentos.
 
 ## Tablas que no son salida de un experimento
 
