@@ -467,59 +467,69 @@ datos del árbol de trabajo, el 2026-10-18. **Es lo primero que hay que
 resolver antes de enviar**, porque un revisor que corra el anexo lo va a
 ver, y el anexo existe precisamente para que lo vea.
 
-### 4.1 `tab:noise_beta` no se reproduce desde los datos entregados
+### 4.1 El esquema de ruido del manuscrito es el que el código reemplazó
 
-No es falta de datos: los datos están completos, son dos archivos
-independientes que coinciden entre sí —los siete por escenario y el
-unificado— y la carpeta es `results/final_suite_ruido/`.
+Detectado y resuelto el 2026-10-18. La redacción anterior de esta entrada
+decía que `tab:noise_beta` «no se reproduce desde los datos entregados», que
+era el síntoma. La causa es otra y es más simple de arreglar.
 
-Cuatro hechos, en orden de gravedad:
+`src/lib/27_ruido_relativo.jl` documenta el cambio en su propio encabezado.
+El 2026-09-05 el ruido observacional pasó de
 
-1. **Los niveles de ruido no son los de la tabla.** El dato tiene
-   `sigma_rel ∈ {0.0, 0.05, 0.10, 0.20}`. La tabla encabeza la columna
-   $\sigma_{\mathrm{obs}}/N$ con $\{0.01, 0.05, 0.10\}$. El 0.01 no
-   existe en los datos; el 0.20 no está en la tabla.
+    aditivo escalado por N:   X_obs = X_true + ε,  ε ~ N(0, σ²),
+                              σ ∈ {0.01N, 0.05N, 0.10N}
 
-2. **De los 30 valores de media que imprime la tabla, uno solo aparece en
-   los datos**, y en otro escenario, otro $\sigma$ y otro método que los
-   que la tabla le asigna. Busqué los seis números de la fila Linear en
-   las seis columnas numéricas × cuatro niveles × dos métodos: cero
-   coincidencias.
+a
 
-3. **El ejemplo del texto va en sentido contrario al dato.** Dice que «la
-   reversión ya es visible en el nivel de ruido más bajo» y lo ilustra con
-   Linear pasando de 0.196 (global) a 0.449 ($m=10$). En el nivel más bajo
-   que existe en los datos (0.05), Linear va de 0.178 con UDE a 0.100 con
-   SW-UDE: SW-UDE es **mejor**. La reversión en Linear empieza en 0.10.
+    multiplicativo relativo:  X_obs = max(0, X_true·(1+ε)),
+                              ε ~ N(0, σ_rel²),
+                              σ_rel ∈ {0.05, 0.10, 0.20}
 
-4. **Las cuentas de significancia no coinciden.** El texto dice diez
-   nominalmente significativas bajo ambas pruebas y seis sobrevivientes a
-   Benjamini-Hochberg con $q=0.05$. Con estos datos son **17 y 16**.
+con un motivo escrito ahí mismo: escalar por el tamaño poblacional produce
+perturbaciones desproporcionadas cuando $I(t)$ es pequeño frente a $N$. Con
+$N = 1000$ e $I_0 = 10$, un «1 % de ruido» ($0{,}01N$ = 10 individuos) iguala
+a toda la población infecciosa inicial.
 
-La lectura más consistente es que §4.1.3 viene de una corrida anterior, con
-niveles $\{0.01, 0.05, 0.10\}$, y que el experimento se volvió a correr con
-$\{0.05, 0.10, 0.20\}$ sin actualizar el manuscrito.
+El manuscrito quedó describiendo el esquema viejo, en la línea 543 de
+`main.tex`, y su tabla y sus dos recuentos de significancia venían de esa
+corrida. Por eso no reproducían.
 
-Dos indicios lo apoyan. El dato es **más favorable a la tesis del artículo
-que lo que el artículo reporta** —16 sobrevivientes contra 6—, lo que
-descarta que se haya exagerado en la dirección conveniente. Y la única
-afirmación que reproduce exacta es la de recuento, «18 de 21», que da 18 de
-21 en las dos versiones: es insensible al reetiquetado de los niveles.
+**Lo que hay que cambiar son cuatro sitios**, y está todo escrito en el
+parche `parche_seccion_ruido.tex` que acompaña a esta entrada:
 
-Qué hacer, y es decisión del autor:
+| Línea | Qué | Por qué |
+|---|---|---|
+| 543 | la definición del ruido, en Métodos | describe el esquema aditivo |
+| 1080 | el párrafo del ejemplo | usa Linear, que en la corrida vigente va al revés en el nivel más bajo |
+| 1082 | los dos recuentos | decía diez y seis; son **17 y 16** |
+| 1084–1123 | la tabla entera | siete escenarios, tres niveles, 42 celdas, con las negritas puestas |
 
-- **Si la corrida vigente es la del árbol** (σ ∈ {0.05, 0.10, 0.20}), hay
-  que rehacer la tabla, el párrafo del ejemplo y las dos cuentas de
-  significancia con estos números. El resultado es más fuerte, no más
-  débil.
-- **Si la corrida válida es la de σ ∈ {0.01, 0.05, 0.10}**, hay que
-  encontrar sus CSV e incorporarlos, porque no están en el árbol que se
-  entregó, y entonces el anexo no acompaña al artículo.
+**Y cuatro sitios que revisé y no hay que tocar**, porque sus afirmaciones
+se sostienen con la corrida vigente: el resumen (línea 87), el párrafo de
+métodos que cuenta 7 × 3 = 21 (760), el primer párrafo de §4.1.3 (1078) y la
+discusión (1524). El recuento «18 de 21» da 18 de 21 en las dos corridas, y
+eso es justamente por lo que el problema pasó inadvertido: las tres
+afirmaciones de alto nivel del artículo eran correctas mientras la tabla y
+los recuentos finos no lo eran.
 
-Mientras no se resuelva, `verify/cifras_manuscrito.yaml` declara de este
-experimento **una sola cifra**, la del recuento, con el detalle del
-problema escrito en el propio archivo. Declarar la tabla sería afirmar que
-reproduce.
+**El resultado queda más fuerte, no más débil.** Con la corrida vigente, 17
+comparaciones son nominalmente significativas bajo ambas pruebas y 16
+sobreviven a Benjamini-Hochberg, contra las diez y seis que reporta el
+manuscrito. Y las 17 van en la dirección de mayor error latente para las
+ventanas: ninguna en contra. La afirmación «no noisy condition shows a
+statistically significant latent-recovery advantage for windowed training»
+se sostiene, y la comprobé explícitamente: de las 21 combinaciones, cero
+tienen las ventanas mejores con $p < 0{,}05$ en alguna de las dos pruebas.
+
+Las 42 celdas y los tres recuentos están declarados en
+`verify/cifras_manuscrito.yaml` y los 45 pasan. Los dos archivos de
+`results/final_suite_ruido/` —el detalle por semilla y el resumen pareado—
+son independientes y coinciden en las 21 filas al $10^{-9}$.
+
+Queda una sola cosa, y es del artículo, no del repositorio: aplicar el
+parche. Hasta entonces el manuscrito y el anexo no dicen lo mismo.
+
+---
 
 ### 4.2 Cinco celdas de `tab:synthetic_multiseed`
 
@@ -542,16 +552,17 @@ tiene la misma pinta que el §4.1: una corrida anterior.
 Las cinco entradas del YAML quedan en FALLA a propósito, cada una con su
 nota. Pasarán a PASA cuando se corrija la tabla, no antes.
 
-### 4.3 Dos problemas de la tabla de ruido que son solo de forma
+### 4.3 Dos problemas de forma de la tabla de ruido, resueltos en el parche
 
-El `\caption` dice «The full table includes the seven synthetic scenarios
-at the three noise levels» y la tabla imprime **cinco**, con una nota al pie
-—«Seasonal and Hospital saturation rows retained from the complete
-experiment output»— que no dice que falten sino algo ambiguo. O se
-completan las dos filas, o el caption deja de prometer siete.
+El `\caption` prometía «the seven synthetic scenarios at the three noise
+levels» y la tabla imprimía **cinco**, con una nota al pie ambigua sobre
+Seasonal y Hospital saturation. La tabla del parche trae los siete, así que
+el caption pasa a ser cierto y la nota al pie desaparece.
 
-El mismo `\caption` dice «Bold entries should identify comparisons for
-which...». Ese «should» es de una nota al autor que quedó en el texto.
+Y el mismo `\caption` decía «Bold entries **should** identify comparisons
+for which...», un «should» de nota al autor que quedó en el texto. En el
+parche las negritas están puestas —las 16 que sobreviven a
+Benjamini-Hochberg— y el caption dice «identify».
 
 ---
 

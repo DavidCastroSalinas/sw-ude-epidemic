@@ -57,6 +57,27 @@ compare ambos árboles sepa qué esperar.
 
 ### Añadido en esta pasada (2026-10-18)
 
+- **129 cifras más en el Nivel 0**, de 102 a 271. Las 84 celdas de
+  `tab:synthetic_multiseed`, las 42 de `tab:noise_beta` y los tres
+  recuentos de §4.1.3. 260 pasan; las 5 que no son celdas del manuscrito
+  que hay que corregir (`docs/PENDIENTES.md` §4.2).
+
+- **`docs/parche_seccion_ruido.tex`**, que corrige §4.1.3 del manuscrito.
+  El artículo describía el esquema de ruido aditivo escalado por $N$ que el
+  código reemplazó el 2026-09-05 por el multiplicativo relativo, y su tabla
+  venía de esa corrida. El parche trae la definición de Métodos, el párrafo
+  del ejemplo, los dos recuentos y la tabla de siete escenarios, y además
+  lista los cuatro sitios que revisé y no hay que tocar. Ver §4.1.
+
+- **Tres reducciones nuevas en el verificador**, cada una porque una cita
+  no se podía expresar sin ella: `comparacion: menor_que` para las celdas
+  que el manuscrito imprime como «<0.0001»; `filtro_no` para «las 21
+  combinaciones con ruido», que son todas salvo $\sigma = 0$; `columna_vs`
+  con `count_ambas_bajo` y `count_bh_ambas` para los recuentos que se
+  definen sobre las dos pruebas pareadas a la vez. La última implementa
+  Benjamini-Hochberg, porque es una de las cifras principales del artículo
+  y debía poder recomputarse.
+
 - **`LICENSE` (MIT)** y **`CITATION.cff`**. Titulares del copyright, los
   tres autores del manuscrito y la Universidad Tecnológica Metropolitana.
   El MIT cubre el código; los

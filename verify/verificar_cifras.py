@@ -129,6 +129,53 @@ REDUCCIONES = {
 }
 
 
+# ----------------------------------------------------------------------
+# Reducciones sobre PARES de columnas
+# ----------------------------------------------------------------------
+# Dos afirmaciones de §4.1.3 se definen sobre las dos pruebas pareadas a la
+# vez, y ninguna se puede expresar con una sola columna:
+#
+#   «17 comparisons are nominally significant under both paired tests»
+#   «after Benjamini-Hochberg at q=0.05, 16 remain significant under both»
+#
+# La primera es un recuento con umbral sobre las dos columnas. La segunda
+# necesita el procedimiento completo, que es lógica y no una reducción: hay
+# que ordenar los p-valores, comparar cada uno contra su rango por q/m y
+# quedarse con el prefijo. Se implementa acá para que el Nivel 0 pueda
+# recomputarla, porque es una de las cifras principales del artículo.
+
+
+def _bh(ps, q):
+    """Benjamini-Hochberg. Devuelve los índices que sobreviven.
+
+    Ordena los p-valores, busca el rango k más grande tal que
+    p_(k) <= k·q/m, y declara significativos los k primeros.
+    """
+    idx = sorted(range(len(ps)), key=lambda i: ps[i])
+    m = len(ps)
+    k = 0
+    for rango, i in enumerate(idx, 1):
+        if ps[i] <= rango * q / m:
+            k = rango
+    return set(idx[:k])
+
+
+def _count_ambas_bajo(pares, umbral):
+    return sum(1 for a, b in pares if a < umbral and b < umbral)
+
+
+def _count_bh_ambas(pares, umbral):
+    a = [x for x, _ in pares]
+    b = [y for _, y in pares]
+    return len(_bh(a, umbral) & _bh(b, umbral))
+
+
+REDUCCIONES_PAR = {
+    "count_ambas_bajo": _count_ambas_bajo,
+    "count_bh_ambas":   _count_bh_ambas,
+}
+
+
 # Transformaciones aplicables al valor reducido antes de comparar.
 TRANSFORMACIONES = {
     "inverso": lambda x: 1.0 / x,
@@ -208,7 +255,18 @@ def evaluar(cifra):
         return "FALLA", None, "no existe la columna %r en %s" % (col_vs, fuente)
 
     red = cifra.get("reduccion", "first")
-    if red == "count":
+    if red in REDUCCIONES_PAR:
+        if col_vs is None:
+            return "FALLA", None, "la reducción %r necesita columna_vs" % red
+        umbral = cifra.get("umbral")
+        if umbral is None:
+            return "FALLA", None, "la reducción %r necesita umbral" % red
+        pares = [(_num(f[col]), _num(f[col_vs])) for f in sel]
+        pares = [(a, b) for a, b in pares if a is not None and b is not None]
+        if not pares:
+            return "FALLA", None, "sin pares numéricos en %r y %r" % (col, col_vs)
+        calc = float(REDUCCIONES_PAR[red](pares, float(umbral)))
+    elif red == "count":
         calc = float(len(sel))
     elif col_vs is not None:
         pares = [(_num(f[col]), _num(f[col_vs])) for f in sel]

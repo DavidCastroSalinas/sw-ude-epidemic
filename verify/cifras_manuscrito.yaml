@@ -1510,6 +1510,736 @@
     sigma = 0. Es la única cifra de §4.1.3 que reproduce desde los datos
     entregados.
 
+# ── Experimento 4 · ruido observacional ────────────────────────────────────
+#
+# tab:noise_beta, las 42 celdas: siete escenarios × tres niveles de ruido ×
+# (media±desviación de cada método). Más los dos recuentos del texto.
+#
+# El esquema de ruido es MULTIPLICATIVO relativo a cada observación,
+# X_obs = max(0, X_true·(1+ε)) con ε ~ N(0, σ_rel²) y σ_rel ∈ {0.05, 0.10,
+# 0.20}, implementado en src/lib/27_ruido_relativo.jl. Reemplazó el
+# 2026-09-05 al aditivo escalado por N, σ ∈ {0.01N, 0.05N, 0.10N}, porque
+# escalar por el tamaño poblacional produce perturbaciones desproporcionadas
+# cuando I(t) es pequeño frente a N.
+#
+# Hasta el 2026-10-18 el manuscrito describía el esquema viejo y su tabla
+# venía de esa corrida, de modo que no reproducía. Estas 42 entradas son la
+# corrida vigente, la que está depositada. Ver docs/PENDIENTES.md §4.1.
+#
+# Una fila del CSV por escenario y nivel, así que el filtro selecciona una
+# sola. El nivel 0.0 queda fuera de la tabla: es el experimento sin ruido,
+# que es el bloque 3.
+
+- id: ruido_tabla.constante.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.030
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.039
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.019
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.008
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.027
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.024
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.062
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.027
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.049
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.038
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.195
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.constante.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.045
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Constant rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.178
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.156
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.100
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.080
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.217
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.123
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.225
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.117
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.348
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.252
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.922
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.lineal.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.416
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Linear rate", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.073
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.005
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.065
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.014
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.081
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.005
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.147
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.042
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.088
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.011
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.254
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.tanh.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.091
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Nonlinear rate (tanh)", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.033
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.023
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.066
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.035
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.061
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.030
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.209
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.081
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.153
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.095
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.346
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.dos_olas.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.090
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Two-wave", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.024
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.007
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.043
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.013
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.058
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.020
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.145
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.041
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.162
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.093
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.317
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.intervencion.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.079
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Abrupt intervention", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.015
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.006
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.034
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.017
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.033
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.014
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.114
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.036
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.061
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.045
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.247
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.estacional.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.096
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Seasonal", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s005.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.030
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s005.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.015
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s005.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.069
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s005.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.045
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.05, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s010.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.045
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s010.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.016
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s010.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.148
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s010.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.063
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.1, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s020.media_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.086
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s020.std_UDE
+  tabla: "tab:noise_beta"
+  valor: 0.068
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_UDE
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s020.media_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.344
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: media_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+- id: ruido_tabla.saturacion.s020.std_Windowed
+  tabla: "tab:noise_beta"
+  valor: 0.129
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: std_Windowed
+  filtro: {escenario: "Hospital saturation", sigma_ruido: 0.2, m: 10}
+  redondeo: 3
+
+# Los dos recuentos de §4.1.3. El primero ya estaba declarado más arriba
+# como ruido_recuento.ventanas_peor_que_global; estos dos son los de
+# significancia, que el manuscrito daba como diez y seis.
+
+- id: ruido_recuento.nominales_ambas_pruebas
+  tabla: "sec:noise_results"
+  valor: 17
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  columna_vs: p_valor_wilcoxon_dos_colas
+  filtro: {m: 10}
+  filtro_no: {sigma_ruido: 0.0}
+  reduccion: count_ambas_bajo
+  umbral: 0.05
+  redondeo: 0
+  nota: >-
+    «17 comparisons are nominally significant under both paired tests».
+    Cuenta las filas con p_t < 0.05 y p_Wilcoxon < 0.05 entre las 21 con
+    ruido. El manuscrito decía diez, con la corrida anterior.
+
+- id: ruido_recuento.sobreviven_bh_ambas
+  tabla: "sec:noise_results"
+  valor: 16
+  fuente: results/final_suite_ruido/comparacion_pareada_ruido_TODOS_escenarios.csv
+  columna: p_valor_t_dos_colas
+  columna_vs: p_valor_wilcoxon_dos_colas
+  filtro: {m: 10}
+  filtro_no: {sigma_ruido: 0.0}
+  reduccion: count_bh_ambas
+  umbral: 0.05
+  redondeo: 0
+  nota: >-
+    «after Benjamini-Hochberg correction at q=0.05, 16 remain significant
+    under both tests». Aplica el procedimiento por separado a cada prueba
+    sobre las 21 combinaciones con ruido y cuenta la intersección. El
+    manuscrito decía seis, con la corrida anterior.
+
+
 - id: pendiente.datos_reales_sensibilidad_m
   tabla: "tab:real_m_selection"
   estado: pendiente
