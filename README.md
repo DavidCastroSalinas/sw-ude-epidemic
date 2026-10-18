@@ -4,8 +4,6 @@ Código, datos y resultados del artículo *Temporal Supervision Horizon and
 Latent-Dynamics Recovery in SIR Universal Differential Equations* (referencia
 completa en `CITATION.cff`).
 
-DOI: [10.5281/zenodo.23459303](https://doi.org/10.5281/zenodo.23459303)
-
 ---
 
 ## De qué trata
@@ -63,15 +61,11 @@ ninguna de las dos cosas instaladas.**
 
 ### Julia, para correr los experimentos
 
-Julia 1.10.5. Desde la raíz del repositorio:
-
-```bash
-julia --project=. install_dependencies.jl
-```
-
-Lee `Manifest.toml` y reconstruye el entorno exacto de la corrida de
-referencia, sin resolver dependencias de nuevo. Son 19 paquetes; no incluye
-ningún solver ODE ni regresión simbólica.
+Julia 1.10.5. La receta de instalación debe leerse junto con
+`docs/ENTORNO.md`: el repositorio aún no contiene un `Manifest.toml` de
+referencia, por lo que la instalación actual no garantiza resolver las
+mismas versiones de paquetes que la corrida del artículo. Este bloqueo debe
+resolverse antes de presentar el repositorio como entorno reproducible.
 
 ### Python, para las figuras
 
@@ -113,13 +107,20 @@ Horas a días según el experimento. Usa todos los hilos disponibles; con
 SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia
 ```
 
-Corre la cadena con épocas y multistarts reducidos. No reproduce las cifras:
-confirma que el entorno está bien armado. Sin `--con-julia` comprueba solo
-lo que no necesita Julia.
+Corre los runners compatibles con épocas y multistarts reducidos. No
+reproduce las cifras: confirma que el entorno está bien armado. Sin
+`--con-julia` comprueba solo lo que no necesita Julia. La destilación se
+omite en esta modalidad para evitar ejecutar su barrido completo.
 
-La variable la honran los experimentos 3, 4, 6, 7 y 8. El 11, la destilación,
-todavía no (`docs/PENDIENTES.md` §2.7), así que correrlo con la variable
-puesta lo ejecuta completo.
+Para probar también el flujo reducido de destilación (dos arranques y las
+familias principales), usa:
+
+```bash
+SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia --con-destilacion-smoke
+```
+
+Ese modo solo comprueba el flujo de ejecución; guarda los resultados de
+prueba en un directorio temporal y no reproduce cifras del artículo.
 
 ### Un escenario sintético, desde el REPL
 
@@ -337,14 +338,10 @@ python3 verify/verificar_cifras.py --tabla tab:noise_beta
 su filtro y su redondeo, de modo que se puede leer qué se está comprobando
 sin leer el código.
 
-Hay tres comprobadores más, para el estado del repositorio y no para las
-cifras:
-
-```bash
-python3 verify/comprobar_archivos.py --solo-faltantes   # ¿está todo lo prometido?
-python3 verify/comprobar_rutas.py --solo-problemas      # ¿alguien escribe fuera del árbol?
-python3 verify/comprobar_codigo_muerto.py               # ¿hay código sin usar?
-```
+Los scripts de diagnóstico interno del árbol de trabajo no forman parte
+del flujo mínimo de reproducción. La comprobación pública de cifras es
+`verify/verificar_cifras.py`; el smoke test valida las herramientas y las
+rutas de ejecución disponibles.
 
 ---
 
@@ -358,21 +355,21 @@ figures_src/  un script por figura, más el estilo y el registro común
 results/      los CSV exactos detrás de cada cifra citada
 figures/      los seis PDF que compila el manuscrito
 verify/       los comprobadores y el archivo de cifras declaradas
-docs/         experimentos, entorno, decisiones, estilo de figuras, pendientes
-bin/          utilidades de mantenimiento del repositorio
+docs/         mapa de experimentos, entorno, decisiones y estilo de figuras
+bin/          utilidades necesarias para regenerar el manifiesto y verificar salidas
 ```
 
 ---
 
 ## Cómo citar
 
-`CITATION.cff` trae dos citas: la del **artículo**, que es la que GitHub
-ofrece por omisión, y la de **este software**, para referenciar una versión
-concreta del código.
+`CITATION.cff` identifica el software, sus autores y el artículo asociado.
+Completar los datos editoriales del artículo y los metadatos de archivo del
+software cuando se emita la versión citable definitiva.
 
 ## Licencias
 
 - Código: `LICENSE` (MIT).
 - Datos, figuras y CSV de salida: `LICENSE-DATA` (CC BY 4.0).
-- La serie epidemiológica de origen mantiene la licencia de su fuente; ver
-  `data/README.md`.
+- Antes de redistribuir la serie epidemiológica, completar y verificar la
+  referencia y las condiciones de la fuente original; ver `data/README.md`.
