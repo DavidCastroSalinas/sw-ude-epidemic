@@ -97,7 +97,7 @@ function correr_experimento_multisemilla(caso_beta::Symbol;
     end
     finalizar_progreso!(prog)
 
-    path = joinpath(outdir, "$(String(caso_beta))_multiseed.csv")
+    path = joinpath(outdir, "$(scenario_file_key(caso_beta))_multiseed.csv")
     return guardar_resultados_csv(resultados; path=path)
 end
 
@@ -234,7 +234,7 @@ para los 7 escenarios y se producen tres salidas en `outdir`:
 
   - `exp_ruido_<escenario>_multiseed.csv`      : esquema interno, por escenario
   - `comparison_paired_noise_ALL_scenarios.csv` : t pareada + Wilcoxon por (escenario, σ_rel)
-  - `noise_detalle_unificado_ALL_scenarios.csv`   : TODAS las repeticiones individuales,
+  - `noise_unified_detail_ALL_scenarios.csv`   : TODAS las repeticiones individuales,
     esquema unificado (escenario, metodo, seed, sigma_rel, porcentaje_ruido,
     RMSE_SIR, RMSE_I, RMSE_beta) -- la tabla pedida para el artículo.
 """
@@ -259,7 +259,7 @@ function correr_todo_experimento5_ruido(; escenarios::Vector{Symbol}=SCENARIO_OR
         # en la raíz del proyecto (comportamiento heredado); además
         # guardamos una copia por escenario para no pisar resultados entre
         # escenarios sucesivos.
-        percaso_path = joinpath(outdir, "exp_noise_$(String(caso))_multiseed.csv")
+        percaso_path = joinpath(outdir, "exp_noise_$(scenario_file_key(caso))_multiseed.csv")
         CSV.write(percaso_path, df)
         push!(tablas_unificadas, tabla_ruido_unificada(df, label))
 
@@ -286,7 +286,7 @@ function correr_todo_experimento5_ruido(; escenarios::Vector{Symbol}=SCENARIO_OR
     println("\n✓ Comparación pareada bajo ruido consolidada en $path")
 
     df_unificado = vcat(tablas_unificadas...)
-    path_unificado = joinpath(outdir, "noise_detalle_unificado_ALL_scenarios.csv")
+    path_unificado = joinpath(outdir, "noise_unified_detail_ALL_scenarios.csv")
     CSV.write(path_unificado, df_unificado)
     println("✓ Detalle unificado (esquema del artículo: escenario, metodo, seed, sigma_rel,")
     println("  porcentaje_ruido, RMSE_SIR, RMSE_I, RMSE_beta) guardado en $path_unificado")

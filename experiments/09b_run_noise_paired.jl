@@ -8,11 +8,11 @@ include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 @assert length(SCENARIO_ORDER) == 7 "SCENARIO_ORDER todavía tiene :realchile -- arreglá src/lib/03 primero"
 
-mkpath("results/final_suite_ruido")
+mkpath("results/final_suite_noise")
 
 df = correr_todo_experimento5_ruido(sigma_values = [0.00, 0.05, 0.10, 0.20],
                                      seeds_red   = 1:10,
-                                     outdir      = "results/final_suite_ruido")
-println("\n✓ Listo. CSVs en results/final_suite_ruido/ (incluye")
-println("  noise_detalle_unificado_ALL_scenarios.csv con el esquema")
-println("  escenario/metodo/seed/sigma_rel/porcentaje_ruido/RMSE_SIR/RMSE_I/RMSE_beta)")
+                                     outdir      = "results/final_suite_noise")
+println("\n✓ Listo. CSVs en results/final_suite_noise/ (incluye")
+println("  noise_unified_detail_ALL_scenarios.csv con el esquema")
+println("  escenario/metodo/seed/sigma_rel/porcentaje_noise/RMSE_SIR/RMSE_I/RMSE_beta)")
