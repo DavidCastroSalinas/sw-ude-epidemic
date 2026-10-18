@@ -2,8 +2,8 @@
 
 ## Julia
 
-El código se desarrolló con Julia 1.10.5. Esta rama todavía no contiene
-`Project.toml` ni `Manifest.toml`, por lo que no fija el árbol completo de
+El código se desarrolló con Julia 1.10.5. Esta rama contiene `Project.toml`, pero todavía no contiene
+`Manifest.toml`, por lo que no fija el árbol completo de
 dependencias y una instalación nueva no garantiza las mismas versiones que
 la corrida del artículo.
 
