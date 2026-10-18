@@ -21,7 +21,7 @@
 #      generalizar el experimento multi-semilla también cierra este punto,
 #      sin tocar la arquitectura ni el optimizador.
 #
-#   3. graficar_trayectorias (Sección 18) es genérica pero solo se había
+#   3. graficar_trajectories (Sección 18) es genérica pero solo se había
 #      invocado para :lineal. Se generaliza a los 7 escenarios.
 #
 # NOTA (21-ago-2026, renumeración): este archivo se llamaba
@@ -68,7 +68,7 @@ Todos los hiperparámetros (hidden, layers, lr, epochs, clip_norm) se
 toman automáticamente de `SCENARIO_CONFIG[caso_beta]` vía
 `ejecutar_repeticion` -- para :saturacion esto ya incluye clip_norm=5.0.
 
-Guarda `outdir/<caso_beta>_multisemilla.csv` y lo devuelve como DataFrame.
+Guarda `outdir/<caso_beta>_multiseed.csv` y lo devuelve como DataFrame.
 """
 function correr_experimento_multisemilla(caso_beta::Symbol;
                                           seeds_red=1:10,
@@ -97,7 +97,7 @@ function correr_experimento_multisemilla(caso_beta::Symbol;
     end
     finalizar_progreso!(prog)
 
-    path = joinpath(outdir, "$(String(caso_beta))_multisemilla.csv")
+    path = joinpath(outdir, "$(String(caso_beta))_multiseed.csv")
     return guardar_resultados_csv(resultados; path=path)
 end
 
@@ -119,7 +119,7 @@ boxplot de RMSE_β y β promedio (reutilizando `graficar_*` de
 de `SCENARIO_CONFIG`, y consolida los resultados de todas las pruebas
 pareadas en un único CSV para citar directamente en el artículo:
 
-    results/final_suite/comparacion_pareada_TODOS_escenarios.csv
+    results/final_suite/comparison_paired_ALL_scenarios.csv
 
 con columnas: escenario, m, metrica, media_UDE, std_UDE, media_Windowed,
 std_Windowed, t_stat, p_valor_t_dos_colas, p_valor_wilcoxon_dos_colas,
@@ -170,7 +170,7 @@ function correr_todos_experimentos_multisemilla(; escenarios::Vector{Symbol}=SCE
     finalizar_progreso!(prog_escenarios)
 
     df_comp = DataFrame(filas_comparacion)
-    path = joinpath(outdir, "comparacion_pareada_TODOS_escenarios.csv")
+    path = joinpath(outdir, "comparison_paired_ALL_scenarios.csv")
     CSV.write(path, df_comp)
     println("\n✓ Comparación pareada consolidada guardada en $path")
     println(df_comp)
@@ -232,9 +232,9 @@ los 7 escenarios.
 `correr_experimento_5_ruido` ya era genérica en `caso_beta`. Aquí se corre
 para los 7 escenarios y se producen tres salidas en `outdir`:
 
-  - `exp_ruido_<escenario>_multisemilla.csv`      : esquema interno, por escenario
-  - `comparacion_pareada_ruido_TODOS_escenarios.csv` : t pareada + Wilcoxon por (escenario, σ_rel)
-  - `ruido_detalle_unificado_TODOS_escenarios.csv`   : TODAS las repeticiones individuales,
+  - `exp_ruido_<escenario>_multiseed.csv`      : esquema interno, por escenario
+  - `comparison_paired_noise_ALL_scenarios.csv` : t pareada + Wilcoxon por (escenario, σ_rel)
+  - `noise_detalle_unificado_ALL_scenarios.csv`   : TODAS las repeticiones individuales,
     esquema unificado (escenario, metodo, seed, sigma_rel, porcentaje_ruido,
     RMSE_SIR, RMSE_I, RMSE_beta) -- la tabla pedida para el artículo.
 """
@@ -255,11 +255,11 @@ function correr_todo_experimento5_ruido(; escenarios::Vector{Symbol}=SCENARIO_OR
 
         df = correr_experimento_5_ruido(caso_beta=caso, sigma_values=sigma_values,
                                          seeds_red=seeds_red, m=cfg.m)
-        # correr_experimento_5_ruido ya escribe "exp5_ruido_multisemilla.csv"
+        # correr_experimento_5_ruido ya escribe "exp5_noise_multiseed.csv"
         # en la raíz del proyecto (comportamiento heredado); además
         # guardamos una copia por escenario para no pisar resultados entre
         # escenarios sucesivos.
-        percaso_path = joinpath(outdir, "exp_ruido_$(String(caso))_multisemilla.csv")
+        percaso_path = joinpath(outdir, "exp_noise_$(String(caso))_multiseed.csv")
         CSV.write(percaso_path, df)
         push!(tablas_unificadas, tabla_ruido_unificada(df, label))
 
@@ -281,12 +281,12 @@ function correr_todo_experimento5_ruido(; escenarios::Vector{Symbol}=SCENARIO_OR
     finalizar_progreso!(prog)
 
     df_out = DataFrame(filas)
-    path = joinpath(outdir, "comparacion_pareada_ruido_TODOS_escenarios.csv")
+    path = joinpath(outdir, "comparison_paired_noise_ALL_scenarios.csv")
     CSV.write(path, df_out)
     println("\n✓ Comparación pareada bajo ruido consolidada en $path")
 
     df_unificado = vcat(tablas_unificadas...)
-    path_unificado = joinpath(outdir, "ruido_detalle_unificado_TODOS_escenarios.csv")
+    path_unificado = joinpath(outdir, "noise_detalle_unificado_ALL_scenarios.csv")
     CSV.write(path_unificado, df_unificado)
     println("✓ Detalle unificado (esquema del artículo: escenario, metodo, seed, sigma_rel,")
     println("  porcentaje_ruido, RMSE_SIR, RMSE_I, RMSE_beta) guardado en $path_unificado")
@@ -299,29 +299,29 @@ println("✓ correr_todo_experimento5_ruido definida")
 
 # ── 5. Trayectorias puntuales para los 7 escenarios ───────────────────────
 """
-    graficar_todas_trayectorias(; escenarios=SCENARIO_ORDER, seed_red=1,
-                                 outdir="results/trayectorias")
+    graficar_todas_trajectories(; escenarios=SCENARIO_ORDER, seed_red=1,
+                                 outdir="results/trajectories")
 
-`graficar_trayectorias` (Sección 18) es genérica pero solo se había usado
+`graficar_trajectories` (Sección 18) es genérica pero solo se había usado
 para `:lineal`. La corre aquí para los 7 escenarios (global y ventanas,
 m tomado de `SCENARIO_CONFIG`).
 """
-function graficar_todas_trayectorias(; escenarios::Vector{Symbol}=SCENARIO_ORDER,
+function graficar_todas_trajectories(; escenarios::Vector{Symbol}=SCENARIO_ORDER,
                                       seed_red::Int=1,
-                                      outdir::String="results/trayectorias")
+                                      outdir::String="results/trajectories")
     mkpath(outdir)
     prog = iniciar_progreso("(C) Trayectorias puntuales — escenarios", length(escenarios))
     for caso in escenarios
         cfg = SCENARIO_CONFIG[caso]
-        graficar_trayectorias(caso, :global,   missing, seed_red; outdir=outdir)
-        graficar_trayectorias(caso, :ventanas, cfg.m,   seed_red; outdir=outdir)
+        graficar_trajectories(caso, :global,   missing, seed_red; outdir=outdir)
+        graficar_trajectories(caso, :ventanas, cfg.m,   seed_red; outdir=outdir)
         avanzar!(prog; detalle=String(caso))
     end
     finalizar_progreso!(prog)
     println("✓ Trayectorias generadas para los $(length(escenarios)) escenarios en $outdir")
 end
 
-println("✓ graficar_todas_trayectorias definida")
+println("✓ graficar_todas_trajectories definida")
 
 println("\n✓ src/lib/10_final_synthetic_experiments.jl cargado -- experimentos generalizados a los 7 escenarios sintéticos")
 println("  (la sensibilidad de datos reales a N/γ vive ahora en src/lib/13_real_data_sensitivity_n_gamma.jl)")

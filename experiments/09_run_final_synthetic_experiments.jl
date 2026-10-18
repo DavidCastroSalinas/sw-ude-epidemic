@@ -16,8 +16,8 @@
 # NOTA (05-sep-2026, rediseño de ruido): este runner traía un paso (B)
 # adicional que corría el experimento de ruido para los 7 escenarios --
 # se QUITÓ de acá porque duplicaba EXACTAMENTE lo que ya hace
-# `experiments/09b_run_ruido_pareado.jl` (Exp 4, el experimento de ruido
-# unificado y CENTRAL, ver MAPA_EXPERIMENTOS.md): mismos escenarios,
+# `experiments/09b_run_noise_paired.jl` (Exp 4, el experimento de ruido
+# unificado y CENTRAL, ver MAPA_EXPERIMENTS.md): mismos escenarios,
 # semillas y sigma_values, solo que escribiendo a una carpeta de salida
 # distinta (`results/final_suite` en vez de `results/final_suite_ruido`).
 # Mantenerlo acá significaba correr ~420 entrenamientos dos veces para
@@ -35,7 +35,7 @@
 #
 # NOTA sobre redundancia: (A) para :lineal/:dos_olas/:estacional es un
 # superconjunto EXACTO de lo que hacían los runners DEPRECATED
-# 05/06 (eliminados en la limpieza profunda, ver MAPA_EXPERIMENTOS.md).
+# 05/06 (eliminados en la limpieza profunda, ver MAPA_EXPERIMENTS.md).
 # Para la versión final, corré SOLO este runner 09.
 #
 # ADVERTENCIA DE TIEMPO DE CÓMPUTO -- VERSIÓN FINAL (épocas completas)
@@ -46,7 +46,7 @@
 #       promedio, x 7 escenarios), hasta 8000 épocas cada uno.
 #   (B) 14 entrenamientos (rápidos, 1 seed).
 # ~504 entrenamientos en total (el experimento de ruido, ~560 más con la
-# grilla σ_rel de 4 niveles, corre aparte en experiments/09b_run_ruido_pareado.jl).
+# grilla σ_rel de 4 niveles, corre aparte en experiments/09b_run_noise_paired.jl).
 # En un solo hilo de CPU esto puede tomar de varias horas a más de un día.
 # Para una corrida de PRUEBA rápida (minutos, no horas -- valida que el
 # pipeline corre sin errores, los NÚMEROS no sirven para el artículo),
@@ -64,7 +64,7 @@
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 mkpath("results/final_suite")
-mkpath("results/trayectorias")
+mkpath("results/trajectories")
 
 SEEDS_RED = 1:10   # SIR_UDE_SMOKE_TEST=1 lo reduce automáticamente -- no editar a mano
 
@@ -84,18 +84,18 @@ println("\n" * "="^70)
 println("  (B) Trayectorias puntuales — 7 escenarios")
 println("="^70)
 t0 = time()
-graficar_todas_trayectorias(seed_red=1, outdir="results/trayectorias")
+graficar_todas_trajectories(seed_red=1, outdir="results/trajectories")
 println("  (B) tiempo total: ", formatear_duracion(time() - t0))
 
 println("\n" * "="^70)
 println("  ✓ VERSIÓN FINAL (sintética) completa. Tiempo total: ", formatear_duracion(time() - t_inicio_total))
 println("  Resultados nuevos en:")
-println("    results/final_suite/comparacion_pareada_TODOS_escenarios.csv")
-println("    results/trayectorias/  (7 escenarios × 2 métodos)")
+println("    results/final_suite/comparison_paired_ALL_scenarios.csv")
+println("    results/trajectories/  (7 escenarios × 2 métodos)")
 println("  Recuerda que experiments/01_run_all_scenarios.jl ahora también genera")
 println("  los GIF de evolución de β (antes desactivados en todo el proyecto).")
 println("  Para el experimento de ruido (Exp 4, unificado, σ_rel), correr aparte")
-println("  experiments/09b_run_ruido_pareado.jl -- ver results/final_suite_ruido/.")
+println("  experiments/09b_run_noise_paired.jl -- ver results/final_suite_ruido/.")
 println("  Para la sensibilidad de datos reales a N/γ (antes el paso D de este")
 println("  runner), correr aparte experiments/11_run_real_data_sensitivity_n_gamma.jl.")
 println("="^70)

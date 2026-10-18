@@ -8,7 +8,7 @@
 #
 # NOTA (21-ago-2026): m=5 y N=80851.0 son los valores OFICIALES fijos del
 # caso real (los mismos que experiments/10 y 12) -- este runner YA NO lee
-# results/datos_reales/datos_reales_sensibilidad_m.csv ni auto-selecciona
+# results/real_data/real_data_sensitivity_m.csv ni auto-selecciona
 # m con `elegir_m_automatico`. Ya no depende de que
 # experiments/12_run_real_data_window_sensitivity.jl haya corrido antes (podés
 # correr este runner solo). Si en algún momento querés volver a
@@ -49,15 +49,15 @@
 #            sobre todo el tramo de test -- ver docstring del módulo para
 #            la justificación de por qué NO es un solo punto).
 #
-# BEFORE RUNNING: copy your CSV to data/datos_historicos_julio_enero.csv
+# BEFORE RUNNING: copy your CSV to data/historical_data_july_january.csv
 # relative to the project root (or edit CSV_PATH below).
 # ============================================================
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
-CSV_PATH = joinpath(@__DIR__, "..", "data", "datos_historicos_julio_enero.csv")
+CSV_PATH = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 if !isfile(CSV_PATH)
-    error("No se encontró $CSV_PATH -- copia el CSV a data/datos_historicos_julio_enero.csv " *
+    error("No se encontró $CSV_PATH -- copia el CSV a data/historical_data_july_january.csv " *
           "antes de correr este script (ver comentario al inicio del archivo).")
 end
 
@@ -111,10 +111,10 @@ df_horizontes = evaluar_extrapolacion_horizontes_real(resultado, SIR_real;
     outdir = "results/datos_reales")
 
 println("\n✓ Listo (", formatear_duracion(time() - t_inicio), "). Resultados en results/datos_reales/:")
-println("    metricas_extendidas_datos_reales.csv           (paso 2)")
-println("    datos_reales_curvas.csv                        (paso 2, curvas día a día)")
+println("    metrics_extended_real_data.csv           (paso 2)")
+println("    real_data_curves.csv                        (paso 2, curvas día a día)")
 println("    datos_reales_I_comparacion.{png,pdf,eps}       (paso 3: interpolación+extrapolación)")
 println("    datos_reales_beta_comparacion.{png,pdf,eps}    (paso 3: β̂ aprendida)")
 println("    datos_reales_reff.{png,pdf,eps}                (paso 3: R_eff)")
-println("    datos_reales_extrapolacion_horizontes.csv      (paso 4: RMSE por horizonte)")
-println("    datos_reales_extrapolacion_horizontes.{png,pdf,eps}  (paso 4: figura)")
+println("    real_data_extrapolation_horizons.csv      (paso 4: RMSE por horizonte)")
+println("    real_data_extrapolation_horizons.{png,pdf,eps}  (paso 4: figura)")

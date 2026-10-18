@@ -40,7 +40,7 @@
 #
 # Cada corrida escribe en su propia subcarpeta
 # (results/datos_reales/multiseed/seed_<seed>/), así que las 5 no se pisan
-# entre sí. experiments/23_consolidar_multiseed_real_data.jl junta los 5 CSV
+# entre sí. experiments/23_consolidate_multiseed_real_data.jl junta los 5 CSV
 # después.
 #
 # Valores oficiales (HASTA 2026-09-07, sin cambios respecto al runner 21):
@@ -73,7 +73,7 @@ end
 
 SEMILLA = parse(Int, get(ENV, "SIR_UDE_SEED", "1234"))
 
-CSV_PATH = joinpath(@__DIR__, "..", "data", "datos_historicos_julio_enero.csv")
+CSV_PATH = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 isfile(CSV_PATH) || error("No se encontró $CSV_PATH")
 
 OUTDIR = joinpath("results", "datos_reales", "multiseed", "seed_$(SEMILLA)")
@@ -121,8 +121,8 @@ df = run_window_sensitivity_real_split(SIR_real;
 df.seed        = fill(SEMILLA, nrow(df))
 df.es_control  = df.m .== M_CONTROL_REAL_V2
 df.es_adoptado = df.m .== M_ADOPTADO
-CSV.write(joinpath(OUTDIR, "datos_reales_sensibilidad_m_seed$(SEMILLA).csv"), df)
+CSV.write(joinpath(OUTDIR, "real_data_sensitivity_m_seed$(SEMILLA).csv"), df)
 
 println("\n✓ Semilla ", SEMILLA, " lista (", formatear_duracion(time() - t0), ").")
-println("  CSV: ", joinpath(OUTDIR, "datos_reales_sensibilidad_m_seed$(SEMILLA).csv"))
-println("  Cuando estén las 5 semillas, correr experiments/23_consolidar_multiseed_real_data.jl")
+println("  CSV: ", joinpath(OUTDIR, "real_data_sensitivity_m_seed$(SEMILLA).csv"))
+println("  Cuando estén las 5 semillas, correr experiments/23_consolidate_multiseed_real_data.jl")

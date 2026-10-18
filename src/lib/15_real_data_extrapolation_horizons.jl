@@ -102,8 +102,8 @@ resultado en un único DataFrame/CSV (columna `etiqueta`: "UDE" /
 "SW-UDE").
 
 Guarda dos archivos en `outdir`:
-  - `datos_reales_extrapolacion_horizontes.csv`
-  - `datos_reales_extrapolacion_horizontes.{png,pdf,eps}` (RMSE_h vs.
+  - `real_data_extrapolation_horizons.csv`
+  - `real_data_extrapolation_horizons.{png,pdf,eps}` (RMSE_h vs.
     horizonte, una curva por modelo)
 
 Devuelve el `DataFrame`.
@@ -126,7 +126,7 @@ function evaluar_extrapolacion_horizontes_real(resultado, SIR::Matrix{Float64};
                                           etiqueta="SW-UDE")
     df = vcat(df_g, df_w)
 
-    path = joinpath(outdir, "datos_reales_extrapolacion_horizontes.csv")
+    path = joinpath(outdir, "real_data_extrapolation_horizons.csv")
     CSV.write(path, df)
     println("\n✓ CSV de extrapolación por horizonte guardado en $path")
     println("  Columnas: etiqueta (UDE/SW-UDE), horizonte (días a futuro), ",
@@ -143,9 +143,9 @@ function evaluar_extrapolacion_horizontes_real(resultado, SIR::Matrix{Float64};
         color = et == "UDE" ? :orange : :steelblue
         plot!(p_h, sub.horizonte, sub.RMSE_h, lw=2, marker=:circle, color=color, label=et)
     end
-    savefig_all(p_h, joinpath(outdir, "datos_reales_extrapolacion_horizontes");
+    savefig_all(p_h, joinpath(outdir, "real_data_extrapolation_horizons");
                 formats=(:png, :pdf, :eps))
-    println("  Figura guardada en $outdir/datos_reales_extrapolacion_horizontes.{png,pdf,eps}")
+    println("  Figura guardada en $outdir/real_data_extrapolation_horizons.{png,pdf,eps}")
 
     return df
 end

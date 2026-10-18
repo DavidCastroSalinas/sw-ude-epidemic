@@ -44,7 +44,7 @@ Barrido de tamaño de ventana sobre la serie real con partición
 cronológica entrenamiento/prueba. Ver el encabezado del módulo.
 
 Devuelve el `DataFrame` (ordenado por `m`) y escribe
-`datos_reales_sensibilidad_m_split.csv` en `outdir`.
+`real_data_sensitivity_m_split.csv` en `outdir`.
 """
 function run_window_sensitivity_real_split(SIR::Matrix{Float64};
                                             N::Float64, γ::Float64, Δt::Float64=1.0,
@@ -159,7 +159,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
     finalizar_progreso!(prog)
 
     df   = sort(DataFrame(filas), :m)
-    path = joinpath(outdir, "datos_reales_sensibilidad_m_split.csv")
+    path = joinpath(outdir, "real_data_sensitivity_m_split.csv")
     CSV.write(path, df)
     println("\n✓ CSV guardado en $path")
     println(df)
@@ -188,7 +188,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
              left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
     plot!(p, df.m, df.RMSE_I_test, lw=2, marker=:square, ls=:dash, color=:crimson,
           label="RMSE_I (test, diagnóstico)")
-    savefig_all(p, joinpath(outdir, "datos_reales_sensibilidad_m_split");
+    savefig_all(p, joinpath(outdir, "real_data_sensitivity_m_split");
                 formats=(:png, :pdf, :eps))
 
     p2 = plot(df.m, df.TV_beta, lw=2, marker=:diamond, color=:seagreen,

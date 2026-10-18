@@ -3,7 +3,7 @@
 #
 #     pip install -r figures_src/requirements.txt
 #
-# El verificador de cifras (verify/verificar_cifras.py) NO necesita nada
+# El verificador de cifras (verify/verify_values.py) NO necesita nada
 # de esto: corre con la biblioteca estándar de Python a propósito, para
 # que el Nivel 0 funcione en cualquier máquina sin instalar nada.
 matplotlib>=3.8

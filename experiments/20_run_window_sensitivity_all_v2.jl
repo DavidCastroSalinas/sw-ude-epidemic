@@ -27,7 +27,7 @@
 # en la grilla esa sección no tiene con qué sostenerse) y m=7/m=15, que
 # tampoco están en la grilla automática. Se revierte a la grilla manual
 # exacta para no perder la reproducibilidad de lo ya escrito y validado.
-# `generar_grilla_m` (src/lib/24_generar_grilla_m.jl) quedó sin uso con esa
+# `generar_grilla_m` (src/lib/24_generate_grilla_m.jl) quedó sin uso con esa
 # reversión y se eliminó del repositorio el 2026-10-18. m_γ se calcula acá
 # en una línea, más abajo, solo para el diagnóstico r_m/es_control.
 #
@@ -69,7 +69,7 @@ df_sensibilidad_all = run_all_sensitivity(
 )
 
 # `run_all_sensitivity` ya escribió su propio CSV consolidado en
-# results/window_sensitivity_v2/sensibilidad_m_TODOS_escenarios.csv (sin
+# results/window_sensitivity_v2/sensitivity_m_ALL_scenarios.csv (sin
 # tocar) -- esto agrega columnas de conveniencia para que downstream
 # (figuras, tablas) no tenga que repetir el criterio "m < 1/gamma" a mano:
 #   es_control : true para m < m_γ (controles sub-epidemiológicos, m=1 y
@@ -81,11 +81,11 @@ df_sensibilidad_all = run_all_sensitivity(
 #                grilla base generada)
 df_sensibilidad_all.es_control = df_sensibilidad_all.m .< M_GAMMA_V2
 df_sensibilidad_all.r_m        = γ .* df_sensibilidad_all.m .* Δt
-CSV.write("results/window_sensitivity_v2/sensibilidad_m_TODOS_escenarios_v2.csv", df_sensibilidad_all)
+CSV.write("results/window_sensitivity_v2/sensitivity_m_ALL_scenarios_v2.csv", df_sensibilidad_all)
 
 println("\n✓ Done. Dos CSV en results/window_sensitivity_v2/:")
-println("    sensibilidad_m_TODOS_escenarios.csv     (salida original de run_all_sensitivity)")
-println("    sensibilidad_m_TODOS_escenarios_v2.csv  (igual + columnas es_control, r_m)")
+println("    sensitivity_m_ALL_scenarios.csv     (salida original de run_all_sensitivity)")
+println("    sensitivity_m_ALL_scenarios_v2.csv  (igual + columnas es_control, r_m)")
 println("  1/γ = ", 1 / γ, " días -- m_γ=", M_GAMMA_V2,
         " -- controles sub-epidemiológicos: ", M_CONTROLES_V2,
         " -- r_m = períodos infecciosos por ventana.")

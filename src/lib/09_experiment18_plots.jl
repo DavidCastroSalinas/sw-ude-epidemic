@@ -92,13 +92,13 @@ function graficar_sensibilidad_m(df::DataFrame; caso_beta::String="lineal",
 end
 
 """
-    graficar_trayectorias(caso_beta, metodo, m, seed_red; sigma_ruido=0.0,
+    graficar_trajectories(caso_beta, metodo, m, seed_red; sigma_ruido=0.0,
                           seed_ruido=1234, outdir)
 
 Trayectorias S, I, R reales vs. reconstruidas para una repetición puntual
 (ítem 6 de la lista de gráficos).
 """
-function graficar_trayectorias(caso_beta::Symbol, metodo::Symbol, m, seed_red::Int;
+function graficar_trajectories(caso_beta::Symbol, metodo::Symbol, m, seed_red::Int;
                                 sigma_ruido::Float64=0.0, seed_ruido::Int=1234,
                                 outdir::String="figuras/exp")
     mkpath(outdir)
@@ -121,11 +121,11 @@ function graficar_trayectorias(caso_beta::Symbol, metodo::Symbol, m, seed_red::I
     plot!(p, ts, ev.pred[3, :], label="R̂", color=:green, ls=:dash,
           xlabel="t", ylabel="Individuals",
           title="$(SCENARIO_LABELS[caso_beta]) — $(metodo_display(metodo; m=(metodo == :ventanas ? m : nothing))) (seed=$seed_red)")
-    savefig_all(p, "$outdir/$(caso_beta)_$(metodo)_trayectorias_seed$(seed_red)"; formats=(:png, :pdf, :eps))
+    savefig_all(p, "$outdir/$(caso_beta)_$(metodo)_trajectories_seed$(seed_red)"; formats=(:png, :pdf, :eps))
     return p
 end
 
-println("✓ graficar_boxplot_metrica, graficar_beta_promedio, graficar_sensibilidad_m, graficar_trayectorias definidas")
+println("✓ graficar_boxplot_metrica, graficar_beta_promedio, graficar_sensibilidad_m, graficar_trajectories definidas")
 
 # [2026-10-18] `evaluar_datos_reales` estaba aquí. Ningún runner del
 # artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.

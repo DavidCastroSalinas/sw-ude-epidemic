@@ -24,7 +24,7 @@ const SCENARIO_CONFIG = Dict(
     # Con T=50 la β real satura casi de inmediato (argumento del tanh crece
     # ~1.2/paso) → función real ≈ escalón con transición de 1-2 pasos.
     # Ventanas apenas mejora sobre Global (RMSE_β 0.0678 vs 0.0718,
-    # resumen_TODOS_escenarios.csv): probable síntoma de que m=10 promedia
+    # summary_ALL_scenarios.csv): probable síntoma de que m=10 promedia
     # sobre tramos casi planos y diluye la única transición informativa.
     # PENDIENTE: barrer m con grid fino (Sección 14b) antes de fijar valor.
 
@@ -42,7 +42,7 @@ const SCENARIO_CONFIG = Dict(
     # β depende de un sigmoide con pendiente 20 sobre I/N: retroalimentación
     # fuerte. Con la config anterior (lr=0.005, sin clip) el entrenamiento
     # por ventanas DIVERGE en estados: RMSE_S pasa de 0.61 (Global) a 5.27
-    # (Ventanas m=10), ver saturacion_10_metricas.csv / resumen_TODOS_escenarios.csv.
+    # (Ventanas m=10), ver saturation_10_metrics.csv / summary_ALL_scenarios.csv.
     # Primer intento de estabilización: lr reducido (0.005→0.003) +
     # clip_norm=5.0 (recorte de norma de gradiente). REQUIERE re-ejecutar y
     # validar que RMSE_S/I/R vuelvan a ser comparables o mejores que Global;
@@ -114,8 +114,8 @@ function run_all_experiments(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
     end
 
     df_resumen = DataFrame(rows)
-    CSV.write("$outdir/resumen_TODOS_escenarios.csv", df_resumen)
-    println("\n✓ Resumen consolidado guardado en $outdir/resumen_TODOS_escenarios.csv")
+    CSV.write("$outdir/summary_ALL_scenarios.csv", df_resumen)
+    println("\n✓ Resumen consolidado guardado en $outdir/summary_ALL_scenarios.csv")
     println(df_resumen)
     finalizar_progreso!(prog)
 
@@ -151,14 +151,14 @@ function run_all_sensitivity(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
                          lr=cfg.lr, hidden=cfg.hidden, layers=cfg.layers,
                          clip_norm=cfg.clip_norm,
                          seed=seed, outdir=outdir, save_csv=true)
-        df_i = CSV.read("$outdir/$(key)_sensibilidad_m.csv", DataFrame)
+        df_i = CSV.read("$outdir/$(key)_sensitivity_m.csv", DataFrame)
         push!(all_dfs, df_i)
         avanzar!(prog; detalle=String(key))
     end
 
     df_all = vcat(all_dfs...)
-    CSV.write("$outdir/sensibilidad_m_TODOS_escenarios.csv", df_all)
-    println("\n✓ Sensibilidad consolidada guardada en $outdir/sensibilidad_m_TODOS_escenarios.csv")
+    CSV.write("$outdir/sensitivity_m_ALL_scenarios.csv", df_all)
+    println("\n✓ Sensibilidad consolidada guardada en $outdir/sensitivity_m_ALL_scenarios.csv")
     finalizar_progreso!(prog)
     return df_all
 end

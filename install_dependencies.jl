@@ -27,9 +27,9 @@ if !isfile(joinpath(REPO, "Project.toml"))
     Falta Project.toml en $(REPO).
 
     Generarlo en la máquina de la corrida de referencia:
-        julia bin/generar_entorno.jl
+        julia bin/generate_environment.jl
 
-    Ver docs/ENTORNO.md, «El entorno de la corrida de referencia».
+    Ver docs/ENVIRONMENT.md, «El entorno de la corrida de referencia».
     """)
 end
 

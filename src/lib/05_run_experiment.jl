@@ -94,8 +94,8 @@ function run_experiment(scenario_key::Symbol;
             RMSE_beta = [mG.RMSE_β,    mW.RMSE_β],
             MAE_beta  = [mG.MAE_β,     mW.MAE_β],
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_metricas.csv", df)
-        println("  CSV guardado en $outdir/$(scenario_key)_$(m)_metricas.csv")
+        CSV.write("$outdir/$(scenario_key)_$(m)_metrics.csv", df)
+        println("  CSV guardado en $outdir/$(scenario_key)_$(m)_metrics.csv")
 
         # ── Curvas completas (para regenerar figuras fuera de Julia,
         # p. ej. en el notebook de ajustes de figuras) ────────────────
@@ -111,7 +111,7 @@ function run_experiment(scenario_key::Symbol;
             S_UDE            = pred_g[1, :], I_UDE       = pred_g[2, :], R_UDE       = pred_g[3, :],
             S_Windowed       = pred_w[1, :], I_Windowed  = pred_w[2, :], R_Windowed  = pred_w[3, :],
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_estados.csv", df_curvas_estados)
+        CSV.write("$outdir/$(scenario_key)_$(m)_curves_states.csv", df_curvas_estados)
 
         df_curvas_beta = DataFrame(
             t                    = ts_β,
@@ -121,14 +121,14 @@ function run_experiment(scenario_key::Symbol;
             beta_directa_UDE     = β_dir_g,
             beta_directa_Windowed = β_dir_w,
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_beta.csv", df_curvas_beta)
+        CSV.write("$outdir/$(scenario_key)_$(m)_curves_beta.csv", df_curvas_beta)
 
         df_curvas_loss = DataFrame(
             iteracion     = 1:max(length(loss_g), length(loss_w)),
             loss_UDE      = vcat(loss_g, fill(missing, max(0, length(loss_w) - length(loss_g)))),
             loss_Windowed = vcat(loss_w, fill(missing, max(0, length(loss_g) - length(loss_w)))),
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_loss.csv", df_curvas_loss)
+        CSV.write("$outdir/$(scenario_key)_$(m)_curves_loss.csv", df_curvas_loss)
 
         println("  Curvas guardadas en $outdir/$(scenario_key)_$(m)_curvas_{estados,beta,loss}.csv")
     end
@@ -209,8 +209,8 @@ function run_sensitivity(scenario_key::Symbol;
     if save_csv
         mkpath(outdir)
         df = DataFrame(rows)
-        CSV.write("$outdir/$(scenario_key)_sensibilidad_m.csv", df)
-        println("  CSV guardado en $outdir/$(scenario_key)_sensibilidad_m.csv")
+        CSV.write("$outdir/$(scenario_key)_sensitivity_m.csv", df)
+        println("  CSV guardado en $outdir/$(scenario_key)_sensitivity_m.csv")
     end
 
     return (metrics_vec=metrics_vec, fig_sensitivity=fig_sens)

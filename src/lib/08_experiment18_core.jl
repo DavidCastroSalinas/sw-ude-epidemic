@@ -15,7 +15,7 @@ Genera la trayectoria sintética de referencia para `caso_beta` (reutiliza
 
 REDISEÑO (05-sep-2026): `sigma_ruido` se reinterpreta como σ_rel, el nivel
 de ruido MULTIPLICATIVO relativo a la magnitud de cada observación (ya no
-una fracción de N) -- ver `src/lib/27_ruido_relativo.jl` para la justificación
+una fracción de N) -- ver `src/lib/27_noise_relative.jl` para la justificación
 completa y `agregar_ruido_relativo_sir` para la implementación:
 
     X_obs(k) = max(0, X_true(k)·(1+ε_k)),  ε_k ~ N(0, σ_rel²)
@@ -103,7 +103,7 @@ println("✓ entrenar_global y entrenar_ventanas definidas")
 
 Evalúa un `resultado` (de `entrenar_global`/`entrenar_ventanas`) SIEMPRE
 contra `datos_pack.datos_limpio` y `datos_pack.beta_fn` — nunca contra la
-trayectoria de entrenamiento, aunque tenga ruido. Devuelve trayectorias
+trayectoria de entrenamiento, aunque tenga ruido. Devuelve trajectories
 reconstruidas, β real/aprendida, y las métricas escalares. Sirve tanto para
 `calcular_metricas` (solo el resumen escalar) como para las funciones de
 graficación de más abajo (que necesitan las curvas completas).
@@ -189,7 +189,7 @@ end
 Convierte un vector de filas (NamedTuples de `ejecutar_repeticion`) a
 DataFrame y lo guarda en `path`. Devuelve el DataFrame.
 """
-function guardar_resultados_csv(resultados::Vector; path::String="resultados_experimentos.csv")
+function guardar_resultados_csv(resultados::Vector; path::String="resultados_experiments.csv")
     df = DataFrame(resultados)
     CSV.write(path, df)
     println("✓ Resultados guardados en $path  ($(nrow(df)) filas)")
@@ -228,7 +228,7 @@ end
 Experimento de ruido (Exp 4/5 unificados, rediseño 05-sep-2026).
 `sigma_values` son niveles de σ_rel -- ruido MULTIPLICATIVO relativo a la
 magnitud de cada observación, no una fracción de N ni un σ absoluto en
-individuos (ver `generar_datos` y `src/lib/27_ruido_relativo.jl`). Grilla por
+individuos (ver `generar_datos` y `src/lib/27_noise_relative.jl`). Grilla por
 defecto {0.00, 0.05, 0.10, 0.20}, la MISMA para los 7 escenarios --
 reemplaza tanto al esquema de fracción-de-N (antes en esta función) como
 al de σ absoluto (antes `experiments/03_run_noise_sensitivity_all.jl`, ambos
@@ -251,7 +251,7 @@ function correr_experimento_5_ruido(; caso_beta::Symbol=:lineal,
         push!(resultados, resultados_global)
         push!(resultados, resultados_ventana)
     end
-    return guardar_resultados_csv(resultados; path="exp5_ruido_multisemilla.csv")
+    return guardar_resultados_csv(resultados; path="exp5_noise_multiseed.csv")
 end
 
 println("✓ resumen_por_m, correr_experimento_5_ruido definidas")

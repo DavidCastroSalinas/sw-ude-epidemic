@@ -40,7 +40,7 @@ include(joinpath(LIBDIR, "04_progress.jl"))
 
 # ── Experimentos SINTÉTICOS (7 escenarios) ────────────────────────────────
 include(joinpath(LIBDIR, "05_run_experiment.jl"))
-include(joinpath(LIBDIR, "27_ruido_relativo.jl"))
+include(joinpath(LIBDIR, "27_noise_relative.jl"))
 include(joinpath(LIBDIR, "08_experiment18_core.jl"))
 include(joinpath(LIBDIR, "09_experiment18_plots.jl"))
 include(joinpath(LIBDIR, "10_final_synthetic_experiments.jl"))
@@ -69,8 +69,8 @@ include(joinpath(LIBDIR, "15_real_data_extrapolation_horizons.jl"))
 
 # NOTA (05-sep-2026, rediseño de ruido): src/lib/07_noise_sensitivity.jl y
 # experiments/03_run_noise_sensitivity_all.jl (esquema de σ absoluto en
-# individuos) se ELIMINARON -- reemplazados por src/lib/27_ruido_relativo.jl
-# (σ_rel multiplicativo, ver ese archivo). Ver MAPA_EXPERIMENTOS.md,
+# individuos) se ELIMINARON -- reemplazados por src/lib/27_noise_relative.jl
+# (σ_rel multiplicativo, ver ese archivo). Ver MAPA_EXPERIMENTS.md,
 # "quinta pasada", para el detalle completo del rediseño.
 
 println("\n✓ sir_ude_lib.jl loaded — all sections (1–18, minus 13, removed")

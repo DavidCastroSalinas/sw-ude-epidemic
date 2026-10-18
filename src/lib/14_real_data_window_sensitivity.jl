@@ -2,7 +2,7 @@
 # src/lib/14_real_data_window_sensitivity.jl
 # ------------------------------------------------------------
 # Experimento simple de sensibilidad al tamaño de ventana m sobre la
-# serie REAL (datos_historicos_julio_enero.csv), pedido explícitamente
+# serie REAL (historical_data_july_january.csv), pedido explícitamente
 # como complemento de `evaluar_datos_reales_v2` (src/lib/11_real_data.jl):
 # UNA sola corrida (seed=1234, sin barrido de semillas) que entrena
 # SW-UDE (`train_windowed_rd`) para una lista de tamaños de

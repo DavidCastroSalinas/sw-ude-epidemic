@@ -46,7 +46,7 @@ etapa() { printf '\n== %s ==\n' "$1"; }
 mal()   { printf 'FALLA: %s\n' "$1"; fallos=$((fallos + 1)); }
 
 etapa "Nivel 0 — verificador de cifras"
-if python3 verify/verificar_cifras.py --solo-fallas; then
+if python3 verify/verify_values.py --solo-fallas; then
     echo "sin fallas."
 else
     mal "el verificador reporta cifras que no cuadran."
@@ -57,7 +57,7 @@ if python3 -c "import matplotlib, numpy, pandas" 2>/dev/null; then
     # A un directorio aparte: comparar antes de reemplazar figures/, que es
     # lo que compila el manuscrito.
     rm -rf "$RAIZ/figures_regeneradas"
-    if ( cd "$RAIZ/figures_src" && python3 figuras_notebook.py \
+    if ( cd "$RAIZ/figures_src" && python3 figure_registry.py \
             --outputs-dir "$RAIZ/results" --outdir "$RAIZ/figures_regeneradas" ); then
         n=$(find "$RAIZ/figures_regeneradas" -name '*.pdf' 2>/dev/null | wc -l | tr -d ' ')
         [[ "$n" -eq 6 ]] || mal "se regeneraron $n figuras de 6."
@@ -70,11 +70,11 @@ fi
 
 etapa "Manifiesto"
 if [[ -f results/MANIFEST.sha256 ]]; then
-    bash bin/generar_manifest.sh --verificar || \
+    bash bin/generate_manifest.sh --verificar || \
         mal "el manifiesto no cuadra con results/, data/ o figures/."
 else
     echo "no existe results/MANIFEST.sha256; generándolo."
-    bash bin/generar_manifest.sh >/dev/null
+    bash bin/generate_manifest.sh >/dev/null
 fi
 
 if [[ $CON_JULIA -eq 1 ]]; then
@@ -87,7 +87,7 @@ if [[ $CON_JULIA -eq 1 ]]; then
         export SIR_UDE_SMOKE_TEST=1
         for r in experiments/*.jl; do
             [[ -f "$r" ]] || continue
-            [[ "$r" == "experiments/29_run_destilacion_parametrica_v51.jl" ]] && continue
+            [[ "$r" == "experiments/29_run_distillation_parametric_v51.jl" ]] && continue
             echo "-- $r"
             "$JULIA" --project=. --threads=auto "$r" || mal "falló $r"
         done
@@ -96,7 +96,7 @@ if [[ $CON_JULIA -eq 1 ]]; then
             etapa "Destilación paramétrica (smoke reducido)"
             SIR_UDE_DESTILACION_SMOKE=1 \
                 "$JULIA" --project=. --threads=auto \
-                experiments/29_run_destilacion_parametrica_v51.jl || \
+                experiments/29_run_distillation_parametric_v51.jl || \
                 mal "falló el smoke reducido de la destilación."
         else
             echo "Destilación omitida; añadir --con-destilacion-smoke para probarla en modo reducido."

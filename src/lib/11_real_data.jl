@@ -10,7 +10,7 @@
 Carga el CSV de una serie univariada (una fila por día) y devuelve un
 `Vector{Float64}` ordenado cronológicamente según `columna_orden`.
 
-Pensado para `datos_historicos_julio_enero.csv` (columnas: "Día histórico",
+Pensado para `historical_data_july_january.csv` (columnas: "Día histórico",
 "Mes", "Día", "Valor"), pero sirve para cualquier CSV con una columna de
 orden entero y una columna numérica de valores.
 """
@@ -412,10 +412,10 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                                         β̂=beta_w, S=pred_w[1, 1:cfg.T], N=N, γ=γ,
                                         idx_test=idx_test, etiqueta="SW-UDE (m=$m)")
     tabla = DataFrame([fila_g, fila_w])
-    CSV.write("$outdir/metricas_extendidas_datos_reales.csv", tabla)
+    CSV.write("$outdir/metrics_extended_real_data.csv", tabla)
     println("\n✓ Tabla de métricas extendidas:")
     println(tabla)
-    println("  Guardada en $outdir/metricas_extendidas_datos_reales.csv")
+    println("  Guardada en $outdir/metrics_extended_real_data.csv")
 
     # ── Curvas completas (día a día) para regenerar figuras fuera de
     # Julia -- antes de esta versión solo se guardaba la tabla de
@@ -454,8 +454,8 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
         Reff_UDE       = Reff_UDE_col,
         Reff_Windowed  = Reff_Windowed_col,
     )
-    CSV.write("$outdir/datos_reales_curvas.csv", df_curvas)
-    println("  Curvas día a día guardadas en $outdir/datos_reales_curvas.csv")
+    CSV.write("$outdir/real_data_curves.csv", df_curvas)
+    println("  Curvas día a día guardadas en $outdir/real_data_curves.csv")
 
     # ── Figuras ─────────────────────────────────────────────────────────
     t_split = dias[length(idx_entren) + 1]

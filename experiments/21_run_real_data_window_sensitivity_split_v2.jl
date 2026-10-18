@@ -60,7 +60,7 @@ if !isdefined(Main, :run_window_sensitivity_real_split)
     include(ruta_lib18)
 end
 
-CSV_PATH = joinpath(@__DIR__, "..", "data", "datos_historicos_julio_enero.csv")
+CSV_PATH = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 isfile(CSV_PATH) || error("No se encontró $CSV_PATH")
 
 mkpath("results/datos_reales")
@@ -149,13 +149,13 @@ df = run_window_sensitivity_real_split(SIR_real;
 df.es_control  = df.m .< M_GAMMA_REAL
 df.es_adoptado = df.m .== M_ADOPTADO
 df.r_m         = GAMMA_REAL .* df.m .* DT_REAL
-CSV.write("results/datos_reales/datos_reales_sensibilidad_m_split_v2.csv", df)
+CSV.write("results/real_data/real_data_sensitivity_m_split_v2.csv", df)
 
 println("\n✓ Listo (", formatear_duracion(time() - t0), ").")
-println("    results/datos_reales/datos_reales_sensibilidad_m_split.csv        (salida original)")
-println("    results/datos_reales/datos_reales_sensibilidad_m_split.{png,pdf,eps}")
+println("    results/real_data/real_data_sensitivity_m_split.csv        (salida original)")
+println("    results/datos_reales/real_data_sensitivity_m_split.{png,pdf,eps}")
 println("    results/datos_reales/datos_reales_TVbeta_vs_m.{png,pdf,eps}")
-println("    results/datos_reales/datos_reales_sensibilidad_m_split_v2.csv     (+ es_control, es_adoptado, r_m)")
+println("    results/real_data/real_data_sensitivity_m_split_v2.csv     (+ es_control, es_adoptado, r_m)")
 println("\n  1/γ = ", round(1 / GAMMA_REAL, digits=2), " días -- m_γ=", M_GAMMA_REAL,
         " -- controles sub-epidemiológicos: m<", M_GAMMA_REAL, " -- y es_adoptado (m=", M_ADOPTADO, ").")
 println("  Elegí m contrastando RMSE_I_train (banda del 5%) con TV(β̂) y con 1/γ.")
