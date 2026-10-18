@@ -24,7 +24,7 @@
 # suplementaria `tab:S1_datos_reales_pareado_supp`.
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 if !isdefined(Main, :evaluar_datos_reales_multisemilla)
     ruta = joinpath(@__DIR__, "..", "src", "lib", "19_real_data_multiseed.jl")
