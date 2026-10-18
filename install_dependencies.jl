@@ -10,10 +10,8 @@
 # el Project y se avisa de que las versiones pueden no ser las de las
 # cifras publicadas.
 #
-# El repositorio no depende de SymbolicRegression.jl ni de MLJ.jl: la
-# regresión simbólica salió del manuscrito y sus módulos no se copiaron.
-# Eran los únicos paquetes que fallaron al instalar en la corrida de
-# septiembre. Ver CHANGELOG.md.
+# Si falta Manifest.toml, Pkg resuelve las dependencias contra Project.toml;
+# la instalación puede diferir de la corrida que produjo las cifras.
 # ============================================================
 
 using Pkg
