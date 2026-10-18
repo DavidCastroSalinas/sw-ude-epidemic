@@ -53,7 +53,7 @@
 # relative to the project root (or edit CSV_PATH below).
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 CSV_PATH = joinpath(@__DIR__, "..", "data", "datos_historicos_julio_enero.csv")
 if !isfile(CSV_PATH)

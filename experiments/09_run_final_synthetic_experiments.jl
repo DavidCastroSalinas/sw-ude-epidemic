@@ -61,7 +61,7 @@
 # resto de la orquestación (qué corre en paralelo con qué).
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 mkpath("results/final_suite")
 mkpath("results/trayectorias")

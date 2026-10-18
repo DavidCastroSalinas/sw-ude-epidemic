@@ -29,7 +29,7 @@
 #     otros runners (p.ej. el mismo header que usa experiments/13_...).
 #     Debe dejar definidas: cargar_serie_real, construir_SIR_desde_I,
 #     evaluar_datos_reales_v2, r_effective, build_network, etc.
-include("../sir_ude_lib.jl")
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 using Statistics, CSV, DataFrames
 

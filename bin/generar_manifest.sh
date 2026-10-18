@@ -57,7 +57,9 @@ listar() {
     local d
     for d in "${DIRECTORIOS[@]}"; do
         [[ -d "$d" ]] || continue
-        find "$d" -type f \
+        find "$d" \
+            -type d -name '.ipynb_checkpoints' -prune -o \
+            -type f \
             ! -name 'MANIFEST.sha256' \
             ! -name 'MANIFEST.sha256.tmp' \
             ! -name '.DS_Store' \
@@ -98,6 +100,6 @@ printf '%s\n' "results/MANIFEST.sha256 — $n archivos"
 for d in "${DIRECTORIOS[@]}"; do
     [[ -d "$d" ]] || continue
     printf '  %-10s %5s archivos  %6s\n' \
-        "$d/" "$(find "$d" -type f ! -name 'MANIFEST.sha256*' | wc -l | tr -d ' ')" \
+        "$d/" "$(find "$d" -type d -name '.ipynb_checkpoints' -prune -o -type f ! -name 'MANIFEST.sha256*' -print | wc -l | tr -d ' ')" \
         "$(du -sh "$d" | cut -f1)"
 done

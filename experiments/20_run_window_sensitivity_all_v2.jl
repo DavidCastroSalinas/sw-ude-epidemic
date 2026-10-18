@@ -43,7 +43,7 @@
 #     julia --project=. experiments/20_run_window_sensitivity_all_v2.jl
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 using CSV   # redundante si sir_ude_lib.jl ya lo carga; no hace daño repetirlo
 
 mkpath("results/window_sensitivity_v2")

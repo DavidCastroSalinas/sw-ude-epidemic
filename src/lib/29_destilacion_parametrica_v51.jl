@@ -64,10 +64,14 @@ using Base.Threads
 
 const DT = 1.0
 
-const N_STARTS         = 50
-const ALG_MAXITER      = 2500
-const N_DYNAMIC_STARTS = 10
-const DYN_MAXITER      = 500
+# Modo de comprobación corto: ejercita M1/M2 con pocos arranques y
+# no debe usarse para producir cifras del manuscrito.
+const MODO_SMOKE = get(ENV, "SIR_UDE_DESTILACION_SMOKE", "0") == "1"
+
+const N_STARTS         = MODO_SMOKE ? 2 : 50
+const ALG_MAXITER      = MODO_SMOKE ? 50 : 2500
+const N_DYNAMIC_STARTS = MODO_SMOKE ? 2 : 10
+const DYN_MAXITER      = MODO_SMOKE ? 50 : 500
 const RANDOM_SEED      = 20260912
 
 const LAMBDA_BETA = 0.50
@@ -87,7 +91,9 @@ const LAMBDA_I    = 0.50
 # En esta versión se ejecutan TODAS las familias registradas.
 # La selección principal se mantiene exclusivamente entre M1 y M2;
 # :control, :extendida y :covid se reportan como sensibilidad.
-const GRUPOS = [:principal, :control, :extendida, :covid]
+const GRUPOS = MODO_SMOKE ?
+    [:principal] :
+    [:principal, :control, :extendida, :covid]
 
 BLAS.set_num_threads(1)
 
@@ -111,6 +117,7 @@ println("Refinam. dinám.  : ", N_DYNAMIC_STARTS)
 println("lambda_beta      : ", LAMBDA_BETA)
 println("lambda_I         : ", LAMBDA_I)
 println("Grupos activos   : ", GRUPOS)
+println("Modo smoke       : ", MODO_SMOKE)
 println("Salida           : ", EXP_DIR)
 
 Threads.nthreads() == 1 &&

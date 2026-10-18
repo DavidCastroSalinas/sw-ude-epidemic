@@ -4,7 +4,7 @@
 # REEMPLAZA los dos esquemas anteriores (fracción de N y σ absoluto en
 # individuos, este último antes en experiments/03_run_noise_sensitivity_all.jl,
 # eliminado) -- ver src/lib/27_ruido_relativo.jl y MAPA_EXPERIMENTOS.md.
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 @assert length(SCENARIO_ORDER) == 7 "SCENARIO_ORDER todavía tiene :realchile -- arreglá src/lib/03 primero"
 

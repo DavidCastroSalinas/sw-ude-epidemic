@@ -25,7 +25,7 @@
 # acumulando las 15 filas y la guarda UNA sola vez al final.
 # ============================================================
 
-include(joinpath(@__DIR__, "..", "sir_ude_lib.jl"))
+include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 using CSV, DataFrames   # redundante si sir_ude_lib.jl ya los carga; no hace daño repetirlo
 
 mkpath("results/saturacion_stress_test")
