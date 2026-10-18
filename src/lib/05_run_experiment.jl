@@ -174,6 +174,7 @@ function run_sensitivity(scenario_key::Symbol;
 
     beta_fn = BETA_FUNCTIONS[scenario_key]
     label   = SCENARIO_LABELS[scenario_key]
+    file_key = scenario_file_key(scenario_key)
 
     println("\n" * "="^65)
     println("  Sensibilidad m — Escenario: $label")
