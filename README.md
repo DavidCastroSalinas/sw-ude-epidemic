@@ -280,13 +280,13 @@ el código que las produce y los datos de los que salen.
 | `fig:temporal_supervision` | esquema | `figures_src/generate_fig_temporal_supervision_horizon.py` | — |
 | `fig:m_sensitivity` | 2 · sensibilidad a $m$, sintético | `experiments/20_run_window_sensitivity_all_v2.jl` | `results/window_sensitivity_v2/` |
 | `tab:synthetic_multiseed` | 3 · pareado multisemilla sin ruido | `experiments/09_run_final_synthetic_experiments.jl` | `results/final_suite/` |
-| `tab:noise_beta` | 4 · ruido observacional | `experiments/09b_run_noise_paired.jl` | `results/final_suite_ruido/` |
+| `tab:noise_beta` | 4 · ruido observacional | `experiments/09b_run_noise_paired.jl` | `results/final_suite_noise/` |
 | `fig:hospital_state` | 5 · saturación hospitalaria | `experiments/04_run_saturation_stress_test.jl` | `results/all_scenarios/` |
-| `tab:real_m_selection` | 6 y 7 · sensibilidad a $m$, datos reales | `experiments/21_…_split_v2.jl`, `22_…_multiseed.jl` ×5, `23_consolidar…jl` | `results/datos_reales/`, `results/datos_reales_multiseed/` |
+| `tab:real_m_selection` | 6 y 7 · sensibilidad a $m$, datos reales | `experiments/21_…_split_v2.jl`, `22_…_multiseed.jl` ×5, `23_consolidar…jl` | `results/real_data/`, `results/real_data_multiseed/` |
 | `tab:real_multiseed` | 8 · pareado $n=10$, datos reales | `experiments/16_run_real_data_multiseed_PAIRED_exp10.jl` | `results/real_data_paired_multiseed/` |
-| `tab:horizon_persistence` | 9 · horizontes y rollout autónomo | `experiments/13_run_real_data_extrapolation_horizons.jl` | `results/datos_reales/` |
-| `fig:real_multiseed`, §4.2.5 | 10 · $R_{\mathrm{eff}}$ y positividad de $\hat\beta$ | `experiments/16_…_REFF_POSITIVITY_exp14.jl`, `16b_…` | `results/datos_reales_multiseed/` |
-| `tab:closed_form_*` ×3, `fig:closed_form_fidelity`, `fig:fidelity_plane` | 11 · destilación paramétrica v5.1 | `experiments/29_run_distillation_parametric_v51.jl` | `results/destilacion_v51/` |
+| `tab:horizon_persistence` | 9 · horizontes y rollout autónomo | `experiments/13_run_real_data_extrapolation_horizons.jl` | `results/real_data/` |
+| `fig:real_multiseed`, §4.2.5 | 10 · $R_{\mathrm{eff}}$ y positividad de $\hat\beta$ | `experiments/16_…_REFF_POSITIVITY_exp14.jl`, `16b_…` | `results/real_data_multiseed/` |
+| `tab:closed_form_*` ×3, `fig:closed_form_fidelity`, `fig:fidelity_plane` | 11 · destilación paramétrica v5.1 | `experiments/29_run_distillation_parametric_v51.jl` | `results/distillation_v51/` |
 
 `docs/EXPERIMENTS.md` tiene el detalle de cada uno: qué módulos usa, qué
 escribe y qué afirmación del artículo sustenta.
@@ -296,7 +296,7 @@ huecos, para no romper la trazabilidad con los nombres de las carpetas de
 salida. El orden de lectura es el de esta tabla.
 
 > **Dos carpetas de nombre casi igual.**
-> `results/datos_reales_multiseed/` es el experimento 10 y sustenta la
+> `results/real_data_multiseed/` es el experimento 10 y sustenta la
 > Sección 4.2.5. `results/real_data_paired_multiseed/` es el experimento 8:
 > columnas casi idénticas, cifras parecidas, otra corrida. Comprobar la
 > Sección 4.2.5 contra la segunda da FALLA en la mitad de las cifras.

@@ -352,7 +352,7 @@ println("    train_global_rd, train_windowed_rd")
     evaluar_datos_reales_v2(SIR::Matrix{Float64}; N, γ, Δt=1.0,
                             hidden, layers, lr, epochs, m,
                             frac_train=0.8, seed_red=1234,
-                            clip_norm=nothing, outdir="figuras/datos_reales")
+                            clip_norm=nothing, outdir="figures/real_data")
 
 Reemplaza a `evaluar_datos_reales` (Sección 18.9 del notebook original)
 con tres diferencias metodológicas importantes:
@@ -376,7 +376,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                                   hidden::Int, layers::Int, lr::Float64, epochs::Int, m::Int,
                                   frac_train::Float64=0.8, seed_red::Int=1234,
                                   clip_norm::Union{Nothing,Float64}=nothing,
-                                  outdir::String="figuras/datos_reales")
+                                  outdir::String="figures/real_data")
     mkpath(outdir)
     cfg = make_real_data_config(SIR; N=N, γ=γ, Δt=Δt)
     idx_entren, idx_test = split_train_test(cfg.T; frac_train=frac_train)

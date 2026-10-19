@@ -59,7 +59,7 @@ qué valores quedan por debajo del piso epidemiológico (columnas
 
 - **Runner**: `experiments/09b_run_noise_paired.jl`
 - **Módulos**: `src/lib/27_noise_relative.jl`
-- **Salida**: `results/final_suite_ruido/`
+- **Salida**: `results/final_suite_noise/`
 - **Sustenta**: `tab:noise_beta`
 
 El esquema vigente es multiplicativo ($\sigma$ relativo), implementado en
@@ -80,7 +80,7 @@ artículo deben corresponder a este esquema.
 - **Módulos**: `src/lib/14_real_data_window_sensitivity.jl` y
   `src/lib/18_real_data_window_sensitivity_split.jl`, éste cargado en
   diferido por el propio runner (ver la nota al final)
-- **Salida**: `results/datos_reales/`
+- **Salida**: `results/real_data/`
 - **Sustenta**: `tab:real_m_selection`
 
 ## 7 · Sensibilidad a $m$, datos reales, cinco semillas
@@ -90,7 +90,7 @@ artículo deben corresponder a este esquema.
   `experiments/23_consolidate_multiseed_real_data.jl`
 - **Módulos**: `src/lib/18_real_data_window_sensitivity_split.jl`, cargado
   en diferido por el runner 22 (ver la nota al final)
-- **Salida**: `results/datos_reales_multiseed/`
+- **Salida**: `results/real_data_multiseed/`
 - **Sustenta**: `tab:real_m_selection`
 
 ## 8 · Pareado $n = 10$, datos reales
@@ -106,14 +106,14 @@ artículo deben corresponder a este esquema.
 
 - **Runner**: `experiments/13_run_real_data_extrapolation_horizons.jl`
 - **Módulos**: `src/lib/15_real_data_extrapolation_horizons.jl`
-- **Salida**: `results/datos_reales/`
+- **Salida**: `results/real_data/`
 - **Sustenta**: `tab:horizon_persistence`, `fig:real_multiseed`
 
 ## 10 · $R_{\mathrm{eff}}$ y positividad de $\hat\beta$
 
 - **Runner**: `experiments/16_run_real_data_multiseed_REFF_POSITIVITY_exp14.jl`,
   y `16b_recover_summary_exp14.jl` para recuperar el resumen
-- **Salida**: `results/datos_reales_multiseed/`
+- **Salida**: `results/real_data_multiseed/`
 - **Sustenta**: prosa de §4.2.6
 
 ## 11 · Destilación paramétrica de $\beta_{\mathrm{SW-UDE}}(t,I)$, v5.1
@@ -121,7 +121,7 @@ artículo deben corresponder a este esquema.
 - **Runner**: `experiments/29_run_distillation_parametric_v51.jl`
 - **Módulo**: `src/lib/29_distillation_parametric_v51.jl`
 - **Entrada**: `data/real_data_curves.csv`
-- **Salida**: `results/destilacion_v51/` (42 CSV, más tres PNG de
+- **Salida**: `results/distillation_v51/` (42 CSV, más tres PNG de
   control que no se versionan)
 - **Sustenta**: `tab:closed_form_parameters`, `tab:closed_form_dynamics`,
   `tab:closed_form_sensitivity`, `fig:closed_form_fidelity`,

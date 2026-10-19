@@ -122,7 +122,7 @@ def usar_destilacion(directorio):
     faltan = [a for a in ARCHIVOS_DESTILACION
               if DESTILACION_DIR and not os.path.exists(os.path.join(DESTILACION_DIR, a))]
     if DESTILACION_DIR is None:
-        print("destilación: vuelve a <outputs_dir>/destilacion_v51")
+        print("destilación: vuelve a <outputs_dir>/distillation_v51")
     elif faltan:
         print("AVISO -- en %s faltan: %s" % (DESTILACION_DIR, ", ".join(faltan)))
     else:

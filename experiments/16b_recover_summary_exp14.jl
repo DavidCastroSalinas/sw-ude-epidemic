@@ -22,7 +22,7 @@
 
 using Statistics, CSV, DataFrames
 
-const OUTDIR_BASE = "results/datos_reales_multiseed"
+const OUTDIR_BASE = "results/real_data_multiseed"
 const PARCIAL     = "$OUTDIR_BASE/summary_multiseed_partial.csv"
 
 isfile(PARCIAL) || error("No se encontró $PARCIAL -- este script asume que " *

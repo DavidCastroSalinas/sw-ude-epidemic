@@ -10,8 +10,8 @@
 # Uso:
 #     julia --threads=auto experiments/29_run_distillation_parametric_v51.jl
 #
-# Salidas: results/destilacion_v51/*.csv  (42 archivos)
-#          results/destilacion_v51/*.png  (3 figuras de control)
+# Salidas: results/distillation_v51/*.csv  (42 archivos)
+#          results/distillation_v51/*.png  (3 figuras de control)
 #
 # Sustenta: tab:destilacion_parametros, tab:destilacion_I,
 #           tab:destilacion_sensibilidad, fig:destilacion_beta_I,
@@ -21,7 +21,7 @@
 #     SIR_UDE_DESTILACION_SMOKE=1 julia --threads=auto \
 #         experiments/29_run_distillation_parametric_v51.jl
 # En ese modo usa pocos arranques y conserva todas las salidas en OUTDIR
-# temporal, sin reemplazar results/destilacion_v51/.
+# temporal, sin reemplazar results/distillation_v51/.
 #
 # Tiempo de pared medido: ver docs/ENVIRONMENT.md
 # ============================================================

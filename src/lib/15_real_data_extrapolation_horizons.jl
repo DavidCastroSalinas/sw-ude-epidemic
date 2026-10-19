@@ -88,7 +88,7 @@ println("✓ rmse_extrapolacion_horizontes definida")
     evaluar_extrapolacion_horizontes_real(resultado, SIR; hidden, layers,
                                            seed_red=1234,
                                            horizontes=[1,2,3,5,7,10],
-                                           outdir="results/datos_reales")
+                                           outdir="results/real_data")
 
 Envoltorio de conveniencia sobre el `resultado` devuelto por
 `evaluar_datos_reales_v2` (src/lib/11_real_data.jl): reconstruye la
@@ -112,7 +112,7 @@ function evaluar_extrapolacion_horizontes_real(resultado, SIR::Matrix{Float64};
                                                 hidden::Int, layers::Int,
                                                 seed_red::Int=1234,
                                                 horizontes::Vector{Int}=[1, 2, 3, 5, 7, 10],
-                                                outdir::String="results/datos_reales")
+                                                outdir::String="results/real_data")
     mkpath(outdir)
     cfg      = resultado.config
     idx_test = resultado.idx_test

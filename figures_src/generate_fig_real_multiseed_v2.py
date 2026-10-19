@@ -31,7 +31,7 @@ Entrada: un directorio con subcarpetas seed1 .. seed10, cada una con
 
 Uso:
     python3 generate_fig_real_multiseed.py \\
-        --multiseed-dir outputs/datos_reales_multiseed --outdir figures
+        --multiseed-dir outputs/real_data_multiseed --outdir figures
 
 Las cifras de la Sección 4.2.5 se recalculan desde estos mismos CSV y se
 imprimen al final, para contrastarlas con el texto antes de publicar.

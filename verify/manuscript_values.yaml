@@ -1458,7 +1458,7 @@
 # datos: los datos están completos. Es que `tab:noise_beta` NO SE REPRODUCE
 # desde ellos, y conviene que el verificador lo diga en vez de callarlo.
 #
-# Lo comprobado el 2026-10-18 contra results/final_suite_ruido/, que son dos
+# Lo comprobado el 2026-10-18 contra results/final_suite_noise/, que son dos
 # archivos independientes que coinciden entre sí (los siete por escenario y
 # el unificado):
 #
@@ -2244,13 +2244,13 @@
   tabla: "tab:real_m_selection"
   estado: pendiente
   valor: 0
-  nota: "requiere results/datos_reales/window_sensitivity (Exp 6)"
+  nota: "requiere results/real_data/window_sensitivity (Exp 6)"
 
 - id: pendiente.datos_reales_sensibilidad_m_multiseed
   tabla: "tab:real_m_selection"
   estado: pendiente
   valor: 0
-  nota: "requiere results/datos_reales_multiseed/ (Exp 7)"
+  nota: "requiere results/real_data_multiseed/ (Exp 7)"
 
 - id: pendiente.real_data_paired
   tabla: "tab:real_multiseed"
@@ -2262,7 +2262,7 @@
   tabla: "tab:horizon_persistence"
   estado: pendiente
   valor: 0
-  nota: "requiere results/datos_reales/horizontes (Exp 9)"
+  nota: "requiere results/real_data/horizontes (Exp 9)"
 
 # ----------------------------------------------------------------------
 # Sección 4.2.5 — estabilidad y admisibilidad de la dinámica inferida

@@ -36,7 +36,7 @@
 #            completas (las de SCENARIO_CONFIG[:estacional]).
 #   [Paso 3] evaluar_datos_reales_v2 ya genera las figuras de
 #            interpolación + extrapolación:
-#              results/datos_reales/datos_reales_I_comparacion.{png,pdf,eps}
+#              results/real_data/datos_reales_I_comparacion.{png,pdf,eps}
 #            (línea vertical discontinua = corte train/test: a la
 #            izquierda es interpolación -- el modelo vio esos días para
 #            ajustar sus parámetros --, a la derecha es extrapolación --
@@ -61,7 +61,7 @@ if !isfile(CSV_PATH)
           "antes de correr este script (ver comentario al inicio del archivo).")
 end
 
-mkpath("results/datos_reales")
+mkpath("results/real_data")
 
 # ── m fijo (valor oficial del caso real) -- SIR_UDE_M_OVERRIDE sigue
 # disponible como escape hatch puntual sin tocar este archivo. ────────────
@@ -96,11 +96,11 @@ resultado = evaluar_datos_reales_v2(SIR_real;
     lr = cfg_arq.lr, epochs = epocas_final(cfg_arq.epochs), m = M_ELEGIDO,
     frac_train = 0.8, seed_red = 1234,
     clip_norm = cfg_arq.clip_norm,
-    outdir = "results/datos_reales")
+    outdir = "results/real_data")
 
 # ── PASO 3: ya generado por evaluar_datos_reales_v2 ────────────────────────
 println("\n✓ Paso 3 (figuras de interpolación + extrapolación) ya generado en:")
-println("    results/datos_reales/datos_reales_I_comparacion.{png,pdf,eps}")
+println("    results/real_data/datos_reales_I_comparacion.{png,pdf,eps}")
 println("    (línea vertical discontinua = corte train/test: izquierda = ",
          "interpolación, derecha = extrapolación)")
 
@@ -108,9 +108,9 @@ println("    (línea vertical discontinua = corte train/test: izquierda = ",
 df_horizontes = evaluar_extrapolacion_horizontes_real(resultado, SIR_real;
     hidden = cfg_arq.hidden, layers = cfg_arq.layers, seed_red = 1234,
     horizontes = [1, 2, 3, 5, 7, 10],
-    outdir = "results/datos_reales")
+    outdir = "results/real_data")
 
-println("\n✓ Listo (", formatear_duracion(time() - t_inicio), "). Resultados en results/datos_reales/:")
+println("\n✓ Listo (", formatear_duracion(time() - t_inicio), "). Resultados en results/real_data/:")
 println("    metrics_extended_real_data.csv           (paso 2)")
 println("    real_data_curves.csv                        (paso 2, curvas día a día)")
 println("    datos_reales_I_comparacion.{png,pdf,eps}       (paso 3: interpolación+extrapolación)")

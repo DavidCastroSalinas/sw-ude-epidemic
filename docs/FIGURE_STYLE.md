@@ -104,7 +104,7 @@ fn.usar_destilacion("<la ruta que salga>")     # la fija para la sesión
 
 o `--destilacion-dir` por línea de comandos, y la variable de entorno
 `DESTILACION_DIR` para el envoltorio de shell. Si no se indica, se toma
-`<outputs_dir>/destilacion_v51` y, cuando falla, el error dice qué hacer.
+`<outputs_dir>/distillation_v51` y, cuando falla, el error dice qué hacer.
 
 Cada figura se genera en un proceso aparte, con el intérprete del kernel.
 Así una corrida desde el notebook da exactamente el mismo PDF que la de
@@ -178,7 +178,7 @@ descriptiva y no molesta, pero si un revisor abre el CSV la va a ver.
 
 ## 7. real_multiseed_v2 — verificación contra el manuscrito
 
-Las diez curvas vienen de `outputs/datos_reales_multiseed/seedN/
+Las diez curvas vienen de `outputs/real_data_multiseed/seedN/
 real_data_curves.csv`, 206 días cada una, 41 de prueba.
 
 **Las trece cifras de la Sección 4.2.5 se recalculan desde esos CSV y

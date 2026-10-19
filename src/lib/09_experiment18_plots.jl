@@ -7,7 +7,7 @@ para la métrica indicada (`:rmse_beta`, `:rmse_global`, `:rmse_S`, etc.).
 function graficar_boxplot_metrica(df::DataFrame; caso_beta::String,
                                    metrica::Symbol=:rmse_beta,
                                    m_ventanas=nothing,
-                                   outdir::String="figuras/exp")
+                                   outdir::String="figures/experiments")
     mkpath(outdir)
     sub = filter(r -> r.caso_beta == caso_beta &&
                        (r.metodo == "global" ||
@@ -35,7 +35,7 @@ la MISMA trayectoria de datos, y grafica β_real(t,I) contra la media ± σ de
 """
 function graficar_beta_promedio(caso_beta::Symbol, metodo::Symbol, m, seeds_red;
                                  sigma_ruido::Float64=0.0, seed_ruido::Int=1234,
-                                 outdir::String="figuras/exp")
+                                 outdir::String="figures/experiments")
     mkpath(outdir)
     datos_pack = generar_datos(caso_beta; sigma_ruido=sigma_ruido, seed_ruido=seed_ruido)
     cfg = SCENARIO_CONFIG[caso_beta]
@@ -79,7 +79,7 @@ Curva de RMSE_β (media ± σ) en función de m, a partir de `resumen_por_m`
 (ítem 5 de la lista de gráficos).
 """
 function graficar_sensibilidad_m(df::DataFrame; caso_beta::String="lineal",
-                                  outdir::String="figuras/exp")
+                                  outdir::String="figures/experiments")
     mkpath(outdir)
     resumen = sort(resumen_por_m(df; caso_beta=caso_beta), :m)
     p = plot(resumen.m, resumen.rmse_beta_media, ribbon=resumen.rmse_beta_std,
@@ -100,7 +100,7 @@ Trayectorias S, I, R reales vs. reconstruidas para una repetición puntual
 """
 function graficar_trajectories(caso_beta::Symbol, metodo::Symbol, m, seed_red::Int;
                                 sigma_ruido::Float64=0.0, seed_ruido::Int=1234,
-                                outdir::String="figuras/exp")
+                                outdir::String="figures/experiments")
     mkpath(outdir)
     datos_pack = generar_datos(caso_beta; sigma_ruido=sigma_ruido, seed_ruido=seed_ruido)
     cfg = SCENARIO_CONFIG[caso_beta]

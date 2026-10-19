@@ -39,7 +39,7 @@
 #     SIR_UDE_SMOKE_TEST=1 SIR_UDE_SEED=1  julia experiments/22_...   # validar rápido, una semilla
 #
 # Cada corrida escribe en su propia subcarpeta
-# (results/datos_reales/multiseed/seed_<seed>/), así que las 5 no se pisan
+# (results/real_data/multiseed/seed_<seed>/), así que las 5 no se pisan
 # entre sí. experiments/23_consolidate_multiseed_real_data.jl junta los 5 CSV
 # después.
 #

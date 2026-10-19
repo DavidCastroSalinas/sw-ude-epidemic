@@ -57,6 +57,16 @@ const SCENARIO_CONFIG = Dict(
 const SCENARIO_ORDER = [:constante, :lineal, :tanh, :dos_olas,
                          :intervencion, :estacional, :saturacion]
 
+# English file stems for generated artifacts; internal scenario symbols stay stable.
+const SCENARIO_FILE_KEYS = Dict(
+    :constante => "constant", :lineal => "linear", :tanh => "tanh",
+    :dos_olas => "two_waves", :intervencion => "intervention",
+    :estacional => "seasonal", :saturacion => "saturation",
+    :realchile => "real_chile",
+)
+scenario_file_key(key::Symbol) = get(SCENARIO_FILE_KEYS, key, String(key))
+scenario_file_key(key::AbstractString) = scenario_file_key(Symbol(key))
+
 println("✓ SCENARIO_CONFIG definido para ", length(SCENARIO_CONFIG), " escenarios")
 for key in SCENARIO_ORDER
     cfg = SCENARIO_CONFIG[key]
@@ -69,7 +79,7 @@ end
 # run_all_experiments — ejecuta y consolida TODOS los escenarios
 # ============================================================
 function run_all_experiments(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
-                              outdir::String="figuras/todos",
+                              outdir::String="figures/all",
                               make_gif::Bool=true,
                               seed::Int=1234)
     mkpath(outdir)
@@ -136,7 +146,7 @@ println("✓ run_all_experiments definida")
 function run_all_sensitivity(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
                               m_values::Vector{Int}=[1,3,5,10,20,50],
                               m_values_override::Dict{Symbol,Vector{Int}}=Dict{Symbol,Vector{Int}}(),
-                              outdir::String="figuras/todos",
+                              outdir::String="figures/all",
                               seed::Int=1234)
     mkpath(outdir)
     all_dfs = DataFrame[]
@@ -171,7 +181,7 @@ println("✓ run_all_sensitivity definida (soporta m_values_override y clip_norm
 # ============================================================
 function plot_beta_grid_summary(results::Dict;
                                  scenarios::Vector{Symbol}=SCENARIO_ORDER,
-                                 outdir::String="figuras/todos",
+                                 outdir::String="figures/all",
                                  ncols::Int=4,
                                  filename::String="figura_resumen_beta_todos_escenarios")
     mkpath(outdir)

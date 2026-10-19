@@ -38,7 +38,7 @@
                                       lr, epochs, seed_red=1234,
                                       clip_norm=nothing, frac_train=0.8,
                                       pcts=Float64[], m_abs=[1,2,5,10,20,32,54,107,171],
-                                      outdir="results/datos_reales")
+                                      outdir="results/real_data")
 
 Barrido de tamaño de ventana sobre la serie real con partición
 cronológica entrenamiento/prueba. Ver el encabezado del módulo.
@@ -55,7 +55,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
                                             frac_train::Float64=0.8,
                                             pcts::Vector{Float64}=Float64[],
                                             m_abs::Vector{Int}=[1, 2, 5, 10, 20, 32, 54, 107, 171],
-                                            outdir::String="results/datos_reales")
+                                            outdir::String="results/real_data")
     mkpath(outdir)
     cfg = make_real_data_config(SIR; N=N, γ=γ, Δt=Δt)
     idx_entren, idx_test = split_train_test(cfg.T; frac_train=frac_train)

@@ -19,7 +19,7 @@
 # `experiments/09b_run_noise_paired.jl` (Exp 4, el experimento de ruido
 # unificado y CENTRAL, ver MAPA_EXPERIMENTS.md): mismos escenarios,
 # semillas y sigma_values, solo que escribiendo a una carpeta de salida
-# distinta (`results/final_suite` en vez de `results/final_suite_ruido`).
+# distinta (`results/final_suite` en vez de `results/final_suite_noise`).
 # Mantenerlo acá significaba correr ~420 entrenamientos dos veces para
 # nada. El experimento de ruido vive ahora en un solo lugar: 09b.
 #
@@ -95,7 +95,7 @@ println("    results/trajectories/  (7 escenarios × 2 métodos)")
 println("  Recuerda que experiments/01_run_all_scenarios.jl ahora también genera")
 println("  los GIF de evolución de β (antes desactivados en todo el proyecto).")
 println("  Para el experimento de ruido (Exp 4, unificado, σ_rel), correr aparte")
-println("  experiments/09b_run_noise_paired.jl -- ver results/final_suite_ruido/.")
+println("  experiments/09b_run_noise_paired.jl -- ver results/final_suite_noise/.")
 println("  Para la sensibilidad de datos reales a N/γ (antes el paso D de este")
 println("  runner), correr aparte experiments/11_run_real_data_sensitivity_n_gamma.jl.")
 println("="^70)

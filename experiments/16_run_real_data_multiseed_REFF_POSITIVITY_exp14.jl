@@ -45,7 +45,7 @@ const SEEDS         = 1:10
 
 # --- AJUSTA esta ruta a tu CSV real (la misma que usan experiments/11_ y 13_) ---
 const RUTA_SERIE  = "data/historical_data_july_january.csv"
-const OUTDIR_BASE = "results/datos_reales_multiseed"
+const OUTDIR_BASE = "results/real_data_multiseed"
 
 mkpath(OUTDIR_BASE)
 

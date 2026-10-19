@@ -63,7 +63,7 @@ end
 CSV_PATH = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 isfile(CSV_PATH) || error("No se encontró $CSV_PATH")
 
-mkpath("results/datos_reales")
+mkpath("results/real_data")
 mkpath("results/logs")
 
 I_obs = cargar_serie_real(CSV_PATH)
@@ -135,7 +135,7 @@ df = run_window_sensitivity_real_split(SIR_real;
     frac_train = FRAC_TRAIN,
     pcts = Float64[],
     m_abs = M_GRID_REAL_V2,
-    outdir = "results/datos_reales")
+    outdir = "results/real_data")
 
 # Columnas de conveniencia, iguales en espíritu a las de
 # experiments/20_run_window_sensitivity_all_v2.jl -- marcan decisiones ya
@@ -153,8 +153,8 @@ CSV.write("results/real_data/real_data_sensitivity_m_split_v2.csv", df)
 
 println("\n✓ Listo (", formatear_duracion(time() - t0), ").")
 println("    results/real_data/real_data_sensitivity_m_split.csv        (salida original)")
-println("    results/datos_reales/real_data_sensitivity_m_split.{png,pdf,eps}")
-println("    results/datos_reales/datos_reales_TVbeta_vs_m.{png,pdf,eps}")
+println("    results/real_data/real_data_sensitivity_m_split.{png,pdf,eps}")
+println("    results/real_data/datos_reales_TVbeta_vs_m.{png,pdf,eps}")
 println("    results/real_data/real_data_sensitivity_m_split_v2.csv     (+ es_control, es_adoptado, r_m)")
 println("\n  1/γ = ", round(1 / GAMMA_REAL, digits=2), " días -- m_γ=", M_GAMMA_REAL,
         " -- controles sub-epidemiológicos: m<", M_GAMMA_REAL, " -- y es_adoptado (m=", M_ADOPTADO, ").")
