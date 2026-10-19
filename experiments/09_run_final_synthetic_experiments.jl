@@ -52,8 +52,8 @@
 # pipeline corre sin errores, los NÚMEROS no sirven para el artículo),
 # activá el modo smoke test:
 #     SIR_UDE_SMOKE_TEST=1 julia experiments/09_run_final_synthetic_experiments.jl
-# (reduce automáticamente épocas y semillas, ver src/lib/00_setup.jl). No
-# hace falta editar `SEEDS_RED` ni ningún grid a mano para esto.
+# (corre 1 escenario, 1 ventana, 2 semillas y 30 épocas; se puede cambiar
+# SIR_UDE_SMOKE_EPOCHS). No hace falta editar grids a mano.
 #
 # Para la corrida en paralelo con seguimiento de progreso apto para
 # `nohup`, usar `./run_final_paralelo.sh` en la raíz del proyecto en vez
@@ -61,37 +61,51 @@
 # resto de la orquestación (qué corre en paralelo con qué).
 # ============================================================
 
+# El modo smoke de este runner valida un escenario, una ventana y dos
+# semillas. Limita además el entrenamiento a 30 épocas (se puede cambiar
+# con SIR_UDE_SMOKE_EPOCHS); la corrida científica conserva la configuración
+# completa y no se modifica.
+if get(ENV, "SIR_UDE_SMOKE_TEST", "0") == "1"
+    ENV["SIR_UDE_SMOKE_EPOCHS"] = get(ENV, "SIR_UDE_SMOKE_EPOCHS", "30")
+end
+
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
 mkpath("results/final_suite")
 mkpath("results/trajectories")
 
-SEEDS_RED = 1:10   # SIR_UDE_SMOKE_TEST=1 lo reduce automáticamente -- no editar a mano
+SEEDS_RED = 1:10
+SMOKE_RUN = SMOKE_TEST
+ESCENARIOS_RUN = SMOKE_RUN ? [:constante] : SCENARIO_ORDER
+SEEDS_RUN = SMOKE_RUN ? (1:2) : SEEDS_RED
+M_VALUES_RUN = SMOKE_RUN ? [10] : nothing
 
 t_inicio_total = time()
 
 # ── A) Multi-semilla + comparación pareada, los 7 escenarios ──────────────
 println("\n" * "="^70)
-println("  (A) Multi-semilla + comparación pareada — 7 escenarios")
+println("  (A) Multi-semilla + comparación pareada — $(length(ESCENARIOS_RUN)) escenario(s)")
 println("="^70)
 t0 = time()
-df_comparacion = correr_todos_experimentos_multisemilla(seeds_red=SEEDS_RED,
-                                                          outdir="results/final_suite")
+df_comparacion = correr_todos_experimentos_multisemilla(
+    escenarios=ESCENARIOS_RUN, seeds_red=SEEDS_RUN, m_values=M_VALUES_RUN,
+    outdir="results/final_suite")
 println("  (A) tiempo total: ", formatear_duracion(time() - t0))
 
 # ── B) Trayectorias puntuales, los 7 escenarios ────────────────────────────
 println("\n" * "="^70)
-println("  (B) Trayectorias puntuales — 7 escenarios")
+println("  (B) Trayectorias puntuales — $(length(ESCENARIOS_RUN)) escenario(s)")
 println("="^70)
 t0 = time()
-graficar_todas_trajectories(seed_red=1, outdir="results/trajectories")
+graficar_todas_trajectories(escenarios=ESCENARIOS_RUN, seed_red=1,
+                               outdir="results/trajectories")
 println("  (B) tiempo total: ", formatear_duracion(time() - t0))
 
 println("\n" * "="^70)
 println("  ✓ VERSIÓN FINAL (sintética) completa. Tiempo total: ", formatear_duracion(time() - t_inicio_total))
 println("  Resultados nuevos en:")
 println("    results/final_suite/comparison_paired_ALL_scenarios.csv")
-println("    results/trajectories/  (7 escenarios × 2 métodos)")
+println("    results/trajectories/  ($(length(ESCENARIOS_RUN)) escenario(s) × 2 métodos)")
 println("  Recuerda que experiments/01_run_all_scenarios.jl ahora también genera")
 println("  los GIF de evolución de β (antes desactivados en todo el proyecto).")
 println("  Para el experimento de ruido (Exp 4, unificado, σ_rel), correr aparte")
