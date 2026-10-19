@@ -56,10 +56,10 @@ etapa "Figuras — regeneración desde los CSV entregados"
 if python3 -c "import matplotlib, numpy, pandas" 2>/dev/null; then
     # A un directorio aparte: comparar antes de reemplazar figures/, que es
     # lo que compila el manuscrito.
-    rm -rf "$RAIZ/figures_regeneradas"
+    rm -rf "$RAIZ/figures_regenerated"
     if ( cd "$RAIZ/figures_src" && python3 figure_registry.py \
-            --outputs-dir "$RAIZ/results" --outdir "$RAIZ/figures_regeneradas" ); then
-        n=$(find "$RAIZ/figures_regeneradas" -name '*.pdf' 2>/dev/null | wc -l | tr -d ' ')
+            --outputs-dir "$RAIZ/results" --outdir "$RAIZ/figures_regenerated" ); then
+        n=$(find "$RAIZ/figures_regenerated" -name '*.pdf' 2>/dev/null | wc -l | tr -d ' ')
         [[ "$n" -eq 6 ]] || mal "se regeneraron $n figuras de 6."
     else
         mal "la regeneración de figuras terminó con error."
