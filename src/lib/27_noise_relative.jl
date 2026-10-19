@@ -1,39 +1,11 @@
-# ============================================================
-# src/lib/27_noise_relative.jl
-# ------------------------------------------------------------
-# Rediseño del ruido observacional (2026-09-05, a pedido de David) --
-# REEMPLAZA los dos esquemas anteriores por uno solo:
+# Multiplicative observational noise, scaled to each observation:
 #
-#   (a) Ruido aditivo como fracción de N: σ_abs = σ·N, σ∈{0.01,0.05,0.10}
-#       (usado por generar_datos/correr_experimento_5_ruido, src/lib/08 y
-#       src/lib/10 -- Exp 4 del inventario).
-#   (b) Ruido aditivo absoluto: σ∈{0,2,5,10,20} individuos (experiments/03,
-#       src/lib/07 -- Exp 5 del inventario).
+#   X_obs(k) = max(0, X_true(k) * (1 + epsilon_k)),
+#   epsilon_k ~ Normal(0, sigma_rel^2)
 #
-# PROBLEMA con (a): escalar por N (tamaño POBLACIONAL) en vez de por la
-# magnitud de la variable observada I(t) puede producir perturbaciones
-# desproporcionadas cuando I(t) es pequeño frente a N. Ejemplo: N=1000,
-# I0=10 -> 0.01·N=10 individuos = 100% de I0 (un "1% de ruido" que en
-# realidad duplica la observación). (a) y (b) tampoco son comparables
-# entre sí al no compartir unidad.
-#
-# NUEVO ESQUEMA -- ruido MULTIPLICATIVO relativo a cada observación:
-#
-#   X_obs(k) = max(0, X_true(k) · (1 + ε_k)),   ε_k ~ N(0, σ_rel²)
-#
-# con grilla única σ_rel ∈ {0.00, 0.05, 0.10, 0.20} (0%, 5%, 10%, 20%),
-# la MISMA para los 7 escenarios sintéticos -- reemplaza tanto a (a) como
-# a (b). La magnitud del ruido ahora se adapta automáticamente a la
-# escala de la observación en cada instante, en vez de depender de N.
-#
-# NOTA METODOLÓGICA: 5%/10%/20% son una grilla interpretable y
-# consistente para evaluar robustez observacional, NO umbrales
-# epidemiológicos validados en la literatura -- no presentar como tales
-# sin una justificación bibliográfica específica agregada aparte.
-#
-# Ver MAPA_EXPERIMENTS.md para qué runners cambiaron y cuáles se
-# retiraron como consecuencia de este rediseño.
-# ============================================================
+# The shared grid is sigma_rel = {0, 0.05, 0.10, 0.20}. These levels are
+# experimental settings for robustness analysis, not literature-validated
+# epidemiological thresholds.
 
 using Random
 
