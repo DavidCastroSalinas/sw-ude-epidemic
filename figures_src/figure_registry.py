@@ -85,7 +85,7 @@ DESTILACION_DIR = None
 
 
 def _dest(outputs_dir):
-    return DESTILACION_DIR or os.path.join(outputs_dir, "destilacion_v51")
+    return DESTILACION_DIR or os.path.join(outputs_dir, "distillation_v51")
 
 
 ARCHIVOS_DESTILACION = ("trajectories.csv", "summary_families.csv")
@@ -146,7 +146,7 @@ FIGURAS = [
     Figura("real_multiseed_v2", 4,
            "Serie chilena, diez inicializaciones",
            "generate_fig_real_multiseed_v2.py",
-           lambda o, d: ["--multiseed-dir", os.path.join(o, "datos_reales_multiseed"),
+           lambda o, d: ["--multiseed-dir", os.path.join(o, "real_data_multiseed"),
                          "--outdir", d]),
     Figura("closed_form_fidelity_v2", 5,
            "Fidelidad funcional y dinámica de las formas cerradas",
@@ -304,7 +304,7 @@ def main(argv=None):
                     help="Carpeta de salida (por omisión, figures/ del repositorio).")
     ap.add_argument("--destilacion-dir", default=None,
                     help="Directorio con trajectories.csv y summary_families.csv "
-                         "(figuras 5 y 6). Por omisión <outputs-dir>/destilacion_v51.")
+                         "(figuras 5 y 6). Por omisión <outputs-dir>/distillation_v51.")
     ap.add_argument("--catalogo", action="store_true", help="Lista las figuras y sale.")
     args = ap.parse_args(argv)
 

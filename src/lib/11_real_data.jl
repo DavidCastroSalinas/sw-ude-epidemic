@@ -466,7 +466,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                   left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
     plot!(p_beta, dias[1:cfg.T], beta_w, label="β̂ SW-UDE (m=$m)", color=:steelblue, lw=2)
     vline!(p_beta, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_beta, "$outdir/datos_reales_beta_comparacion"; formats=(:png, :pdf, :eps))
+    savefig_all(p_beta, "$outdir/real_data_beta_comparison"; formats=(:png, :pdf, :eps))
 
     p_reff = plot(dias[1:cfg.T], r_effective(beta_g, pred_g[1, 1:cfg.T], N, γ),
                   label="R_eff UDE", color=:orange, lw=2,
@@ -477,7 +477,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
           label="R_eff SW-UDE (m=$m)", color=:steelblue, lw=2)
     hline!(p_reff, [1.0], color=:black, ls=:dot, lw=1.4, label="R_eff = 1")
     vline!(p_reff, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_reff, "$outdir/datos_reales_reff"; formats=(:png, :pdf, :eps))
+    savefig_all(p_reff, "$outdir/real_data_reff"; formats=(:png, :pdf, :eps))
 
     p_I = plot(dias, SIR[2, :], label="Observed data", color=:black, lw=2.5,
                xlabel="Day", ylabel="Infected / cases",
@@ -487,7 +487,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
     plot!(p_I, dias, pred_g[2, :], label="Î UDE", color=:orange, ls=:dash, lw=1.8)
     plot!(p_I, dias, pred_w[2, :], label="Î SW-UDE", color=:steelblue, ls=:dash, lw=1.8)
     vline!(p_I, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_I, "$outdir/datos_reales_I_comparacion"; formats=(:png, :pdf, :eps))
+    savefig_all(p_I, "$outdir/real_data_I_comparison"; formats=(:png, :pdf, :eps))
 
     println("\n✓ Figuras guardadas en $outdir/ (train/test split marcado con línea vertical)")
     println("  Preguntas de lectura cualitativa (Sección 18.9 original, siguen aplicando):")

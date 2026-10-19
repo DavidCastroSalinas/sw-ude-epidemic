@@ -154,7 +154,7 @@ CSV.write("results/real_data/real_data_sensitivity_m_split_v2.csv", df)
 println("\n✓ Listo (", formatear_duracion(time() - t0), ").")
 println("    results/real_data/real_data_sensitivity_m_split.csv        (salida original)")
 println("    results/real_data/real_data_sensitivity_m_split.{png,pdf,eps}")
-println("    results/real_data/datos_reales_TVbeta_vs_m.{png,pdf,eps}")
+println("    results/real_data/real_data_TVbeta_vs_m.{png,pdf,eps}")
 println("    results/real_data/real_data_sensitivity_m_split_v2.csv     (+ es_control, es_adoptado, r_m)")
 println("\n  1/γ = ", round(1 / GAMMA_REAL, digits=2), " días -- m_γ=", M_GAMMA_REAL,
         " -- controles sub-epidemiológicos: m<", M_GAMMA_REAL, " -- y es_adoptado (m=", M_ADOPTADO, ").")

@@ -36,7 +36,7 @@
 #            completas (las de SCENARIO_CONFIG[:estacional]).
 #   [Paso 3] evaluar_datos_reales_v2 ya genera las figuras de
 #            interpolación + extrapolación:
-#              results/real_data/datos_reales_I_comparacion.{png,pdf,eps}
+#              figures/real_data/real_data_I_comparison.{png,pdf,eps}
 #            (línea vertical discontinua = corte train/test: a la
 #            izquierda es interpolación -- el modelo vio esos días para
 #            ajustar sus parámetros --, a la derecha es extrapolación --
@@ -100,7 +100,7 @@ resultado = evaluar_datos_reales_v2(SIR_real;
 
 # ── PASO 3: ya generado por evaluar_datos_reales_v2 ────────────────────────
 println("\n✓ Paso 3 (figuras de interpolación + extrapolación) ya generado en:")
-println("    results/real_data/datos_reales_I_comparacion.{png,pdf,eps}")
+println("    figures/real_data/real_data_I_comparison.{png,pdf,eps}")
 println("    (línea vertical discontinua = corte train/test: izquierda = ",
          "interpolación, derecha = extrapolación)")
 
@@ -113,8 +113,8 @@ df_horizontes = evaluar_extrapolacion_horizontes_real(resultado, SIR_real;
 println("\n✓ Listo (", formatear_duracion(time() - t_inicio), "). Resultados en results/real_data/:")
 println("    metrics_extended_real_data.csv           (paso 2)")
 println("    real_data_curves.csv                        (paso 2, curvas día a día)")
-println("    datos_reales_I_comparacion.{png,pdf,eps}       (paso 3: interpolación+extrapolación)")
-println("    datos_reales_beta_comparacion.{png,pdf,eps}    (paso 3: β̂ aprendida)")
-println("    datos_reales_reff.{png,pdf,eps}                (paso 3: R_eff)")
+println("    real_data_I_comparison.{png,pdf,eps}       (paso 3: interpolación+extrapolación)")
+println("    real_data_beta_comparison.{png,pdf,eps}    (paso 3: β̂ aprendida)")
+println("    real_data_reff.{png,pdf,eps}                (paso 3: R_eff)")
 println("    real_data_extrapolation_horizons.csv      (paso 4: RMSE por horizonte)")
 println("    real_data_extrapolation_horizons.{png,pdf,eps}  (paso 4: figura)")

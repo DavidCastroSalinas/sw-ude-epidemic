@@ -76,7 +76,7 @@ SEMILLA = parse(Int, get(ENV, "SIR_UDE_SEED", "1234"))
 CSV_PATH = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 isfile(CSV_PATH) || error("No se encontró $CSV_PATH")
 
-OUTDIR = joinpath("results", "datos_reales", "multiseed", "seed_$(SEMILLA)")
+OUTDIR = joinpath("results", "real_data", "multiseed", "seed_$(SEMILLA)")
 mkpath(OUTDIR)
 mkpath("results/logs")
 

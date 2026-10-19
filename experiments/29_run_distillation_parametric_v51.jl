@@ -33,7 +33,7 @@ using Base.Threads
 
 const REPO   = normpath(joinpath(@__DIR__, ".."))
 const DATA   = joinpath(REPO, "data", "real_data_curves.csv")
-const DESTINO = joinpath(REPO, "results", "destilacion_v51")
+const DESTINO = joinpath(REPO, "results", "distillation_v51")
 
 @assert isfile(DATA) "No existe $(DATA)"
 

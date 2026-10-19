@@ -196,7 +196,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
               title="Real data — roughness of the learned β̂ vs window length",
               legend=:outertopright, size=(900, 480),
               left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
-    savefig_all(p2, joinpath(outdir, "datos_reales_TVbeta_vs_m");
+    savefig_all(p2, joinpath(outdir, "real_data_TVbeta_vs_m");
                 formats=(:png, :pdf, :eps))
 
     return df

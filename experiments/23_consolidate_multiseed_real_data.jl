@@ -25,7 +25,7 @@
 using CSV, DataFrames, Statistics
 
 const SEMILLAS_ESPERADAS = [1234, 1, 2, 3, 4]
-const DIR_BASE = joinpath("results", "datos_reales", "multiseed")
+const DIR_BASE = joinpath("results", "real_data", "multiseed")
 
 rutas = String[]
 faltantes = Int[]

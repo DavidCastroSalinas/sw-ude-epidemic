@@ -212,5 +212,5 @@ difiere en 1 251 casos en `I_Windowed` y 2,3e-3 en `beta_Windowed`.
 
 Conclusión: la entrada del experimento 11 sale de otra corrida, con la
 misma serie observada. El candidato natural es la corrida de semilla
-única del experimento 9, cuya salida es `outputs/datos_reales/`. Queda
+única del experimento 9, cuya salida es `outputs/real_data/`. Queda
 por confirmar; ver `docs/PENDIENTES.md` §2.6.

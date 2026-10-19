@@ -165,7 +165,7 @@ def main():
     # aquí no existe, así que el script fallaba si se invocaba suelto.
     ap.add_argument("--multiseed-dir", default=os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        "results", "datos_reales_multiseed"))
+        "results", "real_data_multiseed"))
     ap.add_argument("--outdir", default="figures")
     args = ap.parse_args()
 
