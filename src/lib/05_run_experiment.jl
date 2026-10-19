@@ -98,14 +98,7 @@ function run_experiment(scenario_key::Symbol;
         CSV.write("$outdir/$(file_key)_$(m)_metrics.csv", df)
         println("  CSV guardado en $outdir/$(file_key)_$(m)_metrics.csv")
 
-        # ── Curvas completas (para regenerar figuras fuera de Julia,
-        # p. ej. en el notebook de ajustes de figuras) ────────────────
-        # NOTA: antes de esta versión, el proyecto solo guardaba métricas
-        # ESCALARES (RMSE/MAE) -- las curvas S/I/R(t) y β(t) solo existían
-        # dentro de los objetos Plots.jl usados para dibujar el PNG/PDF/EPS,
-        # sin CSV equivalente. Sin esto, un notebook externo no puede
-        # reconstruir la figura de estados ni la de β, solo los gráficos de
-        # barras/boxplot que sí dependían de CSV ya existentes.
+        # Save full trajectories so figures can be regenerated outside Julia.
         df_curvas_estados = DataFrame(
             t                = ts,
             S_observado      = datos[1, :], I_observado = datos[2, :], R_observado = datos[3, :],
