@@ -118,13 +118,4 @@ mitad de la ventana, que es el parámetro de mayor carga interpretativa de
 esa familia. Esa es la razón por la que S8 no se presenta entre las formas
 principales pese a su error de prueba.
 
-## Lo que se eliminó del artículo
 
-- **Regresión simbólica (experimentos 15–19).** Ya no aparece en el
-  manuscrito; su rol lo ocupa la destilación paramétrica. Su código no se
-  incluye en este repositorio, lo que elimina la dependencia de
-  `SymbolicRegression.jl` y `MLJ.jl`.
-- **Sensibilidad a $N$ y $\gamma$** (experimento 13).
-- **Variación total de $\hat\beta$** (experimento 6).
-- **Figura S3 y el experimento de ruido absoluto**, superados por el
-  esquema multiplicativo unificado ($\sigma_{rel}$).
