@@ -107,7 +107,7 @@ println("✓ correr_experimento_multisemilla definida (genérica, todos los esce
 # ── 3. Orquestador: multi-semilla + comparación pareada para los 7 ───────
 """
     correr_todos_experimentos_multisemilla(; escenarios=SCENARIO_ORDER,
-                                            seeds_red=1:10,
+                                            seeds_red=1:10, m_values=nothing,
                                             outdir="results/final_suite")
 
 Ejecuta `correr_experimento_multisemilla` para cada escenario en
