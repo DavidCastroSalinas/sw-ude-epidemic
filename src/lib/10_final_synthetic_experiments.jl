@@ -127,6 +127,7 @@ direccion_esperada (bool: ¿SW-UDE tuvo menor error promedio?).
 """
 function correr_todos_experimentos_multisemilla(; escenarios::Vector{Symbol}=SCENARIO_ORDER,
                                                   seeds_red=1:10,
+                                                  m_values::Union{Nothing,Vector{Int}}=nothing,
                                                   outdir::String="results/final_suite")
     mkpath(outdir)
     filas_comparacion = NamedTuple[]
@@ -137,7 +138,8 @@ function correr_todos_experimentos_multisemilla(; escenarios::Vector{Symbol}=SCE
         caso_str = String(caso)
         label    = SCENARIO_LABELS[caso]
 
-        df = correr_experimento_multisemilla(caso; seeds_red=seeds_red, outdir=outdir)
+        df = correr_experimento_multisemilla(caso; seeds_red=seeds_red,
+                                                       m_values=m_values, outdir=outdir)
 
         # Figuras (reutilizan graficar_* de 09_experiment18_plots.jl,
         # ya genéricas en caso_beta -- solo no se habían invocado antes
