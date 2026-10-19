@@ -69,13 +69,3 @@ function m_values_from_pcts(T::Int;
 end
 
 println("✓ m_values_from_pcts definida")
-
-
-# [2026-10-18] `run_window_sensitivity_real` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
-
-
-# [2026-10-18] `elegir_m_automatico` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
