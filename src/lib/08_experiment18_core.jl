@@ -198,16 +198,11 @@ end
 
 println("✓ ejecutar_repeticion y guardar_resultados_csv definidas")
 
-# [2026-10-18] `correr_experimento_1_lineal` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
 """
     resumen_por_m(df; caso_beta="lineal")
 
-Experimento 2 (sensibilidad a m): agrupa las filas `:ventanas` del
-Experimento 1 por `m` y calcula media ± desviación estándar de
-`rmse_global` y `rmse_beta`. No entrena nada nuevo — reutiliza el CSV de
-`correr_experimento_1_lineal`.
+Agrupa las filas del método por ventanas según `m` y resume la media y
+desviación estándar de `rmse_global` y `rmse_beta`.
 """
 function resumen_por_m(df::DataFrame; caso_beta::String="lineal")
     sub = filter(r -> r.metodo == "ventanas" && r.caso_beta == caso_beta, df)
@@ -217,9 +212,6 @@ function resumen_por_m(df::DataFrame; caso_beta::String="lineal")
                    :rmse_beta   => mean => :rmse_beta_media,
                    :rmse_beta   => std  => :rmse_beta_std)
 end
-
-# [2026-10-18] `correr_experimento_3_no_lineales` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
 
 """
     correr_experimento_5_ruido(; caso_beta=:lineal, sigma_values=[0.00,0.05,0.10,0.20],
