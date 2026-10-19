@@ -1,20 +1,20 @@
 # Citation metadata for the software and accompanying article.
 cff-version: 1.2.0
 message: >-
-  Si usa este software, cite el artículo y, si necesita referenciar una
-  versión concreta del código, también el software.
+  If you use this software, please cite the article and, if you need to
+  reference a specific version of the code, the software as well.
 type: software
 
 title: >-
-  Código y datos de «Temporal Supervision Horizon and Latent-Dynamics
-  Recovery in SIR Universal Differential Equations»
+  Code and data for "Temporal Supervision Horizon and Latent-Dynamics
+  Recovery in SIR Universal Differential Equations"
 
 abstract: >-
-  Anexo reproducible del artículo: la biblioteca SIR-UDE en Julia, los
-  runners de los once experimentos, los CSV de resultados citados en el
-  manuscrito, los scripts que generan las seis figuras y tres
-  verifier that checks whether cited manuscript values match the delivered
-  data.
+  Reproducible companion to the article: the SIR-UDE library in Julia, the
+  runners for the eleven experiments, the result files behind every value
+  cited in the manuscript, the scripts that generate the six figures, and
+  four checkers that recompute each cited value from the delivered data
+  and report whether it matches.
 
 authors:
   - family-names: Castro-Salinas
@@ -55,6 +55,9 @@ keywords:
   - Julia
 
 repository-code: https://github.com/DavidCastroSalinas/sw-ude-epidemic
+doi: 10.5281/zenodo.23459303
+version: 1.0.0
+date-released: 2026-10-19
 
 preferred-citation:
   type: article

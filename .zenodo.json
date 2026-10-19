@@ -1,0 +1,46 @@
+{
+  "title": "Code and data for \"Temporal Supervision Horizon and Latent-Dynamics Recovery in SIR Universal Differential Equations\"",
+  "upload_type": "software",
+  "description": "<p>Reproducible companion to the article: the SIR-UDE library in Julia, the runners for the eleven experiments, the result files behind every value cited in the manuscript, the scripts that generate the six figures, and four checkers that recompute each cited value from the delivered data and report whether it matches.</p><p>The verification runs on the Python standard library alone, with no Julia and no third-party packages, so the cited values can be checked in seconds without installing anything. Reproducing the experiments themselves requires Julia and takes hours to days.</p>",
+  "creators": [
+    {
+      "name": "Castro-Salinas, David",
+      "affiliation": "Programa de Doctorado en Informática Aplicada a Salud y Medio Ambiente, Escuela de Postgrado, Universidad Tecnológica Metropolitana, Santiago, Chile",
+      "orcid": "0000-0002-7443-5467"
+    },
+    {
+      "name": "Vergara Quezada, Jorge",
+      "affiliation": "Departamento de Informática y Computación, Facultad de Ingeniería, Universidad Tecnológica Metropolitana, Santiago, Chile",
+      "orcid": "0000-0001-6699-4181"
+    },
+    {
+      "name": "Sepúlveda Oehninger, Daniel",
+      "affiliation": "Departamento de Matemática, Facultad de Ciencias Naturales, Matemática y Medio Ambiente, Universidad Tecnológica Metropolitana, Santiago, Chile",
+      "orcid": "0000-0002-3129-393X"
+    }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "language": "spa",
+  "version": "1.0.0",
+  "keywords": [
+    "hybrid dynamical models",
+    "Universal Differential Equations",
+    "latent dynamics",
+    "temporal supervision",
+    "mechanism recovery",
+    "scientific machine learning",
+    "epidemiological modeling",
+    "SIR",
+    "Julia",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/DavidCastroSalinas/sw-ude-epidemic",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "The code is released under the MIT licence (LICENSE). Data, results and figures are released under CC BY 4.0 (LICENSE-DATA). The source epidemiological series keeps the licence of its institutional provider and is not sublicensed here: see data/README.md. Software DOI reserved on Zenodo: 10.5281/zenodo.23459303."
+}
