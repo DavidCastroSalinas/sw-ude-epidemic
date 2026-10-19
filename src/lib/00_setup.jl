@@ -39,10 +39,10 @@ end
     epocas_final(n::Int)
 
 Devuelve `n` tal cual, salvo que `SIR_UDE_SMOKE_TEST=1` esté activa, en
-cuyo caso devuelve `min(n, 150)` -- para poder validar el pipeline
-completo en minutos en vez de horas.
+cuyo caso devuelve `min(n, SIR_UDE_SMOKE_EPOCHS)` (150 por defecto).
+El runner 09 fija este límite en 30 para que su prueba sea más rápida.
 """
-epocas_final(n::Int) = SMOKE_TEST ? min(n, 150) : n
+epocas_final(n::Int) = SMOKE_TEST ? min(n, max(1, parse(Int, get(ENV, "SIR_UDE_SMOKE_EPOCHS", "150")))) : n
 
 """
     semillas_final(rango)
