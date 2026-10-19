@@ -127,6 +127,3 @@ end
 
 println("✓ graficar_boxplot_metrica, graficar_beta_promedio, graficar_sensibilidad_m, graficar_trajectories definidas")
 
-# [2026-10-18] `evaluar_datos_reales` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
