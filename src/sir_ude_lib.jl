@@ -1,6 +1,6 @@
 # Shared Julia library for synthetic and real-data SIR-UDE experiments.
 # Load from a runner with:
-#   include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
+#   include(joinpath(@__DIR__, "sir_ude_lib.jl"))
 
 const LIBDIR = joinpath(@__DIR__, "lib")
 
