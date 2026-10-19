@@ -24,8 +24,7 @@ GAMMA_REAL = GAMMA_REF_FIJO   # 1/7, igual que antes
 resultado_ancla = construir_serie_referencia_fija(I_obs)  # usa los _REF_FIJO por defecto
 SIR_real = resultado_ancla.SIR
 N_REAL   = N_REF_FIJO
-println("✓ N fijo (fuente de referencia): N_REAL = ", N_REAL,
-        "  (antes se derivaba con sugerir_N; ya no aplica)   m = ", M_ELEGIDO)
+println("✓ N fijo (fuente de referencia): N_REAL = ", N_REAL, "  m = ", M_ELEGIDO)
 
 cfg_arq  = SCENARIO_CONFIG[:realchile]
 
