@@ -254,11 +254,10 @@ function correr_todo_experimento5_ruido(; escenarios::Vector{Symbol}=SCENARIO_OR
         println("\n→ Experimento de ruido (σ_rel multiplicativo, unificado) — $label")
 
         df = correr_experimento_5_ruido(caso_beta=caso, sigma_values=sigma_values,
-                                         seeds_red=seeds_red, m=cfg.m)
-        # correr_experimento_5_ruido ya escribe "exp5_noise_multiseed.csv"
-        # en la raíz del proyecto (comportamiento heredado); además
-        # guardamos una copia por escenario para no pisar resultados entre
-        # escenarios sucesivos.
+                                         seeds_red=seeds_red, m=cfg.m,
+                                         outdir=outdir, save_csv=false)
+        # La función devuelve las filas sin crear archivos intermedios;
+        # aquí se guarda una salida separada para cada escenario.
         percaso_path = joinpath(outdir, "exp_noise_$(scenario_file_key(caso))_multiseed.csv")
         CSV.write(percaso_path, df)
         push!(tablas_unificadas, tabla_ruido_unificada(df, label))

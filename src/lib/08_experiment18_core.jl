@@ -223,7 +223,8 @@ end
 
 """
     correr_experimento_5_ruido(; caso_beta=:lineal, sigma_values=[0.00,0.05,0.10,0.20],
-                                 seeds_red=1:10, m=nothing)
+                                 seeds_red=1:10, m=nothing,
+                                 outdir="results/final_suite_noise", save_csv=true)
 
 Experimento de ruido (Exp 4/5 unificados, rediseño 05-sep-2026).
 `sigma_values` son niveles de σ_rel -- ruido MULTIPLICATIVO relativo a la
@@ -238,7 +239,9 @@ comparación pareada garantizada por construcción, no por casualidad.
 """
 function correr_experimento_5_ruido(; caso_beta::Symbol=:lineal,
                                        sigma_values::Vector{Float64}=[0.00, 0.05, 0.10, 0.20],
-                                       seeds_red=1:10, m::Union{Nothing,Int}=nothing)
+                                       seeds_red=1:10, m::Union{Nothing,Int}=nothing,
+                                       outdir::String="results/final_suite_noise",
+                                       save_csv::Bool=true)
     cfg = SCENARIO_CONFIG[caso_beta]
     m_use = m === nothing ? cfg.m : m
     resultados = []
@@ -251,7 +254,12 @@ function correr_experimento_5_ruido(; caso_beta::Symbol=:lineal,
         push!(resultados, resultados_global)
         push!(resultados, resultados_ventana)
     end
-    return guardar_resultados_csv(resultados; path="exp5_noise_multiseed.csv")
+    if save_csv
+        mkpath(outdir)
+        path = joinpath(outdir, "exp5_noise_multiseed.csv")
+        return guardar_resultados_csv(resultados; path=path)
+    end
+    return DataFrame(resultados)
 end
 
 println("✓ resumen_por_m, correr_experimento_5_ruido definidas")
