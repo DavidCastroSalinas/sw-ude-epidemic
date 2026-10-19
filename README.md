@@ -61,11 +61,29 @@ ninguna de las dos cosas instaladas.**
 
 ### Julia, para correr los experimentos
 
-Julia 1.10.5. La receta de instalación debe leerse junto con
-`docs/ENVIRONMENT.md`: el repositorio aún no contiene un `Manifest.toml` de
-referencia, por lo que la instalación actual no garantiza resolver las
-mismas versiones de paquetes que la corrida del artículo. Este bloqueo debe
-resolverse antes de presentar el repositorio como entorno reproducible.
+Si aún no tienes Julia, instala Juliaup y Julia desde una terminal:
+
+```bash
+curl -fsSL https://install.julialang.org | sh
+```
+
+Al terminar la instalación, abre una nueva terminal y comprueba que Julia
+esté disponible:
+
+```bash
+julia --version
+```
+
+El repositorio incluye `Manifest.toml`, que registra Julia 1.12.7 y las
+versiones resueltas de los paquetes. Desde el directorio raíz del proyecto,
+instala las dependencias con:
+
+```bash
+julia --project=. install_dependencies.jl
+```
+
+Consulta `docs/ENVIRONMENT.md` para más detalles sobre el entorno y las
+pruebas de ejecución.
 
 ### Python, para las figuras
 
