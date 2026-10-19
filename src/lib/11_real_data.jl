@@ -372,19 +372,13 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
     println(tabla)
     println("  Guardada en $outdir/metrics_extended_real_data.csv")
 
-    # ── Curvas completas (día a día) para regenerar figuras fuera de
-    # Julia -- antes de esta versión solo se guardaba la tabla de
-    # métricas escalares, no I(t)/β̂(t)/R_eff(t) día a día. ──────────
+    # Save daily trajectories and derived metrics for external plotting.
     reff_g = r_effective(beta_g, pred_g[1, 1:cfg.T], N, γ)
     reff_w = r_effective(beta_w, pred_w[1, 1:cfg.T], N, γ)
 
-    # es_test se extiende a los T+1 días (0..T): el día k (k=0..T) es de
-    # prueba si la transición que lo produce (transición k, k=1..T) está
-    # en idx_test. El día 0 (estado inicial) queda siempre false. Verificado
-    # contra split_train_test (src/lib/12_extended_metrics.jl): con T=214 y
-    # frac_train=0.8, idx_entren=1:171 e idx_test=172:214, de modo que los
-    # días 172..214 (43 días) quedan marcados como test -- coincide con la
-    # partición ya usada en tabla_metricas_extendidas vía `idx_test .+ 1`.
+    # Mark a day as test when the transition producing it belongs to idx_test.
+    # The initial state is always training data; day indices are shifted by
+    # one relative to the transition indices.
     es_test_dias = [k in idx_test for k in 0:cfg.T]
 
     # β̂ y R_eff están indexados por transición (k=1..T, T valores) y por
