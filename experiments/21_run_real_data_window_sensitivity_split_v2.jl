@@ -1,57 +1,10 @@
-# ============================================================
-# Sensibilidad a m sobre datos reales, CON split entrenamiento/prueba -- v2
-# ============================================================
-# Reemplaza a experiments/15_run_real_data_window_sensitivity_split.jl SOLO en
-# la grilla de m; el motor de entrenamiento, el split 80/20 y las métricas
-# (RMSE_I_train / RMSE_I_test, etc.) son idénticos -- misma
-# run_window_sensitivity_real_split de src/lib/18_real_data_window_sensitivity_split.jl.
-#
-# REVERTIDO 2026-09-05 (revisión de experimentos vs. manuscrito): entre el
-# 2026-08-30 y esta revisión, la grilla pasó a generarse automáticamente
-# con `generar_grilla_m(γ, Δt, T_train)`, un módulo que existió hasta el
-# 2026-10-18 y se eliminó al quedar sin uso:
-#
-#   m_γ = ceil(1/(γ·Δt))   (τ_I en pasos temporales)
-#   grilla = { ceil(m_γ/2), m_γ, 2·m_γ, 3·m_γ, ..., K·m_γ, T_train }
-#
-# Para γ=1/7, T_train=171 esto da m_γ=7 y una grilla de 26 múltiplos de 7
-# (7,14,...,168) más el ancla 171 -- ~27 valores de m en total (con
-# m=10 agregado aparte). Dos problemas confirmados al revisar esto contra
-# el manuscrito: (1) NO reproduce `tab:datos_reales_sensibilidad_m`, cuya
-# grilla real y ya citada es `[1, 2, 4, 7, 10, 14, 21, 35, 54, 107, 171]`
-# (11 valores, sin m=1/m=2 en la grilla automática pese a que el texto los
-# discute explícitamente); y (2) más del DOBLE de entrenamientos que la
-# grilla real para un experimento que ya cuesta 8-10h -- optimización en
-# la dirección contraria a la buscada. Además queda inconsistente con
-# `experiments/22_...` (Exp 9), que sigue usando la lista manual de 11 valores
-# para la resolución m=7 vs m=10. Se revierte a esa misma lista de 11
-# valores (ver `M_GRID_REAL_V2` más abajo) -- Exp 8 y Exp 9 vuelven a usar
-# la misma grilla, y el costo de cómputo vuelve al de antes.
-#
-#     julia experiments/21_run_real_data_window_sensitivity_split_v2.jl
-#     SIR_UDE_SMOKE_TEST=1 julia experiments/21_...   # validación en minutos
-#
-# Valores oficiales (HASTA 2026-09-07): γ = 1/7, N derivado con sugerir_N,
-# seed = 1234.
-#
-# [2026-09-07] ACTUALIZADO A PEDIDO DE DAVID: N ya NO se deriva con
-# `sugerir_N` sobre la serie digitalizada con R0=0. Ahora se usa
-# `construir_serie_referencia_fija` (src/lib/11_real_data.jl, sección 1bis)
-# para anclar la serie a las condiciones iniciales fijas de Córdova-Lepe
-# et al. 2026 (Medwave e3191) al 10 de julio de 2020: N=19.660.000,
-# S0=19.348.776, I0=26.390, R0=284.834, γ=1/7. La serie resultante tiene
-# 206 días (10 de julio de 2020 -- 31 de enero de 2021), NO 215 -- son
-# exactamente los mismos días que usó Córdova-Lepe et al. (David,
-# 2026-09-07). Esto cambia T_train (antes 171 con la serie de 215 días y
-# frac_train=0.8; ahora T_train=164) -- la grilla manual `M_GRID_REAL_V2`
-# de abajo se mantiene con los mismos 10 valores citados en
-# `tab:datos_reales_sensibilidad_m`, pero el ANCLA final ya no es el 171
-# fijo: se recalcula como `T_TRAIN_REAL` para seguir representando "todo
-# el horizonte de entrenamiento en una ventana", ahora =164.
-# ============================================================
+# Real-data window-length sensitivity with an 80/20 train/test split.
+# Uses the manuscript grid [1, 2, 4, 7, 10, 14, 21, 35, 54, 107] plus the
+# training-horizon endpoint, recomputed from the current reference series.
+# Run with: julia experiments/21_run_real_data_window_sensitivity_split_v2.jl
+# Override the selected window with SIR_UDE_M_OVERRIDE=<m>.
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
-using CSV   # redundante si sir_ude_lib.jl ya lo carga; no hace daño repetirlo
 
 # Carga autosuficiente de src/lib/18 si no está en sir_ude_lib.jl
 if !isdefined(Main, :run_window_sensitivity_real_split)
