@@ -14,9 +14,9 @@
 #   · el manifiesto cuadra con lo que hay en disco.
 #
 # Lo que hace además, si hay Julia y se pide --con-julia:
-#   · el entorno instala y precompila;
-#   · los runners ligeros presentes corren con SIR_UDE_SMOKE_TEST=1;
-#   · la destilación completa queda excluida.
+#   · el entorno instala y precompila en una copia temporal;
+#   · los runners ligeros corren con SIR_UDE_SMOKE_TEST=1;
+#   · los resultados del repositorio no se sobrescriben.
 #
 # Para probar también el flujo de destilación sin ejecutar el experimento
 # completo ni reemplazar sus resultados, añadir --con-destilacion-smoke.
