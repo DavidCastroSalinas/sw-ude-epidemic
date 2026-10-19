@@ -31,7 +31,7 @@ import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IGNORAR_DIR = {".git", "__pycache__", ".venv", "venv", ".ipynb_checkpoints",
-               "figures_regeneradas"}
+               "figures_regenerated"}
 
 # (patrón de ruta, papel, por qué)
 REGLAS = [
