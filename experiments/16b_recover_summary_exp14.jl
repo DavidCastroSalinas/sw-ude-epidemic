@@ -1,24 +1,6 @@
-# ============================================================
-# experiments/16b_recover_summary_exp14.jl
-# ------------------------------------------------------------
-# [2026-09-09] Script de recuperación, no un experimento nuevo.
-#
-# experiments/16_run_real_data_multiseed_REFF_POSITIVITY_exp14.jl entrenó
-# las 10 semillas completas (guardando cada una en
-# results/real_data_multiseed/summary_multiseed_partial.csv, dentro
-# del loop) pero se cayó DESPUÉS de eso, al imprimir el resumen final, por
-# un bug de código (`length(::DataFrame)` no existe en DataFrames.jl --
-# tenía que ser `nrow(...)`; ya corregido en el runner 16 original,
-# ver el comentario "[2026-09-09] FIX" ahí).
-#
-# Como el entrenamiento de las 10 semillas (~3.6 h) ya está hecho y
-# guardado en el CSV parcial, este script SOLO relee ese CSV y repite la
-# agregación final + el guardado del CSV definitivo -- no reentrena nada,
-# tarda segundos.
-#
-# Uso:
-#     julia experiments/16b_recover_summary_exp14.jl
-# ============================================================
+# Recovery utility for experiment 14: summarizes an existing partial CSV
+# without rerunning the ten-seed training job.
+# Run with: julia experiments/16b_recover_summary_exp14.jl
 
 using Statistics, CSV, DataFrames
 
