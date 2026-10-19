@@ -1,15 +1,4 @@
-# Cómo citar este repositorio. GitHub y Zenodo leen este archivo.
-#
-# Hay dos citas distintas y conviene no confundirlas:
-#
-#   · las claves de primer nivel citan EL SOFTWARE, este anexo;
-#   · `preferred-citation` cita EL ARTÍCULO, y es la que GitHub ofrece
-#     por omisión en el botón «Cite this repository».
-#
-# Los campos marcados PENDIENTE hay que completarlos antes de la etiqueta
-# v1.0.0. Son tres: la revista, el DOI del artículo y el DOI de Zenodo del
-# software, que no existe hasta que se deposita. Ver docs/PENDIENTES.md.
-
+# Citation metadata for the software and accompanying article.
 cff-version: 1.2.0
 message: >-
   Si usa este software, cite el artículo y, si necesita referenciar una
@@ -24,8 +13,8 @@ abstract: >-
   Anexo reproducible del artículo: la biblioteca SIR-UDE en Julia, los
   runners de los once experimentos, los CSV de resultados citados en el
   manuscrito, los scripts que generan las seis figuras y tres
-  verificadores que comprueban sin correr nada que las cifras del
-  manuscrito salen de los datos entregados.
+  verifier that checks whether cited manuscript values match the delivered
+  data.
 
 authors:
   - family-names: Castro-Salinas
@@ -65,14 +54,7 @@ keywords:
   - SIR
   - Julia
 
-doi: 10.5281/zenodo.23459303
-version: 1.0.0
-date-released: 2026-10-18
-
-# PENDIENTE, la última: la URL del repositorio público. Descomentar y poner
-# el usuario cuando exista. `date-released` arriba hay que igualarla a la
-# fecha real del release si no es hoy.
-# repository-code: https://github.com/<usuario>/sw-ude-epidemic
+repository-code: https://github.com/DavidCastroSalinas/sw-ude-epidemic
 
 preferred-citation:
   type: article
@@ -90,6 +72,3 @@ preferred-citation:
       given-names: Daniel
       orcid: https://orcid.org/0000-0002-3129-393X
   year: 2026
-  # PENDIENTE: revista, volumen, número, páginas y DOI del artículo.
-  # journal: <revista>
-  # doi: 10.3390/XXXXXXX

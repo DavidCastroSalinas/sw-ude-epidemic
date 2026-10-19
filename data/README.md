@@ -1,6 +1,6 @@
 # Datos
 
-## `datos_reales_curvas.csv`
+## `real_data_curves.csv`
 
 Serie de entrada de la destilación paramétrica (experimento 11). 206
 filas, una por día, y nueve columnas:

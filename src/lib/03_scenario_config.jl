@@ -12,50 +12,32 @@ end
 
 const SCENARIO_CONFIG = Dict(
     :constante    => ScenarioConfig(0,  1, 10, 3000, 0.010, nothing),
-    # β afín exacta → arquitectura y m validados (Sección 14, curva en U con
-    # mínimo claro en m=10: RMSE_β = 0.0475/0.0251/0.0107/0.00367/0.0143/0.0310
-    # para m=1/3/5/10/20/50).
-
     :lineal       => ScenarioConfig(0,  1, 10, 7000, 0.010, nothing),
-    # β afín exacta. m=10 heredado del caso :constante; PENDIENTE confirmar
-    # con su propia curva de sensibilidad (Sección 14b).
-
+    # The tanh scenario changes rapidly near its transition, so its m-grid
+    # includes shorter windows.
     :tanh         => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Con T=50 la β real satura casi de inmediato (argumento del tanh crece
-    # ~1.2/paso) → función real ≈ escalón con transición de 1-2 pasos.
-    # Ventanas apenas mejora sobre Global (RMSE_β 0.0678 vs 0.0718,
-    # resumen_TODOS_escenarios.csv): probable síntoma de que m=10 promedia
-    # sobre tramos casi planos y diluye la única transición informativa.
-    # PENDIENTE: barrer m con grid fino (Sección 14b) antes de fijar valor.
-
     :dos_olas     => ScenarioConfig(32, 2, 10, 8000, 0.005, nothing),
-    # Mejora parcial (RMSE_S y RMSE_I bajan, RMSE_R sube levemente). No hay
-    # evidencia de inestabilidad; se deja igual, revisar tras Sección 14b.
-
     :intervencion => ScenarioConfig(32, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
     :estacional   => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
+    # Gradient clipping stabilizes windowed training for this strongly
+    # feedback-dependent scenario.
     :saturacion   => ScenarioConfig(16, 2, 10, 8000, 0.003, 5.0),
-    # β depende de un sigmoide con pendiente 20 sobre I/N: retroalimentación
-    # fuerte. Con la config anterior (lr=0.005, sin clip) el entrenamiento
-    # por ventanas DIVERGE en estados: RMSE_S pasa de 0.61 (Global) a 5.27
-    # (Ventanas m=10), ver saturacion_10_metricas.csv / resumen_TODOS_escenarios.csv.
-    # Primer intento de estabilización: lr reducido (0.005→0.003) +
-    # clip_norm=5.0 (recorte de norma de gradiente). REQUIERE re-ejecutar y
-    # validar que RMSE_S/I/R vuelvan a ser comparables o mejores que Global;
-    # si sigue inestable, probar m más chico (Sección 14b) antes que tocar
-    # la arquitectura.
-
-    :realchile   => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
+    # Architecture used for the real-data experiments; not in SCENARIO_ORDER.
+    :realchile    => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
 )
 
 const SCENARIO_ORDER = [:constante, :lineal, :tanh, :dos_olas,
                          :intervencion, :estacional, :saturacion]
+
+# English file stems for generated artifacts; internal scenario symbols stay stable.
+const SCENARIO_FILE_KEYS = Dict(
+    :constante => "constant", :lineal => "linear", :tanh => "tanh",
+    :dos_olas => "two_waves", :intervencion => "intervention",
+    :estacional => "seasonal", :saturacion => "saturation",
+    :realchile => "real_chile",
+)
+scenario_file_key(key::Symbol) = get(SCENARIO_FILE_KEYS, key, String(key))
+scenario_file_key(key::AbstractString) = scenario_file_key(Symbol(key))
 
 println("✓ SCENARIO_CONFIG definido para ", length(SCENARIO_CONFIG), " escenarios")
 for key in SCENARIO_ORDER
@@ -69,7 +51,7 @@ end
 # run_all_experiments — ejecuta y consolida TODOS los escenarios
 # ============================================================
 function run_all_experiments(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
-                              outdir::String="figuras/todos",
+                              outdir::String="figures/all",
                               make_gif::Bool=true,
                               seed::Int=1234)
     mkpath(outdir)
@@ -114,8 +96,8 @@ function run_all_experiments(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
     end
 
     df_resumen = DataFrame(rows)
-    CSV.write("$outdir/resumen_TODOS_escenarios.csv", df_resumen)
-    println("\n✓ Resumen consolidado guardado en $outdir/resumen_TODOS_escenarios.csv")
+    CSV.write("$outdir/summary_ALL_scenarios.csv", df_resumen)
+    println("\n✓ Resumen consolidado guardado en $outdir/summary_ALL_scenarios.csv")
     println(df_resumen)
     finalizar_progreso!(prog)
 
@@ -136,7 +118,7 @@ println("✓ run_all_experiments definida")
 function run_all_sensitivity(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
                               m_values::Vector{Int}=[1,3,5,10,20,50],
                               m_values_override::Dict{Symbol,Vector{Int}}=Dict{Symbol,Vector{Int}}(),
-                              outdir::String="figuras/todos",
+                              outdir::String="figures/all",
                               seed::Int=1234)
     mkpath(outdir)
     all_dfs = DataFrame[]
@@ -151,14 +133,14 @@ function run_all_sensitivity(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
                          lr=cfg.lr, hidden=cfg.hidden, layers=cfg.layers,
                          clip_norm=cfg.clip_norm,
                          seed=seed, outdir=outdir, save_csv=true)
-        df_i = CSV.read("$outdir/$(key)_sensibilidad_m.csv", DataFrame)
+        df_i = CSV.read("$outdir/$(key)_sensitivity_m.csv", DataFrame)
         push!(all_dfs, df_i)
         avanzar!(prog; detalle=String(key))
     end
 
     df_all = vcat(all_dfs...)
-    CSV.write("$outdir/sensibilidad_m_TODOS_escenarios.csv", df_all)
-    println("\n✓ Sensibilidad consolidada guardada en $outdir/sensibilidad_m_TODOS_escenarios.csv")
+    CSV.write("$outdir/sensitivity_m_ALL_scenarios.csv", df_all)
+    println("\n✓ Sensibilidad consolidada guardada en $outdir/sensitivity_m_ALL_scenarios.csv")
     finalizar_progreso!(prog)
     return df_all
 end
@@ -171,7 +153,7 @@ println("✓ run_all_sensitivity definida (soporta m_values_override y clip_norm
 # ============================================================
 function plot_beta_grid_summary(results::Dict;
                                  scenarios::Vector{Symbol}=SCENARIO_ORDER,
-                                 outdir::String="figuras/todos",
+                                 outdir::String="figures/all",
                                  ncols::Int=4,
                                  filename::String="figura_resumen_beta_todos_escenarios")
     mkpath(outdir)

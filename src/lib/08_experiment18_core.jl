@@ -15,7 +15,7 @@ Genera la trayectoria sintética de referencia para `caso_beta` (reutiliza
 
 REDISEÑO (05-sep-2026): `sigma_ruido` se reinterpreta como σ_rel, el nivel
 de ruido MULTIPLICATIVO relativo a la magnitud de cada observación (ya no
-una fracción de N) -- ver `src/lib/27_ruido_relativo.jl` para la justificación
+una fracción de N) -- ver `src/lib/27_noise_relative.jl` para la justificación
 completa y `agregar_ruido_relativo_sir` para la implementación:
 
     X_obs(k) = max(0, X_true(k)·(1+ε_k)),  ε_k ~ N(0, σ_rel²)
@@ -103,7 +103,7 @@ println("✓ entrenar_global y entrenar_ventanas definidas")
 
 Evalúa un `resultado` (de `entrenar_global`/`entrenar_ventanas`) SIEMPRE
 contra `datos_pack.datos_limpio` y `datos_pack.beta_fn` — nunca contra la
-trayectoria de entrenamiento, aunque tenga ruido. Devuelve trayectorias
+trayectoria de entrenamiento, aunque tenga ruido. Devuelve trajectories
 reconstruidas, β real/aprendida, y las métricas escalares. Sirve tanto para
 `calcular_metricas` (solo el resumen escalar) como para las funciones de
 graficación de más abajo (que necesitan las curvas completas).
@@ -189,7 +189,7 @@ end
 Convierte un vector de filas (NamedTuples de `ejecutar_repeticion`) a
 DataFrame y lo guarda en `path`. Devuelve el DataFrame.
 """
-function guardar_resultados_csv(resultados::Vector; path::String="resultados_experimentos.csv")
+function guardar_resultados_csv(resultados::Vector; path::String="resultados_experiments.csv")
     df = DataFrame(resultados)
     CSV.write(path, df)
     println("✓ Resultados guardados en $path  ($(nrow(df)) filas)")
@@ -198,16 +198,11 @@ end
 
 println("✓ ejecutar_repeticion y guardar_resultados_csv definidas")
 
-# [2026-10-18] `correr_experimento_1_lineal` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
 """
     resumen_por_m(df; caso_beta="lineal")
 
-Experimento 2 (sensibilidad a m): agrupa las filas `:ventanas` del
-Experimento 1 por `m` y calcula media ± desviación estándar de
-`rmse_global` y `rmse_beta`. No entrena nada nuevo — reutiliza el CSV de
-`correr_experimento_1_lineal`.
+Agrupa las filas del método por ventanas según `m` y resume la media y
+desviación estándar de `rmse_global` y `rmse_beta`.
 """
 function resumen_por_m(df::DataFrame; caso_beta::String="lineal")
     sub = filter(r -> r.metodo == "ventanas" && r.caso_beta == caso_beta, df)
@@ -218,17 +213,15 @@ function resumen_por_m(df::DataFrame; caso_beta::String="lineal")
                    :rmse_beta   => std  => :rmse_beta_std)
 end
 
-# [2026-10-18] `correr_experimento_3_no_lineales` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
-
 """
     correr_experimento_5_ruido(; caso_beta=:lineal, sigma_values=[0.00,0.05,0.10,0.20],
-                                 seeds_red=1:10, m=nothing)
+                                 seeds_red=1:10, m=nothing,
+                                 outdir="results/final_suite_noise", save_csv=true)
 
 Experimento de ruido (Exp 4/5 unificados, rediseño 05-sep-2026).
 `sigma_values` son niveles de σ_rel -- ruido MULTIPLICATIVO relativo a la
 magnitud de cada observación, no una fracción de N ni un σ absoluto en
-individuos (ver `generar_datos` y `src/lib/27_ruido_relativo.jl`). Grilla por
+individuos (ver `generar_datos` y `src/lib/27_noise_relative.jl`). Grilla por
 defecto {0.00, 0.05, 0.10, 0.20}, la MISMA para los 7 escenarios --
 reemplaza tanto al esquema de fracción-de-N (antes en esta función) como
 al de σ absoluto (antes `experiments/03_run_noise_sensitivity_all.jl`, ambos
@@ -238,7 +231,9 @@ comparación pareada garantizada por construcción, no por casualidad.
 """
 function correr_experimento_5_ruido(; caso_beta::Symbol=:lineal,
                                        sigma_values::Vector{Float64}=[0.00, 0.05, 0.10, 0.20],
-                                       seeds_red=1:10, m::Union{Nothing,Int}=nothing)
+                                       seeds_red=1:10, m::Union{Nothing,Int}=nothing,
+                                       outdir::String="results/final_suite_noise",
+                                       save_csv::Bool=true)
     cfg = SCENARIO_CONFIG[caso_beta]
     m_use = m === nothing ? cfg.m : m
     resultados = []
@@ -251,7 +246,12 @@ function correr_experimento_5_ruido(; caso_beta::Symbol=:lineal,
         push!(resultados, resultados_global)
         push!(resultados, resultados_ventana)
     end
-    return guardar_resultados_csv(resultados; path="exp5_ruido_multisemilla.csv")
+    if save_csv
+        mkpath(outdir)
+        path = joinpath(outdir, "exp5_noise_multiseed.csv")
+        return guardar_resultados_csv(resultados; path=path)
+    end
+    return DataFrame(resultados)
 end
 
 println("✓ resumen_por_m, correr_experimento_5_ruido definidas")

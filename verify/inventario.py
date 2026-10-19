@@ -66,7 +66,7 @@ REGLAS = [
 def _senal_datos_con_salida(rutas):
     """data/ debería tener solo lo observado."""
     out = []
-    p = "data/datos_reales_curvas.csv"
+    p = "data/real_data_curves.csv"
     if p in rutas:
         cab = os.path.join(RAIZ, p)
         try:
@@ -255,7 +255,7 @@ def main():
                      and papel(r)[0] != "generado"]
         if huerfanos:
             print("\n  Un archivo que nadie referencia o sobra, o le falta entrar")
-            print("  en el README y en el mapa de docs/EXPERIMENTOS.md.\n")
+            print("  en el README y en el mapa de docs/EXPERIMENTS.md.\n")
             for r in huerfanos:
                 print("      %s" % r)
         else:

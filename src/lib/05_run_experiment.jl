@@ -5,7 +5,7 @@ function run_experiment(scenario_key::Symbol;
                         hidden::Int      = 0,
                         layers::Int      = 1,
                         seed::Int        = 1234,
-                        outdir::String   = "figuras",
+                        outdir::String   = "figures",
                         save_csv::Bool   = true,
                         make_gif::Bool   = true,
                         guardar_cada::Int = 25,
@@ -15,6 +15,7 @@ function run_experiment(scenario_key::Symbol;
 
     beta_fn = BETA_FUNCTIONS[scenario_key]
     label   = SCENARIO_LABELS[scenario_key]
+    file_key = scenario_file_key(scenario_key)
 
     println("\n" * "="^65)
     println("  Escenario : $label")
@@ -71,7 +72,7 @@ function run_experiment(scenario_key::Symbol;
                   legend=:topright, size=(800, 480),
                   left_margin=8mm, bottom_margin=8mm)
     plot!(p_loss, loss_w, lw=2, color=:crimson, ls=:dash, label="SW-UDE (m=$m)")
-    savefig_all(p_loss, "$outdir/$(scenario_key)_$(m)_loss"; formats=(:png, :pdf, :eps))
+    savefig_all(p_loss, "$outdir/$(file_key)_$(m)_loss"; formats=(:png, :pdf, :eps))
     if make_gif
         make_gif_beta(scenario_key, ts_β, β_true, iter_g, snaps_g,
                       st_nn, nn_beta, datos; outdir=outdir, suffix="_UDE")
@@ -94,24 +95,17 @@ function run_experiment(scenario_key::Symbol;
             RMSE_beta = [mG.RMSE_β,    mW.RMSE_β],
             MAE_beta  = [mG.MAE_β,     mW.MAE_β],
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_metricas.csv", df)
-        println("  CSV guardado en $outdir/$(scenario_key)_$(m)_metricas.csv")
+        CSV.write("$outdir/$(file_key)_$(m)_metrics.csv", df)
+        println("  CSV guardado en $outdir/$(file_key)_$(m)_metrics.csv")
 
-        # ── Curvas completas (para regenerar figuras fuera de Julia,
-        # p. ej. en el notebook de ajustes de figuras) ────────────────
-        # NOTA: antes de esta versión, el proyecto solo guardaba métricas
-        # ESCALARES (RMSE/MAE) -- las curvas S/I/R(t) y β(t) solo existían
-        # dentro de los objetos Plots.jl usados para dibujar el PNG/PDF/EPS,
-        # sin CSV equivalente. Sin esto, un notebook externo no puede
-        # reconstruir la figura de estados ni la de β, solo los gráficos de
-        # barras/boxplot que sí dependían de CSV ya existentes.
+        # Save full trajectories so figures can be regenerated outside Julia.
         df_curvas_estados = DataFrame(
             t                = ts,
             S_observado      = datos[1, :], I_observado = datos[2, :], R_observado = datos[3, :],
             S_UDE            = pred_g[1, :], I_UDE       = pred_g[2, :], R_UDE       = pred_g[3, :],
             S_Windowed       = pred_w[1, :], I_Windowed  = pred_w[2, :], R_Windowed  = pred_w[3, :],
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_estados.csv", df_curvas_estados)
+        CSV.write("$outdir/$(file_key)_$(m)_curves_states.csv", df_curvas_estados)
 
         df_curvas_beta = DataFrame(
             t                    = ts_β,
@@ -121,16 +115,16 @@ function run_experiment(scenario_key::Symbol;
             beta_directa_UDE     = β_dir_g,
             beta_directa_Windowed = β_dir_w,
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_beta.csv", df_curvas_beta)
+        CSV.write("$outdir/$(file_key)_$(m)_curves_beta.csv", df_curvas_beta)
 
         df_curvas_loss = DataFrame(
             iteracion     = 1:max(length(loss_g), length(loss_w)),
             loss_UDE      = vcat(loss_g, fill(missing, max(0, length(loss_w) - length(loss_g)))),
             loss_Windowed = vcat(loss_w, fill(missing, max(0, length(loss_g) - length(loss_w)))),
         )
-        CSV.write("$outdir/$(scenario_key)_$(m)_curvas_loss.csv", df_curvas_loss)
+        CSV.write("$outdir/$(file_key)_$(m)_curves_loss.csv", df_curvas_loss)
 
-        println("  Curvas guardadas en $outdir/$(scenario_key)_$(m)_curvas_{estados,beta,loss}.csv")
+        println("  Curvas guardadas en $outdir/$(file_key)_$(m)_curves_{states,beta,loss}.csv")
     end
 
     return (
@@ -165,7 +159,7 @@ function run_sensitivity(scenario_key::Symbol;
                          hidden::Int           = 0,
                          layers::Int           = 1,
                          seed::Int             = 1234,
-                         outdir::String        = "figuras",
+                         outdir::String        = "figures",
                          save_csv::Bool        = true,
                          clip_norm::Union{Nothing,Float64} = nothing)
 
@@ -173,6 +167,7 @@ function run_sensitivity(scenario_key::Symbol;
 
     beta_fn = BETA_FUNCTIONS[scenario_key]
     label   = SCENARIO_LABELS[scenario_key]
+    file_key = scenario_file_key(scenario_key)
 
     println("\n" * "="^65)
     println("  Sensibilidad m — Escenario: $label")
@@ -209,8 +204,8 @@ function run_sensitivity(scenario_key::Symbol;
     if save_csv
         mkpath(outdir)
         df = DataFrame(rows)
-        CSV.write("$outdir/$(scenario_key)_sensibilidad_m.csv", df)
-        println("  CSV guardado en $outdir/$(scenario_key)_sensibilidad_m.csv")
+        CSV.write("$outdir/$(file_key)_sensitivity_m.csv", df)
+        println("  CSV guardado en $outdir/$(file_key)_sensitivity_m.csv")
     end
 
     return (metrics_vec=metrics_vec, fig_sensitivity=fig_sens)

@@ -4,14 +4,12 @@ Código, datos y resultados del artículo *Temporal Supervision Horizon and
 Latent-Dynamics Recovery in SIR Universal Differential Equations* (referencia
 completa en `CITATION.cff`).
 
-DOI: [10.5281/zenodo.23459303](https://doi.org/10.5281/zenodo.23459303)
-
 ---
 
 ## De qué trata
 
 Un modelo híbrido neuronal-mecanicista aprende una parte desconocida de un
-sistema dinámico a partir de trayectorias observadas. Acá el sistema es un
+sistema dinámico a partir de trajectories observadas. Acá el sistema es un
 SIR y la parte desconocida es la tasa de transmisión, representada por una
 función neuronal $\beta_\theta(t, I)$:
 
@@ -63,15 +61,11 @@ ninguna de las dos cosas instaladas.**
 
 ### Julia, para correr los experimentos
 
-Julia 1.10.5. Desde la raíz del repositorio:
-
-```bash
-julia --project=. install_dependencies.jl
-```
-
-Lee `Manifest.toml` y reconstruye el entorno exacto de la corrida de
-referencia, sin resolver dependencias de nuevo. Son 19 paquetes; no incluye
-ningún solver ODE ni regresión simbólica.
+Julia 1.10.5. La receta de instalación debe leerse junto con
+`docs/ENVIRONMENT.md`: el repositorio aún no contiene un `Manifest.toml` de
+referencia, por lo que la instalación actual no garantiza resolver las
+mismas versiones de paquetes que la corrida del artículo. Este bloqueo debe
+resolverse antes de presentar el repositorio como entorno reproducible.
 
 ### Python, para las figuras
 
@@ -85,7 +79,7 @@ pip install -r figures_src/requirements.txt
 
 En Debian y Ubuntu `pip install` al Python del sistema está bloqueado por
 PEP 668; de ahí el entorno virtual. La receta alternativa con paquetes de la
-distribución está en `docs/ENTORNO.md`.
+distribución está en `docs/ENVIRONMENT.md`.
 
 ---
 
@@ -113,13 +107,20 @@ Horas a días según el experimento. Usa todos los hilos disponibles; con
 SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia
 ```
 
-Corre la cadena con épocas y multistarts reducidos. No reproduce las cifras:
-confirma que el entorno está bien armado. Sin `--con-julia` comprueba solo
-lo que no necesita Julia.
+Corre los runners compatibles con épocas y multistarts reducidos. No
+reproduce las cifras: confirma que el entorno está bien armado. Sin
+`--con-julia` comprueba solo lo que no necesita Julia. La destilación se
+omite en esta modalidad para evitar ejecutar su barrido completo.
 
-La variable la honran los experimentos 3, 4, 6, 7 y 8. El 11, la destilación,
-todavía no (`docs/PENDIENTES.md` §2.7), así que correrlo con la variable
-puesta lo ejecuta completo.
+Para probar también el flujo reducido de destilación (dos arranques y las
+familias principales), usa:
+
+```bash
+SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia --con-destilacion-smoke
+```
+
+Ese modo solo comprueba el flujo de ejecución; guarda los resultados de
+prueba en un directorio temporal y no reproduce cifras del artículo.
 
 ### Un escenario sintético, desde el REPL
 
@@ -187,7 +188,7 @@ julia> evaluar_completo(g, datos), evaluar_completo(v, datos)
 El ruido es multiplicativo relativo a cada observación,
 $X_{\mathrm{obs}} = \max(0,\, X_{\mathrm{true}}(1+\varepsilon))$ con
 $\varepsilon \sim \mathcal{N}(0, \sigma_{\mathrm{rel}}^2)$. Está en
-`src/lib/27_ruido_relativo.jl`, con el motivo de por qué no se escala por
+`src/lib/27_noise_relative.jl`, con el motivo de por qué no se escala por
 $N$.
 
 ### Sobre tu propia serie
@@ -235,26 +236,26 @@ datos del DEIS sin ese paso no reproduce las cifras.
 Las seis se regeneran desde los CSV entregados, sin Julia:
 
 ```bash
-python3 figures_src/figuras_notebook.py
+python3 figures_src/figure_registry.py
 ```
 
 o desde un notebook, mostrándolas en línea:
 
 ```python
-from figuras_notebook import generar_y_mostrar
+from figure_registry import generar_y_mostrar
 generar_y_mostrar()
 ```
 
 Con `SOURCE_DATE_EPOCH` fijo salen byte a byte idénticas entre corridas:
 
 ```bash
-SOURCE_DATE_EPOCH=1760000000 python3 figures_src/figuras_notebook.py
+SOURCE_DATE_EPOCH=1760000000 python3 figures_src/figure_registry.py
 ```
 
-`figures_src/figuras_notebook.py` es el registro único de qué script produce
+`figures_src/figure_registry.py` es el registro único de qué script produce
 cada figura y con qué argumentos. El estándar de presentación —tamaño a
 escala final, paleta validada para daltonismo, pisos tipográficos— está en
-`docs/ESTILO_FIGURAS.md`.
+`docs/FIGURE_STYLE.md`.
 
 ### Variables de entorno
 
@@ -276,18 +277,18 @@ el código que las produce y los datos de los que salen.
 | Pieza | Experimento | Runner | Resultados |
 |---|---|---|---|
 | `tab:synthetic_scenarios` | definicional | `src/lib/03_scenario_config.jl` | — |
-| `fig:temporal_supervision` | esquema | `figures_src/generar_fig_temporal_supervision_horizon.py` | — |
+| `fig:temporal_supervision` | esquema | `figures_src/generate_fig_temporal_supervision_horizon.py` | — |
 | `fig:m_sensitivity` | 2 · sensibilidad a $m$, sintético | `experiments/20_run_window_sensitivity_all_v2.jl` | `results/window_sensitivity_v2/` |
 | `tab:synthetic_multiseed` | 3 · pareado multisemilla sin ruido | `experiments/09_run_final_synthetic_experiments.jl` | `results/final_suite/` |
-| `tab:noise_beta` | 4 · ruido observacional | `experiments/09b_run_ruido_pareado.jl` | `results/final_suite_ruido/` |
-| `fig:hospital_state` | 5 · saturación hospitalaria | `experiments/04_run_saturacion_stress_test.jl` | `results/all_scenarios/` |
-| `tab:real_m_selection` | 6 y 7 · sensibilidad a $m$, datos reales | `experiments/21_…_split_v2.jl`, `22_…_multiseed.jl` ×5, `23_consolidar…jl` | `results/datos_reales/`, `results/datos_reales_multiseed/` |
-| `tab:real_multiseed` | 8 · pareado $n=10$, datos reales | `experiments/16_run_real_data_multiseed_PAREADO_exp10.jl` | `results/datos_reales_multisemilla/` |
-| `tab:horizon_persistence` | 9 · horizontes y rollout autónomo | `experiments/13_run_real_data_extrapolation_horizons.jl` | `results/datos_reales/` |
-| `fig:real_multiseed`, §4.2.5 | 10 · $R_{\mathrm{eff}}$ y positividad de $\hat\beta$ | `experiments/16_…_REFF_POSITIVIDAD_exp14.jl`, `16b_…` | `results/datos_reales_multiseed/` |
-| `tab:closed_form_*` ×3, `fig:closed_form_fidelity`, `fig:fidelity_plane` | 11 · destilación paramétrica v5.1 | `experiments/29_run_destilacion_parametrica_v51.jl` | `results/destilacion_v51/` |
+| `tab:noise_beta` | 4 · ruido observacional | `experiments/09b_run_noise_paired.jl` | `results/final_suite_noise/` |
+| `fig:hospital_state` | 5 · saturación hospitalaria | `experiments/04_run_saturation_stress_test.jl` | `results/all_scenarios/` |
+| `tab:real_m_selection` | 6 y 7 · sensibilidad a $m$, datos reales | `experiments/21_…_split_v2.jl`, `22_…_multiseed.jl` ×5, `23_consolidar…jl` | `results/real_data/`, `results/real_data_multiseed/` |
+| `tab:real_multiseed` | 8 · pareado $n=10$, datos reales | `experiments/16_run_real_data_multiseed_PAIRED_exp10.jl` | `results/real_data_paired_multiseed/` |
+| `tab:horizon_persistence` | 9 · horizontes y rollout autónomo | `experiments/13_run_real_data_extrapolation_horizons.jl` | `results/real_data/` |
+| `fig:real_multiseed`, §4.2.5 | 10 · $R_{\mathrm{eff}}$ y positividad de $\hat\beta$ | `experiments/16_…_REFF_POSITIVITY_exp14.jl`, `16b_…` | `results/real_data_multiseed/` |
+| `tab:closed_form_*` ×3, `fig:closed_form_fidelity`, `fig:fidelity_plane` | 11 · destilación paramétrica v5.1 | `experiments/29_run_distillation_parametric_v51.jl` | `results/distillation_v51/` |
 
-`docs/EXPERIMENTOS.md` tiene el detalle de cada uno: qué módulos usa, qué
+`docs/EXPERIMENTS.md` tiene el detalle de cada uno: qué módulos usa, qué
 escribe y qué afirmación del artículo sustenta.
 
 La numeración de los runners conserva la del proyecto original, con sus
@@ -295,8 +296,8 @@ huecos, para no romper la trazabilidad con los nombres de las carpetas de
 salida. El orden de lectura es el de esta tabla.
 
 > **Dos carpetas de nombre casi igual.**
-> `results/datos_reales_multiseed/` es el experimento 10 y sustenta la
-> Sección 4.2.5. `results/datos_reales_multisemilla/` es el experimento 8:
+> `results/real_data_multiseed/` es el experimento 10 y sustenta la
+> Sección 4.2.5. `results/real_data_paired_multiseed/` es el experimento 8:
 > columnas casi idénticas, cifras parecidas, otra corrida. Comprobar la
 > Sección 4.2.5 contra la segunda da FALLA en la mitad de las cifras.
 
@@ -317,7 +318,7 @@ salida. El orden de lectura es el de esta tabla.
   usó para elegir $m$.
 - **Euler explícito, $\Delta t = 1$ día.**
 
-`docs/DECISIONES.md` explica por qué cada uno y qué cambia si se cambia.
+`docs/DECISIONS.md` explica por qué cada uno y qué cambia si se cambia.
 
 ---
 
@@ -328,23 +329,19 @@ CSV que lo sustenta y emite PASA o FALLA. **Corre con la biblioteca estándar
 de Python**: sin Julia, sin pandas, sin numpy, en segundos.
 
 ```bash
-python3 verify/verificar_cifras.py
-python3 verify/verificar_cifras.py --solo-fallas
-python3 verify/verificar_cifras.py --tabla tab:noise_beta
+python3 verify/verify_values.py
+python3 verify/verify_values.py --solo-fallas
+python3 verify/verify_values.py --tabla tab:noise_beta
 ```
 
-`verify/cifras_manuscrito.yaml` declara cada cifra con su fuente, su columna,
+`verify/manuscript_values.yaml` declara cada cifra con su fuente, su columna,
 su filtro y su redondeo, de modo que se puede leer qué se está comprobando
 sin leer el código.
 
-Hay tres comprobadores más, para el estado del repositorio y no para las
-cifras:
-
-```bash
-python3 verify/comprobar_archivos.py --solo-faltantes   # ¿está todo lo prometido?
-python3 verify/comprobar_rutas.py --solo-problemas      # ¿alguien escribe fuera del árbol?
-python3 verify/comprobar_codigo_muerto.py               # ¿hay código sin usar?
-```
+Los scripts de diagnóstico interno del árbol de trabajo no forman parte
+del flujo mínimo de reproducción. La comprobación pública de cifras es
+`verify/verify_values.py`; el smoke test valida las herramientas y las
+rutas de ejecución disponibles.
 
 ---
 
@@ -358,21 +355,21 @@ figures_src/  un script por figura, más el estilo y el registro común
 results/      los CSV exactos detrás de cada cifra citada
 figures/      los seis PDF que compila el manuscrito
 verify/       los comprobadores y el archivo de cifras declaradas
-docs/         experimentos, entorno, decisiones, estilo de figuras, pendientes
-bin/          utilidades de mantenimiento del repositorio
+docs/         mapa de experimentos, entorno, decisiones y estilo de figuras
+bin/          utilidades necesarias para regenerar el manifiesto y verificar salidas
 ```
 
 ---
 
 ## Cómo citar
 
-`CITATION.cff` trae dos citas: la del **artículo**, que es la que GitHub
-ofrece por omisión, y la de **este software**, para referenciar una versión
-concreta del código.
+`CITATION.cff` identifica el software, sus autores y el artículo asociado.
+Completar los datos editoriales del artículo y los metadatos de archivo del
+software cuando se emita la versión citable definitiva.
 
 ## Licencias
 
 - Código: `LICENSE` (MIT).
 - Datos, figuras y CSV de salida: `LICENSE-DATA` (CC BY 4.0).
-- La serie epidemiológica de origen mantiene la licencia de su fuente; ver
-  `data/README.md`.
+- Antes de redistribuir la serie epidemiológica, completar y verificar la
+  referencia y las condiciones de la fuente original; ver `data/README.md`.

@@ -27,10 +27,10 @@
 
 
 """
-    evaluar_datos_reales_multisemilla(SIR; N, γ, Δt=1.0, hidden, layers,
+    evaluar_real_data_paired_multiseed(SIR; N, γ, Δt=1.0, hidden, layers,
                                       lr, epochs, m, frac_train=0.8,
                                       seeds=1:10, clip_norm=nothing,
-                                      outdir="results/datos_reales_multisemilla")
+                                      outdir="results/real_data_paired_multiseed")
 
 Entrena UDE y SW-UDE sobre la serie real para cada semilla de `seeds` y
 devuelve `(df_corridas, df_pareado)`. Escribe ambos como CSV en `outdir`.
@@ -40,13 +40,13 @@ devuelve `(df_corridas, df_pareado)`. Escribe ambos como CSV en `outdir`.
 media, estadístico t, y valores p de la prueba t pareada y de Wilcoxon
 (a dos colas y a una cola en la dirección esperada).
 """
-function evaluar_datos_reales_multisemilla(SIR::Matrix{Float64};
+function evaluar_real_data_paired_multiseed(SIR::Matrix{Float64};
         N::Float64, γ::Float64, Δt::Float64=1.0,
         hidden::Int, layers::Int, lr::Float64, epochs::Int, m::Int,
         frac_train::Float64=0.8,
         seeds=1:10,
         clip_norm::Union{Nothing,Float64}=nothing,
-        outdir::String="results/datos_reales_multisemilla")
+        outdir::String="results/real_data_paired_multiseed")
 
     mkpath(outdir)
     cfg = make_real_data_config(SIR; N=N, γ=γ, Δt=Δt)
@@ -116,7 +116,7 @@ function evaluar_datos_reales_multisemilla(SIR::Matrix{Float64};
     finalizar_progreso!(prog)
 
     df = DataFrame(filas)
-    CSV.write(joinpath(outdir, "datos_reales_multisemilla.csv"), df)
+    CSV.write(joinpath(outdir, "real_data_paired_multiseed.csv"), df)
 
     # ── Comparación pareada ─────────────────────────────────────────────
     g = sort(df[df.metodo .== "UDE",    :], :seed)
@@ -148,7 +148,7 @@ function evaluar_datos_reales_multisemilla(SIR::Matrix{Float64};
         ))
     end
     dfp = DataFrame(filas_p)
-    CSV.write(joinpath(outdir, "datos_reales_pareado.csv"), dfp)
+    CSV.write(joinpath(outdir, "real_data_paired.csv"), dfp)
 
     println("\n" * "="^70)
     println("  Comparación pareada (n=$(length(seeds)) semillas), H1: SW-UDE mejor")
@@ -159,7 +159,7 @@ function evaluar_datos_reales_multisemilla(SIR::Matrix{Float64};
                 r.dif_media, r.t_stat, r.p_t_una_cola, r.p_wilcoxon_una_cola,
                 r.p_t_una_cola < 0.05 ? "*" : "")
     end
-    println("\n  CSV: $outdir/datos_reales_multisemilla.csv  y  datos_reales_pareado.csv")
+    println("\n  CSV: $outdir/real_data_paired_multiseed.csv  y  real_data_paired.csv")
     println("  Nota: TV_beta es diagnóstico de suavidad de β̂, no una métrica de error;")
     println("        interpretar su prueba con cuidado.")
 
@@ -176,4 +176,4 @@ function evaluar_datos_reales_multisemilla(SIR::Matrix{Float64};
     return df, dfp
 end
 
-println("✓ evaluar_datos_reales_multisemilla definida (comparación pareada sobre datos reales)")
+println("✓ evaluar_real_data_paired_multiseed definida (comparación pareada sobre datos reales)")

@@ -38,13 +38,13 @@
                                       lr, epochs, seed_red=1234,
                                       clip_norm=nothing, frac_train=0.8,
                                       pcts=Float64[], m_abs=[1,2,5,10,20,32,54,107,171],
-                                      outdir="results/datos_reales")
+                                      outdir="results/real_data")
 
 Barrido de tamaño de ventana sobre la serie real con partición
 cronológica entrenamiento/prueba. Ver el encabezado del módulo.
 
 Devuelve el `DataFrame` (ordenado por `m`) y escribe
-`datos_reales_sensibilidad_m_split.csv` en `outdir`.
+`real_data_sensitivity_m_split.csv` en `outdir`.
 """
 function run_window_sensitivity_real_split(SIR::Matrix{Float64};
                                             N::Float64, γ::Float64, Δt::Float64=1.0,
@@ -55,7 +55,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
                                             frac_train::Float64=0.8,
                                             pcts::Vector{Float64}=Float64[],
                                             m_abs::Vector{Int}=[1, 2, 5, 10, 20, 32, 54, 107, 171],
-                                            outdir::String="results/datos_reales")
+                                            outdir::String="results/real_data")
     mkpath(outdir)
     cfg = make_real_data_config(SIR; N=N, γ=γ, Δt=Δt)
     idx_entren, idx_test = split_train_test(cfg.T; frac_train=frac_train)
@@ -159,7 +159,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
     finalizar_progreso!(prog)
 
     df   = sort(DataFrame(filas), :m)
-    path = joinpath(outdir, "datos_reales_sensibilidad_m_split.csv")
+    path = joinpath(outdir, "real_data_sensitivity_m_split.csv")
     CSV.write(path, df)
     println("\n✓ CSV guardado en $path")
     println(df)
@@ -188,7 +188,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
              left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
     plot!(p, df.m, df.RMSE_I_test, lw=2, marker=:square, ls=:dash, color=:crimson,
           label="RMSE_I (test, diagnóstico)")
-    savefig_all(p, joinpath(outdir, "datos_reales_sensibilidad_m_split");
+    savefig_all(p, joinpath(outdir, "real_data_sensitivity_m_split");
                 formats=(:png, :pdf, :eps))
 
     p2 = plot(df.m, df.TV_beta, lw=2, marker=:diamond, color=:seagreen,
@@ -196,7 +196,7 @@ function run_window_sensitivity_real_split(SIR::Matrix{Float64};
               title="Real data — roughness of the learned β̂ vs window length",
               legend=:outertopright, size=(900, 480),
               left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
-    savefig_all(p2, joinpath(outdir, "datos_reales_TVbeta_vs_m");
+    savefig_all(p2, joinpath(outdir, "real_data_TVbeta_vs_m");
                 formats=(:png, :pdf, :eps))
 
     return df

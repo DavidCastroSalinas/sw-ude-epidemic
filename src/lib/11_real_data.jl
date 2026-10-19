@@ -10,7 +10,7 @@
 Carga el CSV de una serie univariada (una fila por día) y devuelve un
 `Vector{Float64}` ordenado cronológicamente según `columna_orden`.
 
-Pensado para `datos_historicos_julio_enero.csv` (columnas: "Día histórico",
+Pensado para `historical_data_july_january.csv` (columnas: "Día histórico",
 "Mes", "Día", "Valor"), pero sirve para cualquier CSV con una columna de
 orden entero y una columna numérica de valores.
 """
@@ -97,37 +97,9 @@ function construir_SIR_desde_I(I_obs::Vector{Float64};
     return permutedims(hcat(S, I_obs, R))   # 3×Tn
 end
 
-# [2026-10-18] `sugerir_N` estaba aquí: derivaba N como cota mecánica a
-# partir de I_obs y γ. Ya no la usa nada —ningún runner del artículo la
-# llama— y David confirmó que no se ocupa. Se borra. N, S0, I0, R0 y γ se
-# fijan a los valores de la fuente de referencia (Córdova-Lepe et al.
-# 2026, Medwave e3191) con `construir_serie_referencia_fija`, más abajo.
-# Ver CHANGELOG.md y docs/PENDIENTES.md §3 c.
-
-# ── 1bis. Condiciones iniciales FIJAS de la fuente de referencia ────────────
-# [2026-09-07] A pedido de David: el artículo de referencia (Córdova-Lepe,
-# Hernández Castañeda, Gutiérrez & Gutiérrez Jara, 2026, Medwave 26(05):e3191,
-# doi:10.5867/medwave.2026.05.3191 -- https://www.medwave.cl/investigacion/estudios/3191.html)
-# reporta condiciones iniciales epidemiológicas concretas al 10 de julio de
-# 2020. En vez de derivar N mecánicamente (una cota sin lectura
-# demográfica, ver deprecación arriba), se fijan N/S0/I0/R0/γ a esos valores.
-#
-# Problema técnico detectado y resuelto (ver chat, 2026-09-07): I0=26.390
-# (prevalencia puntual reportada por la fuente) es 6,5–8,5x el valor de
-# incidencia diaria digitalizada en la misma fecha -- sustituir u0
-# literalmente sobre la serie sin ajustar produce una discontinuidad de un
-# paso de ~23.000 unidades, inviable para entrenar. Solución adoptada
-# (Opción A, discutida y confirmada con David): reescalar TODA la serie
-# digitalizada restante (desde la fecha ancla en adelante) por un factor
-# constante = I0_ref / I_digitalizado(fecha ancla), preservando la forma
-# relativa de la curva digitalizada pero anclándola a la escala de
-# prevalencia de la fuente. Se descartan los primeros 9 días (1-9 de
-# julio), para los que no hay ancla de referencia -- la serie resultante
-# tiene 206 días (10 de julio de 2020 -- 31 de enero de 2021), no 215.
-#
-# Verificado: con estos valores, S0 reconstruido coincide exactamente con
-# S0_REF_FIJO (tolerancia 1.0) y min(S(t)) = 18.838.158,5 en toda la serie
-# (margen amplio, muy distinto de la cota mecánica vieja, ajustada al límite).
+# Condiciones de referencia de Córdova-Lepe et al. (2026), ancladas
+# al 10 de julio de 2020. La serie digitalizada se reescala desde esa fecha
+# para coincidir con la prevalencia reportada; el resultado contiene 206 días.
 const N_REF_FIJO     = 19_660_000.0
 const S0_REF_FIJO    = 19_348_776.0
 const I0_REF_FIJO    = 26_390.0
@@ -147,22 +119,9 @@ const FECHA_FIN_SERIE = "31 de enero de 2021"
                                      γ=GAMMA_REF_FIJO, dia_ancla_idx=DIA_ANCLA_REF,
                                      Δt=1.0)
 
-Reemplaza a la derivación mecánica de N en todo el
-pipeline de datos reales. Ancla la serie digitalizada completa (215 días,
-`cargar_serie_real`) a las condiciones iniciales fijas de la fuente de
-referencia en `dia_ancla_idx` (por defecto, día 10 = 10 de julio de 2020):
-
-  1. Calcula `factor = I0 / I_obs_raw[dia_ancla_idx]`.
-  2. Reescala TODA la sub-serie desde `dia_ancla_idx` en adelante por ese
-     factor (`I_sub = I_obs_raw[dia_ancla_idx:end] .* factor`) -- descarta
-     los `dia_ancla_idx - 1` días anteriores, para los que no hay ancla.
-  3. Reconstruye S/R desde `I_sub` con `construir_SIR_desde_I` usando
-     `N`, `γ`, `R0` fijos (ya NO con R0=0.0 implícito).
-
-Devuelve `(SIR, factor_reescala, n_dias_descartados)`. Lanza `@assert` si
-la reescala no reproduce `I0` en el primer punto o si `S0` reconstruido no
-coincide con el `S0` fijo (chequeo de consistencia, no debería fallar
-nunca con los valores por defecto).
+Reescala la serie observada desde la fecha de referencia y reconstruye S y
+R con las condiciones iniciales fijas. Excluye los días anteriores al ancla.
+Devuelve la matriz SIR, el factor de reescala y el número de días excluidos.
 """
 function construir_serie_referencia_fija(I_obs_raw::Vector{Float64};
                                           N::Float64=N_REF_FIJO, S0::Float64=S0_REF_FIJO,
@@ -178,10 +137,6 @@ function construir_serie_referencia_fija(I_obs_raw::Vector{Float64};
     @assert isapprox(SIR[1, 1], S0; atol=1.0) "S0 reconstruido no coincide con S0_REF_FIJO"
     return (SIR=SIR, factor_reescala=factor, n_dias_descartados=n_descartados)
 end
-
-
-# [2026-10-18] `plot_sir_reconstruido` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
 
 
 # ── 2. Modelo SIR-UDE parametrizado (config explícito, sin constantes globales) ─
@@ -352,7 +307,7 @@ println("    train_global_rd, train_windowed_rd")
     evaluar_datos_reales_v2(SIR::Matrix{Float64}; N, γ, Δt=1.0,
                             hidden, layers, lr, epochs, m,
                             frac_train=0.8, seed_red=1234,
-                            clip_norm=nothing, outdir="figuras/datos_reales")
+                            clip_norm=nothing, outdir="figures/real_data")
 
 Reemplaza a `evaluar_datos_reales` (Sección 18.9 del notebook original)
 con tres diferencias metodológicas importantes:
@@ -376,7 +331,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                                   hidden::Int, layers::Int, lr::Float64, epochs::Int, m::Int,
                                   frac_train::Float64=0.8, seed_red::Int=1234,
                                   clip_norm::Union{Nothing,Float64}=nothing,
-                                  outdir::String="figuras/datos_reales")
+                                  outdir::String="figures/real_data")
     mkpath(outdir)
     cfg = make_real_data_config(SIR; N=N, γ=γ, Δt=Δt)
     idx_entren, idx_test = split_train_test(cfg.T; frac_train=frac_train)
@@ -412,24 +367,18 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                                         β̂=beta_w, S=pred_w[1, 1:cfg.T], N=N, γ=γ,
                                         idx_test=idx_test, etiqueta="SW-UDE (m=$m)")
     tabla = DataFrame([fila_g, fila_w])
-    CSV.write("$outdir/metricas_extendidas_datos_reales.csv", tabla)
+    CSV.write("$outdir/metrics_extended_real_data.csv", tabla)
     println("\n✓ Tabla de métricas extendidas:")
     println(tabla)
-    println("  Guardada en $outdir/metricas_extendidas_datos_reales.csv")
+    println("  Guardada en $outdir/metrics_extended_real_data.csv")
 
-    # ── Curvas completas (día a día) para regenerar figuras fuera de
-    # Julia -- antes de esta versión solo se guardaba la tabla de
-    # métricas escalares, no I(t)/β̂(t)/R_eff(t) día a día. ──────────
+    # Save daily trajectories and derived metrics for external plotting.
     reff_g = r_effective(beta_g, pred_g[1, 1:cfg.T], N, γ)
     reff_w = r_effective(beta_w, pred_w[1, 1:cfg.T], N, γ)
 
-    # es_test se extiende a los T+1 días (0..T): el día k (k=0..T) es de
-    # prueba si la transición que lo produce (transición k, k=1..T) está
-    # en idx_test. El día 0 (estado inicial) queda siempre false. Verificado
-    # contra split_train_test (src/lib/12_extended_metrics.jl): con T=214 y
-    # frac_train=0.8, idx_entren=1:171 e idx_test=172:214, de modo que los
-    # días 172..214 (43 días) quedan marcados como test -- coincide con la
-    # partición ya usada en tabla_metricas_extendidas vía `idx_test .+ 1`.
+    # Mark a day as test when the transition producing it belongs to idx_test.
+    # The initial state is always training data; day indices are shifted by
+    # one relative to the transition indices.
     es_test_dias = [k in idx_test for k in 0:cfg.T]
 
     # β̂ y R_eff están indexados por transición (k=1..T, T valores) y por
@@ -454,8 +403,8 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
         Reff_UDE       = Reff_UDE_col,
         Reff_Windowed  = Reff_Windowed_col,
     )
-    CSV.write("$outdir/datos_reales_curvas.csv", df_curvas)
-    println("  Curvas día a día guardadas en $outdir/datos_reales_curvas.csv")
+    CSV.write("$outdir/real_data_curves.csv", df_curvas)
+    println("  Curvas día a día guardadas en $outdir/real_data_curves.csv")
 
     # ── Figuras ─────────────────────────────────────────────────────────
     t_split = dias[length(idx_entren) + 1]
@@ -466,7 +415,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
                   left_margin=6mm, right_margin=2mm, bottom_margin=8mm)
     plot!(p_beta, dias[1:cfg.T], beta_w, label="β̂ SW-UDE (m=$m)", color=:steelblue, lw=2)
     vline!(p_beta, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_beta, "$outdir/datos_reales_beta_comparacion"; formats=(:png, :pdf, :eps))
+    savefig_all(p_beta, "$outdir/real_data_beta_comparison"; formats=(:png, :pdf, :eps))
 
     p_reff = plot(dias[1:cfg.T], r_effective(beta_g, pred_g[1, 1:cfg.T], N, γ),
                   label="R_eff UDE", color=:orange, lw=2,
@@ -477,7 +426,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
           label="R_eff SW-UDE (m=$m)", color=:steelblue, lw=2)
     hline!(p_reff, [1.0], color=:black, ls=:dot, lw=1.4, label="R_eff = 1")
     vline!(p_reff, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_reff, "$outdir/datos_reales_reff"; formats=(:png, :pdf, :eps))
+    savefig_all(p_reff, "$outdir/real_data_reff"; formats=(:png, :pdf, :eps))
 
     p_I = plot(dias, SIR[2, :], label="Observed data", color=:black, lw=2.5,
                xlabel="Day", ylabel="Infected / cases",
@@ -487,7 +436,7 @@ function evaluar_datos_reales_v2(SIR::Matrix{Float64};
     plot!(p_I, dias, pred_g[2, :], label="Î UDE", color=:orange, ls=:dash, lw=1.8)
     plot!(p_I, dias, pred_w[2, :], label="Î SW-UDE", color=:steelblue, ls=:dash, lw=1.8)
     vline!(p_I, [t_split], color=:gray, ls=:dash, lw=1.2, label="train/test split")
-    savefig_all(p_I, "$outdir/datos_reales_I_comparacion"; formats=(:png, :pdf, :eps))
+    savefig_all(p_I, "$outdir/real_data_I_comparison"; formats=(:png, :pdf, :eps))
 
     println("\n✓ Figuras guardadas en $outdir/ (train/test split marcado con línea vertical)")
     println("  Preguntas de lectura cualitativa (Sección 18.9 original, siguen aplicando):")

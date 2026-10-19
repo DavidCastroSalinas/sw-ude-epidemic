@@ -18,16 +18,9 @@ using CSV, DataFrames
 
 println("✓ Librerías cargadas")
 
-# ============================================================
-# Modo de prueba rápida (smoke test) — activar con la variable de entorno
-# SIR_UDE_SMOKE_TEST=1 antes de correr cualquier runner (o exportarla antes
-# del `nohup`). Reduce épocas y número de semillas para validar que TODO
-# el pipeline corre de punta a punta en minutos, antes de lanzar la
-# corrida completa (que puede tomar muchas horas). Los números resultantes
-# en modo smoke test NO son válidos para el artículo -- son solo para
-# confirmar que no hay errores antes de comprometer el tiempo de cómputo
-# de la corrida real.
-# ============================================================
+# Smoke mode checks the pipeline with fewer epochs and seeds. Its numerical
+# results are not valid for the article. Enable it before starting a runner
+# with SIR_UDE_SMOKE_TEST=1.
 const SMOKE_TEST = get(ENV, "SIR_UDE_SMOKE_TEST", "0") == "1"
 if SMOKE_TEST
     println("⚠ SIR_UDE_SMOKE_TEST=1 -- usando épocas/semillas reducidas (corrida de PRUEBA).")
@@ -39,10 +32,10 @@ end
     epocas_final(n::Int)
 
 Devuelve `n` tal cual, salvo que `SIR_UDE_SMOKE_TEST=1` esté activa, en
-cuyo caso devuelve `min(n, 150)` -- para poder validar el pipeline
-completo en minutos en vez de horas.
+cuyo caso devuelve `min(n, SIR_UDE_SMOKE_EPOCHS)` (150 por defecto).
+El runner 09 fija este límite en 30 para que su prueba sea más rápida.
 """
-epocas_final(n::Int) = SMOKE_TEST ? min(n, 150) : n
+epocas_final(n::Int) = SMOKE_TEST ? min(n, max(1, parse(Int, get(ENV, "SIR_UDE_SMOKE_EPOCHS", "150")))) : n
 
 """
     semillas_final(rango)
