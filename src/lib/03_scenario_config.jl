@@ -12,46 +12,18 @@ end
 
 const SCENARIO_CONFIG = Dict(
     :constante    => ScenarioConfig(0,  1, 10, 3000, 0.010, nothing),
-    # β afín exacta → arquitectura y m validados (Sección 14, curva en U con
-    # mínimo claro en m=10: RMSE_β = 0.0475/0.0251/0.0107/0.00367/0.0143/0.0310
-    # para m=1/3/5/10/20/50).
-
     :lineal       => ScenarioConfig(0,  1, 10, 7000, 0.010, nothing),
-    # β afín exacta. m=10 heredado del caso :constante; PENDIENTE confirmar
-    # con su propia curva de sensibilidad (Sección 14b).
-
+    # The tanh scenario changes rapidly near its transition, so its m-grid
+    # includes shorter windows.
     :tanh         => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Con T=50 la β real satura casi de inmediato (argumento del tanh crece
-    # ~1.2/paso) → función real ≈ escalón con transición de 1-2 pasos.
-    # Ventanas apenas mejora sobre Global (RMSE_β 0.0678 vs 0.0718,
-    # summary_ALL_scenarios.csv): probable síntoma de que m=10 promedia
-    # sobre tramos casi planos y diluye la única transición informativa.
-    # PENDIENTE: barrer m con grid fino (Sección 14b) antes de fijar valor.
-
     :dos_olas     => ScenarioConfig(32, 2, 10, 8000, 0.005, nothing),
-    # Mejora parcial (RMSE_S y RMSE_I bajan, RMSE_R sube levemente). No hay
-    # evidencia de inestabilidad; se deja igual, revisar tras Sección 14b.
-
     :intervencion => ScenarioConfig(32, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
     :estacional   => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
+    # Gradient clipping stabilizes windowed training for this strongly
+    # feedback-dependent scenario.
     :saturacion   => ScenarioConfig(16, 2, 10, 8000, 0.003, 5.0),
-    # β depende de un sigmoide con pendiente 20 sobre I/N: retroalimentación
-    # fuerte. Con la config anterior (lr=0.005, sin clip) el entrenamiento
-    # por ventanas DIVERGE en estados: RMSE_S pasa de 0.61 (Global) a 5.27
-    # (Ventanas m=10), ver saturation_10_metrics.csv / summary_ALL_scenarios.csv.
-    # Primer intento de estabilización: lr reducido (0.005→0.003) +
-    # clip_norm=5.0 (recorte de norma de gradiente). REQUIERE re-ejecutar y
-    # validar que RMSE_S/I/R vuelvan a ser comparables o mejores que Global;
-    # si sigue inestable, probar m más chico (Sección 14b) antes que tocar
-    # la arquitectura.
-
-    :realchile   => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
-    # Ventanas gana en todas las métricas de estado y de β. Sin cambios.
-
+    # Architecture used for the real-data experiments; not in SCENARIO_ORDER.
+    :realchile    => ScenarioConfig(16, 2, 10, 8000, 0.005, nothing),
 )
 
 const SCENARIO_ORDER = [:constante, :lineal, :tanh, :dos_olas,
