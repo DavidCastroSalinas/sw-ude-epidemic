@@ -1,38 +1,7 @@
-# ============================================================
-# src/lib/10_final_synthetic_experiments.jl — Versión final: cierra los experimentos
-# SINTÉTICOS (7 escenarios) que en el proyecto original quedaron parciales
-# o sin ejecutar.
-# ------------------------------------------------------------
-# Gaps identificados por revisión de código (ver auditoría previa) y que
-# este archivo resuelve:
-#
-#   1. Multi-semilla (10 seeds) + comparación pareada (t de Student +
-#      Wilcoxon) solo existían, de hecho, para :lineal (Experimento 1) y
-#      parcialmente para :dos_olas/:estacional (Experimento 3, sin barrido
-#      de m ni test pareado). :constante, :tanh, :intervencion y
-#      :saturacion nunca tuvieron más que una corrida puntual con
-#      seed=1234. Este archivo generaliza el patrón de
-#      `correr_experimento_1_lineal` a CUALQUIER escenario.
-#
-#   2. :saturacion estaba excluida a propósito de Experimento 3 "hasta
-#      confirmar estabilidad". SCENARIO_CONFIG[:saturacion] YA tiene la
-#      configuración estabilizada (lr=0.003, clip_norm=5.0, Sección 17),
-#      y `ejecutar_repeticion` la toma automáticamente de ahí -- así que
-#      generalizar el experimento multi-semilla también cierra este punto,
-#      sin tocar la arquitectura ni el optimizador.
-#
-#   3. graficar_trajectories (Sección 18) es genérica pero solo se había
-#      invocado para :lineal. Se generaliza a los 7 escenarios.
-#
-# NOTA (21-ago-2026, renumeración): este archivo se llamaba
-# `src/lib/11_final_experiments.jl` y traía, además de lo anterior, un cuarto
-# punto sobre sensibilidad de datos reales a N/γ -- ESE punto (la función
-# `evaluar_sensibilidad_datos_reales`) se separó a su propio archivo,
-# `src/lib/13_real_data_sensitivity_n_gamma.jl`, para que todo lo que trabaja
-# con datos reales (src/lib/11 a src/lib/17) quede en un bloque de números
-# contiguo, sin este archivo -- que es 100% sobre los 7 escenarios
-# SINTÉTICOS -- interrumpiéndolo en el medio.
-# ============================================================
+# Multi-seed comparisons, window-length sensitivity, paired tests, and
+# representative trajectories for the seven synthetic scenarios.
+# Scenario parameters and default m-grids are defined below and in
+# src/lib/03_scenario_config.jl.
 
 
 # ── 1. Grid de m por defecto, específico por escenario ───────────────────
