@@ -122,6 +122,14 @@ SIR_UDE_SMOKE_TEST=1 ./smoke_test.sh --con-julia --con-destilacion-smoke
 Ese modo solo comprueba el flujo de ejecución; guarda los resultados de
 prueba en un directorio temporal y no reproduce cifras del artículo.
 
+### SW-UDE con datos reales, paso a paso
+
+El cuaderno [notebooks/SW_UDE_step_by_step.ipynb](notebooks/SW_UDE_step_by_step.ipynb)
+recorre una ejecución de SW-UDE con la serie real: carga y prepara los datos,
+entrena una sola semilla, calcula métricas de I(t) y grafica I(t), β̂, R_eff
+y la pérdida. No ejecuta ni compara con UDE. Las figuras exportadas quedan en
+notebooks/outputs/ y no se mezclan con los resultados del artículo.
+
 ### Un escenario sintético, desde el REPL
 
 Es la forma más corta de ver el método funcionando. `src/sir_ude_lib.jl`
