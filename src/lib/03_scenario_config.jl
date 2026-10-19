@@ -133,7 +133,7 @@ function run_all_sensitivity(; scenarios::Vector{Symbol}=SCENARIO_ORDER,
                          lr=cfg.lr, hidden=cfg.hidden, layers=cfg.layers,
                          clip_norm=cfg.clip_norm,
                          seed=seed, outdir=outdir, save_csv=true)
-        df_i = CSV.read("$outdir/$(key)_sensitivity_m.csv", DataFrame)
+        df_i = CSV.read("$outdir/$(scenario_file_key(key))_sensitivity_m.csv", DataFrame)
         push!(all_dfs, df_i)
         avanzar!(prog; detalle=String(key))
     end
