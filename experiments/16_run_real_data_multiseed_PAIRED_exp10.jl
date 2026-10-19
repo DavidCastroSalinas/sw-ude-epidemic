@@ -1,28 +1,7 @@
-# ============================================================
-# Datos reales: comparación pareada multi-semilla UDE vs SW-UDE
-# ============================================================
-#   julia experiments/16_run_real_data_multiseed.jl
-#   SIR_UDE_SMOKE_TEST=1 julia experiments/16_...    # validación en minutos
-#
-# ~11 min por semilla (ambos métodos) => ~110 min con 10 semillas.
-# Cierra la limitación declarada en el manuscrito: hoy toda la sección de
-# datos reales usa una única semilla y no admite ningún valor p.
-#
-# m por defecto = 10 (el seleccionado con el barrido sin fuga + TV(β̂)).
-# Override:  SIR_UDE_M_OVERRIDE=5 julia experiments/16_...
-#
-# [2026-09-07] ACTUALIZADO A PEDIDO DE DAVID: N ya NO se deriva con
-# `sugerir_N` sobre la serie digitalizada con R0=0. Ahora se usa
-# `construir_serie_referencia_fija` (src/lib/11_real_data.jl, sección 1bis)
-# para anclar la serie a las condiciones iniciales fijas de Córdova-Lepe
-# et al. 2026 (Medwave e3191) al 10 de julio de 2020: N=19.660.000,
-# S0=19.348.776, I0=26.390, R0=284.834, γ=1/7. La serie resultante tiene
-# 206 días (10 de julio de 2020 -- 31 de enero de 2021), no 215. Este es
-# el runner de la CIFRA CENTRAL de la sección de datos reales
-# (`tab:real_data_paired`, n=10 semillas) -- cualquier corrida nueva
-# de este archivo invalida y reemplaza esa tabla y su análoga
-# suplementaria `tab:S1_real_data_paired_supp`.
-# ============================================================
+# Paired multi-seed comparison of UDE and SW-UDE on real data (n=10).
+# Uses the fixed reference conditions in src/lib/11_real_data.jl.
+# Run with: julia experiments/16_run_real_data_multiseed_PAIRED_exp10.jl
+# Override the window or seed count with SIR_UDE_M_OVERRIDE and smoke mode.
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
