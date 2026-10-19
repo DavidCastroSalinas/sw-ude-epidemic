@@ -1,50 +1,9 @@
-# ============================================================
-# Window-length (m) sensitivity for all 7 scenarios -- v2
-# ============================================================
-# Reemplaza a experiments/02_run_window_sensitivity_all.jl para la grilla de m.
-# No cambia el motor de entrenamiento ni las métricas -- llama a la misma
-# `run_all_sensitivity` de sir_ude_lib.jl -- solo cambia QUÉ valores de m
-# se prueban y por qué, de acuerdo a la discusión metodológica de
-# Sección~2.1.4 (Sensitivity to Window Length) de main3_corregido.tex.
-#
-# REVERTIDO 2026-09-05 (revisión de experimentos vs. manuscrito): entre el
-# 2026-08-30 y esta revisión, este runner pasó a generar la grilla
-# automáticamente con `generar_grilla_m(γ, Δt, T_train)`
-# (un módulo que existió hasta el 2026-10-18):
-#
-#   m_γ = ceil(1/(γ·Δt))   (τ_I en pasos temporales)
-#   grilla = { ceil(m_γ/2), m_γ, 2·m_γ, 3·m_γ, ..., K·m_γ, T_train }
-#
-# Para γ=0.10, Δt=1.0, T_train=50 esto da m_γ=10 → grilla=[5,10,20,30,40,50]
-# (6 puntos) -- que YA NO es la grilla que produjo los resultados citados en
-# main3_corregido.tex/articulo_bloques_es.tex. La Sección "Sensitivity to
-# Window Length" y la Tabla tab:tv_diagnostico están escritas sobre la
-# grilla refinada real, `[1, 2, 5, 7, 10, 15, 20, 30, 50]` (9 puntos) --
-# incluyen EXPLÍCITAMENTE m=1 y m=2 como controles por debajo del piso
-# epidemiológico (el argumento central de esa sección es que el mínimo de
-# RMSE_β cae en m=1/m=2 para la mayoría de los escenarios, y eso es
-# precisamente lo que muestra ser un artefacto de sobreajuste; sin m=1/m=2
-# en la grilla esa sección no tiene con qué sostenerse) y m=7/m=15, que
-# tampoco están en la grilla automática. Se revierte a la grilla manual
-# exacta para no perder la reproducibilidad de lo ya escrito y validado.
-# `generar_grilla_m` (src/lib/24_generate_grilla_m.jl) quedó sin uso con esa
-# reversión y se eliminó del repositorio el 2026-10-18. m_γ se calcula acá
-# en una línea, más abajo, solo para el diagnóstico r_m/es_control.
-#
-# Grilla usada acá (idéntica a la "v2 manual, 2026-08-30" y a la que cita
-# el manuscrito):
-#   [1(control), 2(control), 5, 7, 10, 15, 20, 30, 50]
-#
-# Grillas aún más antiguas (solo para referencia histórica):
-#   default:            [1, 3, 5, 10, 20, 50]
-#   :tanh, :saturacion: [1, 2, 3, 5, 7, 10, 20]
-#
-# Run from the command line with:
-#     julia --project=. experiments/20_run_window_sensitivity_all_v2.jl
-# ============================================================
+# Window-length sensitivity for all seven synthetic scenarios.
+# Uses the grid reported in the manuscript: [1, 2, 5, 7, 10, 15, 20, 30, 50].
+# Values 1 and 2 are below the epidemiological timescale 1/gamma and serve
+# as controls. Run with: julia --project=. experiments/20_run_window_sensitivity_all_v2.jl
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
-using CSV   # redundante si sir_ude_lib.jl ya lo carga; no hace daño repetirlo
 
 mkpath("results/window_sensitivity_v2")
 
