@@ -28,8 +28,7 @@ GAMMA_REAL = GAMMA_REF_FIJO   # 1/7, igual que antes
 resultado_ancla = construir_serie_referencia_fija(I_obs)  # usa los _REF_FIJO por defecto
 SIR_real = resultado_ancla.SIR
 N_REAL   = N_REF_FIJO
-println("✓ Semilla = ", SEMILLA, " -- N fijo (fuente de referencia): N_REAL = ", N_REAL,
-        "  (antes se derivaba con sugerir_N; ya no aplica)")
+println("✓ Semilla = ", SEMILLA, " -- N fijo (fuente de referencia): N_REAL = ", N_REAL)
 
 cfg_arq  = SCENARIO_CONFIG[:realchile]
 
@@ -46,8 +45,7 @@ const T_TRAIN_REAL = length(idx_entren)
 const M_GRID_REAL_V2    = sort(unique([1, 2, 4, 7, 10, 14, 21, 35, 54, 107, T_TRAIN_REAL]))
 const M_CONTROL_REAL_V2 = 1
 const M_ADOPTADO        = 10
-println("  Ancla de horizonte completo (antes 171, serie de 215 días): T_TRAIN_REAL = ", T_TRAIN_REAL,
-        "  (serie nueva de 206 días, mismos días que Córdova-Lepe et al.)")
+println("Training-horizon endpoint: T_TRAIN_REAL = ", T_TRAIN_REAL)
 
 t0 = time()
 df = run_window_sensitivity_real_split(SIR_real;
