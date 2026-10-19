@@ -1,40 +1,12 @@
-# ============================================================
-# experiments/16_run_real_data_multiseed.jl
-#
-# Corrida multi-semilla de datos reales (N=80 851, γ=1/7, m=10) para
-# refrescar dos cifras que hoy están footnoteadas en el manuscrito como
-# provenientes de la corrida ANTERIOR al parche de consistencia de β̂:
-#
-#   1. Máximo de R_eff(t) por semilla y método (media ± DE, y en cuántas
-#      de las 10 semillas supera 1) -- Sección de R_eff por fases.
-#   2. Mínimo global de β̂ en las 20 corridas (10 semillas x 2 métodos)
-#      -- párrafo de "control de robustez" antes de la sensibilidad a N.
-#
-# Requiere que `src/lib/11_real_data.jl` ya esté en su versión PARCHEADA:
-# evaluar_datos_reales_v2 debe evaluar β̂ sobre el I que cada método
-# propaga (pred_g[2,k] / pred_w[2,k]), no sobre el I observado. Si tu
-# `src/lib/11_real_data.jl` es el archivo que ya me pasaste como
-# `11_real_data_corregido.jl`, esto ya está aplicado.
-#
-# [2026-09-07] ACTUALIZADO A PEDIDO DE DAVID: ya NO deriva N con
-# `sugerir_N` sobre la serie digitalizada con R0=0. Ahora usa
-# `construir_serie_referencia_fija` para anclar la serie a las condiciones
-# iniciales de Córdova-Lepe et al. 2026 (Medwave e3191) al 10 de julio de
-# 2020: N=19.660.000, S0=19.348.776, I0=26.390, R0=284.834, γ=1/7. La
-# serie resultante tiene 206 días (10 de julio de 2020 -- 31 de enero de
-# 2021), no 215.
-# ============================================================
+# Real-data robustness summary across 10 seeds.
+# Reports maximum effective reproduction number and beta extrema for each
+# method. Uses the fixed reference conditions in src/lib/11_real_data.jl.
 
-# --- AJUSTA ESTE INCLUDE a como cargas el resto de la librería en tus
-#     otros runners (p.ej. el mismo header que usa experiments/13_...).
-#     Debe dejar definidas: cargar_serie_real, construir_SIR_desde_I,
-#     evaluar_datos_reales_v2, r_effective, build_network, etc.
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
-using Statistics, CSV, DataFrames
 
 # ── Config oficial adoptada en el manuscrito [ACTUALIZADA 2026-09-07] ──
-const GAMMA_OFICIAL = GAMMA_REF_FIJO   # 1/7, igual que antes
+const GAMMA_OFICIAL = GAMMA_REF_FIJO
 const M_OFICIAL     = 10
 const HIDDEN        = 16
 const LAYERS        = 2
@@ -44,7 +16,7 @@ const FRAC_TRAIN    = 0.8
 const SEEDS         = 1:10
 
 # --- AJUSTA esta ruta a tu CSV real (la misma que usan experiments/11_ y 13_) ---
-const RUTA_SERIE  = "data/historical_data_july_january.csv"
+const RUTA_SERIE  = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
 const OUTDIR_BASE = "results/real_data_multiseed"
 
 mkpath(OUTDIR_BASE)
