@@ -81,25 +81,43 @@ if [[ $CON_JULIA -eq 1 ]]; then
     etapa "Entorno de Julia"
     JULIA="${JULIA:-julia}"
     if command -v "$JULIA" >/dev/null 2>&1; then
-        "$JULIA" --project=. install_dependencies.jl || mal "no instaló el entorno."
-
-        etapa "Runners presentes (modo reducido)"
         export SIR_UDE_SMOKE_TEST=1
-        for r in experiments/*.jl; do
-            [[ -f "$r" ]] || continue
-            [[ "$r" == "experiments/29_run_distillation_parametric_v51.jl" ]] && continue
-            echo "-- $r"
-            "$JULIA" --project=. --threads=auto "$r" || mal "falló $r"
-        done
+        SMOKE_TMP="$(mktemp -d "${TMPDIR:-/tmp}/sw-ude-smoke.XXXXXX")" || {
+            mal "no se pudo crear el directorio temporal del smoke."
+            SMOKE_TMP=""
+        }
 
-        if [[ $CON_DESTILACION_SMOKE -eq 1 ]]; then
-            etapa "Destilación paramétrica (smoke reducido)"
-            SIR_UDE_DESTILACION_SMOKE=1 \
-                "$JULIA" --project=. --threads=auto \
-                experiments/29_run_distillation_parametric_v51.jl || \
-                mal "falló el smoke reducido de la destilación."
-        else
-            echo "Destilación omitida; añadir --con-destilacion-smoke para probarla en modo reducido."
+        if [[ -n "$SMOKE_TMP" ]]; then
+            trap 'if [[ -n "${SMOKE_TMP:-}" ]]; then rm -rf "$SMOKE_TMP"; fi' EXIT
+            SMOKE_REPO="$SMOKE_TMP/repo"
+            mkdir -p "$SMOKE_REPO"
+            if tar --exclude='./.git' -C "$RAIZ" -cf - . | tar -C "$SMOKE_REPO" -xf -; then
+                echo "Copia temporal: $SMOKE_REPO"
+                if ( cd "$SMOKE_REPO" && "$JULIA" --project=. install_dependencies.jl ); then
+                    etapa "Runners presentes (modo reducido)"
+                    for r in "$SMOKE_REPO"/experiments/*.jl; do
+                        [[ -f "$r" ]] || continue
+                        rel="${r#"$SMOKE_REPO"/}"
+                        [[ "$rel" == "experiments/29_run_distillation_parametric_v51.jl" ]] && continue
+                        echo "-- $rel"
+                        ( cd "$SMOKE_REPO" && "$JULIA" --project=. --threads=auto "$rel" ) || mal "falló $rel"
+                    done
+
+                    if [[ $CON_DESTILACION_SMOKE -eq 1 ]]; then
+                        etapa "Destilación paramétrica (smoke reducido)"
+                        ( cd "$SMOKE_REPO" && SIR_UDE_DESTILACION_SMOKE=1 \
+                            "$JULIA" --project=. --threads=auto \
+                            experiments/29_run_distillation_parametric_v51.jl ) || \
+                            mal "falló el smoke reducido de la destilación."
+                    else
+                        echo "Destilación omitida; añadir --con-destilacion-smoke para probarla en modo reducido."
+                    fi
+                else
+                    mal "no instaló el entorno Julia en la copia temporal."
+                fi
+            else
+                mal "no se pudo preparar la copia temporal del repositorio."
+            fi
         fi
     else
         mal "no se encontró Julia; fijar JULIA=/ruta/a/julia."
