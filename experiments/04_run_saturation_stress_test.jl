@@ -1,32 +1,9 @@
-# ============================================================
-# Numerical-stability stress test for the :saturacion scenario  [Section 14b.2]
-# ============================================================
-# Run from the command line with:
-#     julia --project=. experiments/04_run_saturation_stress_test.jl
-# (or just `julia experiments/04_run_saturation_stress_test.jl` if you have the packages installed
-# globally). Adjust the `cd`/`outdir` below if you want the figures and
-# CSVs somewhere else.
-#
-# 15 combinaciones (m ∈ {1,2,3,5,10} × clip_norm ∈ {nothing,5.0,1.0}), cada
-# una entrena UDE global + SW-UDE (2 entrenamientos de 3000 épocas) --
-# ~15 min estimados en MAPA_EXPERIMENTS.md/inventario_experiments.sh
-# para las 30 corridas juntas.
-#
-# NOTA (2026-09-07): esta versión agrega el CSV consolidado que faltaba --
-# antes el runner corría con `save_csv=false` y solo imprimía los
-# resultados por consola, así que un corrida exitosa no dejaba NINGÚN
-# archivo en results/saturacion_stress_test/, y `inventario_experiments.sh`
-# (que busca `results/saturacion_stress_test/*.csv`) lo iba a reportar
-# como "FALTA" para siempre, sin importar cuántas veces se corriera. No se
-# activó `save_csv=true` de `run_experiment` porque esa función nombra el
-# archivo solo por escenario+m (`saturacion_<m>_metrics.csv`), sin
-# `clip_norm` -- las 3 variantes de clip_norm para el mismo m se
-# pisarían entre sí. En cambio, este runner arma su propia tabla
-# acumulando las 15 filas y la guarda UNA sola vez al final.
-# ============================================================
+# Saturation stability stress test (Section 14b.2).
+# Trains UDE and SW-UDE for each (m, clip_norm) pair and writes one summary
+# CSV. The combined output avoids filename collisions between clip_norm runs.
+# Run with: julia --project=. experiments/04_run_saturation_stress_test.jl
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
-using CSV, DataFrames   # redundante si sir_ude_lib.jl ya los carga; no hace daño repetirlo
 
 mkpath("results/saturacion_stress_test")
 COMBINACIONES = [(m_test, clip_test) for m_test in [1, 2, 3, 5, 10] for clip_test in [nothing, 5.0, 1.0]]
