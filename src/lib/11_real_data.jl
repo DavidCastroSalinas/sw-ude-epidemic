@@ -97,37 +97,9 @@ function construir_SIR_desde_I(I_obs::Vector{Float64};
     return permutedims(hcat(S, I_obs, R))   # 3×Tn
 end
 
-# [2026-10-18] `sugerir_N` estaba aquí: derivaba N como cota mecánica a
-# partir de I_obs y γ. Ya no la usa nada —ningún runner del artículo la
-# llama— y David confirmó que no se ocupa. Se borra. N, S0, I0, R0 y γ se
-# fijan a los valores de la fuente de referencia (Córdova-Lepe et al.
-# 2026, Medwave e3191) con `construir_serie_referencia_fija`, más abajo.
-# Ver CHANGELOG.md y docs/PENDIENTES.md §3 c.
-
-# ── 1bis. Condiciones iniciales FIJAS de la fuente de referencia ────────────
-# [2026-09-07] A pedido de David: el artículo de referencia (Córdova-Lepe,
-# Hernández Castañeda, Gutiérrez & Gutiérrez Jara, 2026, Medwave 26(05):e3191,
-# doi:10.5867/medwave.2026.05.3191 -- https://www.medwave.cl/investigacion/estudios/3191.html)
-# reporta condiciones iniciales epidemiológicas concretas al 10 de julio de
-# 2020. En vez de derivar N mecánicamente (una cota sin lectura
-# demográfica, ver deprecación arriba), se fijan N/S0/I0/R0/γ a esos valores.
-#
-# Problema técnico detectado y resuelto (ver chat, 2026-09-07): I0=26.390
-# (prevalencia puntual reportada por la fuente) es 6,5–8,5x el valor de
-# incidencia diaria digitalizada en la misma fecha -- sustituir u0
-# literalmente sobre la serie sin ajustar produce una discontinuidad de un
-# paso de ~23.000 unidades, inviable para entrenar. Solución adoptada
-# (Opción A, discutida y confirmada con David): reescalar TODA la serie
-# digitalizada restante (desde la fecha ancla en adelante) por un factor
-# constante = I0_ref / I_digitalizado(fecha ancla), preservando la forma
-# relativa de la curva digitalizada pero anclándola a la escala de
-# prevalencia de la fuente. Se descartan los primeros 9 días (1-9 de
-# julio), para los que no hay ancla de referencia -- la serie resultante
-# tiene 206 días (10 de julio de 2020 -- 31 de enero de 2021), no 215.
-#
-# Verificado: con estos valores, S0 reconstruido coincide exactamente con
-# S0_REF_FIJO (tolerancia 1.0) y min(S(t)) = 18.838.158,5 en toda la serie
-# (margen amplio, muy distinto de la cota mecánica vieja, ajustada al límite).
+# Condiciones de referencia de Córdova-Lepe et al. (2026), ancladas
+# al 10 de julio de 2020. La serie digitalizada se reescala desde esa fecha
+# para coincidir con la prevalencia reportada; el resultado contiene 206 días.
 const N_REF_FIJO     = 19_660_000.0
 const S0_REF_FIJO    = 19_348_776.0
 const I0_REF_FIJO    = 26_390.0
@@ -147,22 +119,9 @@ const FECHA_FIN_SERIE = "31 de enero de 2021"
                                      γ=GAMMA_REF_FIJO, dia_ancla_idx=DIA_ANCLA_REF,
                                      Δt=1.0)
 
-Reemplaza a la derivación mecánica de N en todo el
-pipeline de datos reales. Ancla la serie digitalizada completa (215 días,
-`cargar_serie_real`) a las condiciones iniciales fijas de la fuente de
-referencia en `dia_ancla_idx` (por defecto, día 10 = 10 de julio de 2020):
-
-  1. Calcula `factor = I0 / I_obs_raw[dia_ancla_idx]`.
-  2. Reescala TODA la sub-serie desde `dia_ancla_idx` en adelante por ese
-     factor (`I_sub = I_obs_raw[dia_ancla_idx:end] .* factor`) -- descarta
-     los `dia_ancla_idx - 1` días anteriores, para los que no hay ancla.
-  3. Reconstruye S/R desde `I_sub` con `construir_SIR_desde_I` usando
-     `N`, `γ`, `R0` fijos (ya NO con R0=0.0 implícito).
-
-Devuelve `(SIR, factor_reescala, n_dias_descartados)`. Lanza `@assert` si
-la reescala no reproduce `I0` en el primer punto o si `S0` reconstruido no
-coincide con el `S0` fijo (chequeo de consistencia, no debería fallar
-nunca con los valores por defecto).
+Reescala la serie observada desde la fecha de referencia y reconstruye S y
+R con las condiciones iniciales fijas. Excluye los días anteriores al ancla.
+Devuelve la matriz SIR, el factor de reescala y el número de días excluidos.
 """
 function construir_serie_referencia_fija(I_obs_raw::Vector{Float64};
                                           N::Float64=N_REF_FIJO, S0::Float64=S0_REF_FIJO,
@@ -178,10 +137,6 @@ function construir_serie_referencia_fija(I_obs_raw::Vector{Float64};
     @assert isapprox(SIR[1, 1], S0; atol=1.0) "S0 reconstruido no coincide con S0_REF_FIJO"
     return (SIR=SIR, factor_reescala=factor, n_dias_descartados=n_descartados)
 end
-
-
-# [2026-10-18] `plot_sir_reconstruido` estaba aquí. Ningún runner del
-# artículo la llamaba: quedó superada y se eliminó. Ver CHANGELOG.md.
 
 
 # ── 2. Modelo SIR-UDE parametrizado (config explícito, sin constantes globales) ─
