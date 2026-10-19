@@ -1,25 +1,29 @@
-# Real-data robustness summary across 10 seeds.
-# Reports maximum effective reproduction number and beta extrema for each
-# method. Uses the fixed reference conditions in src/lib/11_real_data.jl.
+# Real-data robustness summary across network seeds.
+# Smoke mode uses 2 seeds, 30 epochs, and a temporary output directory.
+# Full runs use 10 seeds and write to results/real_data_multiseed/.
+
+if get(ENV, "SIR_UDE_SMOKE_TEST", "0") == "1"
+    ENV["SIR_UDE_SMOKE_EPOCHS"] = get(ENV, "SIR_UDE_SMOKE_EPOCHS", "30")
+end
 
 include(joinpath(@__DIR__, "..", "src", "sir_ude_lib.jl"))
 
-
-# ── Config oficial adoptada en el manuscrito [ACTUALIZADA 2026-09-07] ──
 const GAMMA_OFICIAL = GAMMA_REF_FIJO
 const M_OFICIAL     = 10
 const HIDDEN        = 16
 const LAYERS        = 2
-const EPOCHS        = 8000
+const EPOCHS        = epocas_final(8000)
 const LR            = 0.005
 const FRAC_TRAIN    = 0.8
-const SEEDS         = 1:10
+const SEEDS         = semillas_final(1:10)
 
-# --- AJUSTA esta ruta a tu CSV real (la misma que usan experiments/11_ y 13_) ---
-const RUTA_SERIE  = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
-const OUTDIR_BASE = "results/real_data_multiseed"
+const RUTA_SERIE = joinpath(@__DIR__, "..", "data", "historical_data_july_january.csv")
+const OUTDIR_BASE = SMOKE_TEST ? mktempdir() : joinpath("results", "real_data_multiseed")
 
 mkpath(OUTDIR_BASE)
+if SMOKE_TEST
+    println("⚠ Smoke outputs will be written to a temporary directory: ", OUTDIR_BASE)
+end
 
 # ── Cargar y anclar la serie una sola vez (no depende de la semilla) ──
 I_obs_raw = cargar_serie_real(RUTA_SERIE)
@@ -62,7 +66,7 @@ end
 
 # ── Agregados exactos que pide el manuscrito ───────────────────────────
 println("\n" * "="^70)
-println("  RESUMEN FINAL (10 semillas)")
+println("  RESUMEN FINAL ($(length(SEEDS)) semillas)")
 println("="^70)
 
 for metodo in ("UDE", "SW-UDE")
@@ -71,7 +75,7 @@ for metodo in ("UDE", "SW-UDE")
     sd     = std(filas.Reff_max)
     n_sup1 = count(>(1.0), filas.Reff_max)
     println("$metodo:  Reff_max = $(round(mu, digits=3)) ± $(round(sd, digits=3))  " *
-            "($n_sup1 de $(nrow(filas)) semillas superan 1)")  # [2026-09-09] FIX: length(::DataFrame) no existe -- era nrow(filas)
+            "($n_sup1 de $(nrow(filas)) semillas superan 1)")
 end
 
 beta_min_global = minimum(resumen.beta_min)
