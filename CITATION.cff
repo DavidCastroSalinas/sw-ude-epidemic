@@ -4,18 +4,15 @@ message: >-
   If you use this software, please cite the article and, if you need to
   reference a specific version of the code, the software as well.
 type: software
-
 title: >-
   Code and data for "Temporal Supervision Horizon and Latent-Dynamics
   Recovery in SIR Universal Differential Equations"
-
 abstract: >-
   Reproducible companion to the article: the SIR-UDE library in Julia, the
   runners for the eleven experiments, the result files behind every value
   cited in the manuscript, the scripts that generate the six figures, and
   four checkers that recompute each cited value from the delivered data
   and report whether it matches.
-
 authors:
   - family-names: Castro-Salinas
     given-names: David
@@ -40,7 +37,6 @@ authors:
       Departamento de Matemática, Facultad de Ciencias Naturales,
       Matemática y Medio Ambiente, Universidad Tecnológica Metropolitana,
       Santiago, Chile
-
 license: MIT
 license-url: https://opensource.org/licenses/MIT
 keywords:
@@ -53,12 +49,17 @@ keywords:
   - epidemiological modeling
   - SIR
   - Julia
-
 repository-code: https://github.com/DavidCastroSalinas/sw-ude-epidemic
-doi: 10.5281/zenodo.23459303
-version: 1.0.0
-date-released: 2026-10-19
-
+doi: 10.5281/zenodo.23467398
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23467398
+    description: Concept DOI (all versions; resolves to the latest release).
+  - type: doi
+    value: 10.5281/zenodo.23467399
+    description: Version 1.0.0 of the archived software.
+version: 1.0.1
+date-released: 2026-10-31
 preferred-citation:
   type: article
   title: >-
@@ -74,4 +75,6 @@ preferred-citation:
     - family-names: Sepúlveda Oehninger
       given-names: Daniel
       orcid: https://orcid.org/0000-0002-3129-393X
+  journal: Mathematics
+  status: submitted
   year: 2026
