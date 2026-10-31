@@ -22,7 +22,7 @@
   "license": "MIT",
   "access_right": "open",
   "language": "spa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "hybrid dynamical models",
     "Universal Differential Equations",
@@ -42,5 +42,5 @@
       "scheme": "url"
     }
   ],
-  "notes": "The code is released under the MIT licence (LICENSE). Data, results and figures are released under CC BY 4.0 (LICENSE-DATA). The source epidemiological series keeps the licence of its institutional provider and is not sublicensed here: see data/README.md. Software DOI reserved on Zenodo: 10.5281/zenodo.23459303."
+  "notes": "The code is released under the MIT licence (LICENSE). Data, results and figures are released under CC BY 4.0 (LICENSE-DATA). The source epidemiological series keeps the licence of its institutional provider and is not sublicensed here: see data/README.md."
 }
