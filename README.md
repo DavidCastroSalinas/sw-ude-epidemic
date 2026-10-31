@@ -1,5 +1,7 @@
 # SW-UDE — Horizonte de supervisión temporal en un SIR-UDE
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23467398.svg)](https://doi.org/10.5281/zenodo.23467398)
+
 Código, datos y resultados del artículo *Temporal Supervision Horizon and
 Latent-Dynamics Recovery in SIR Universal Differential Equations* (referencia
 completa en `CITATION.cff`).
@@ -9,7 +11,7 @@ completa en `CITATION.cff`).
 ## De qué trata
 
 Un modelo híbrido neuronal-mecanicista aprende una parte desconocida de un
-sistema dinámico a partir de trajectories observadas. Acá el sistema es un
+sistema dinámico a partir de trayectorias observadas. Acá el sistema es un
 SIR y la parte desconocida es la tasa de transmisión, representada por una
 función neuronal $\beta_\theta(t, I)$:
 
@@ -167,8 +169,8 @@ uno. Los siete escenarios son:
 | Clave | Ley de transmisión |
 |---|---|
 | `:constante` | $\beta$ constante |
-| `:lineal` | decreciente lineal |
-| `:tanh` | transición suave |
+| `:lineal` | afín en $t$ e $I$ (control de especificación exacta) |
+| `:tanh` | no lineal con variación rápida (caso difícil deliberado) |
 | `:dos_olas` | dos olas |
 | `:intervencion` | caída abrupta por intervención |
 | `:estacional` | forzamiento estacional |
@@ -185,11 +187,14 @@ julia> run_all_sensitivity(; m_values=[1, 2, 5, 7, 10, 15, 20, 30, 50],
                              outdir="results/mi_barrido")
 ```
 
-Esa es la grilla del artículo. Incluye $m = 1$ y $m = 2$ a propósito, como
-controles por debajo del piso epidemiológico $m_\gamma = \lceil 1/(\gamma
-\Delta t)\rceil$: el mínimo de RMSE$_\beta$ cae ahí en la mayoría de los
-escenarios, y mostrar que eso es un artefacto de sobreajuste es el argumento
-de esa sección.
+Esa es la grilla del artículo, desde supervisión completamente local
+($m = 1$) hasta global ($m = T = 50$). La escala
+$m_{\mathrm{ref}} = 1/(\gamma \Delta t)$ es solo una referencia
+epidemiológica, no un piso: los horizontes más cortos son parte del rango
+experimental. Con observaciones exactas, el mínimo de RMSE$_\beta$ cae por
+debajo de $m_{\mathrm{ref}}$ en los siete escenarios, lo que es consistente
+con que una sola transición ya contiene información local sobre $\beta$. Con
+ruido observacional esa ventaja se invierte.
 
 ### Los dos métodos, por separado
 
@@ -389,13 +394,22 @@ bin/          utilidades necesarias para regenerar el manifiesto y verificar sal
 
 ## Cómo citar
 
-`CITATION.cff` identifica el software, sus autores y el artículo asociado.
-Completar los datos editoriales del artículo y los metadatos de archivo del
-software cuando se emita la versión citable definitiva.
+Si usas este código, cita el artículo y, si necesitas referenciar una versión
+específica del software, también su archivo en Zenodo:
+
+> Castro-Salinas, D., Vergara Quezada, J., & Sepúlveda Oehninger, D. (2026).
+> *Code and data for "Temporal Supervision Horizon and Latent-Dynamics
+> Recovery in SIR Universal Differential Equations"*. Zenodo.
+> https://doi.org/10.5281/zenodo.23467398
+
+El DOI anterior apunta siempre a la versión más reciente. Los metadatos
+completos están en `CITATION.cff`.
 
 ## Licencias
 
 - Código: `LICENSE` (MIT).
 - Datos, figuras y CSV de salida: `LICENSE-DATA` (CC BY 4.0).
-- Antes de redistribuir la serie epidemiológica, completar y verificar la
-  referencia y las condiciones de la fuente original; ver `data/README.md`.
+- La serie epidemiológica de entrada proviene del Departamento de
+  Estadísticas e Información de Salud (DEIS), Ministerio de Salud de Chile
+  (https://deis.minsal.cl), y conserva las condiciones de uso de esa fuente;
+  no se sublicencia aquí. Ver `data/README.md`.
